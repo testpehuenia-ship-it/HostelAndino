@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<script>
+  if (sessionStorage.getItem('is_admin_logged_in') !== 'true') {
+    window.location.href = '/admin/login.html';
+  }
+  function logout() {
+    sessionStorage.removeItem('is_admin_logged_in');
+    window.location.href = '/admin/login.html';
+  }
+</script>
+<script src="/admin/db.js" type="module"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Tarifas y Promociones - Hostel Andino</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#281803",
+                    "on-tertiary-container": "#cfb290",
+                    "secondary-container": "#e1e0d9",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#454840",
+                    "outline": "#75786f",
+                    "surface-tint": "#546346",
+                    "on-primary-container": "#acbc9a",
+                    "inverse-primary": "#bccca9",
+                    "secondary": "#5f5f59",
+                    "background": "#fcf9f8",
+                    "on-secondary-fixed": "#1b1c18",
+                    "outline-variant": "#c5c8bd",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#402e15",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#303030",
+                    "surface-container-highest": "#e4e2e1",
+                    "secondary-fixed": "#e4e2dc",
+                    "on-surface": "#1b1c1c",
+                    "tertiary-fixed": "#fdddb9",
+                    "surface-container": "#f0eded",
+                    "primary": "#28351c",
+                    "primary-fixed-dim": "#bccca9",
+                    "surface-dim": "#dcd9d9",
+                    "surface-container-low": "#f6f3f2",
+                    "tertiary-container": "#594429",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#3d4b30",
+                    "primary-fixed": "#d8e8c4",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#eae7e7",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary-container": "#63635e",
+                    "primary-container": "#3e4c31",
+                    "tertiary-fixed-dim": "#e0c29f",
+                    "surface-variant": "#e4e2e1",
+                    "on-tertiary-fixed-variant": "#584329",
+                    "surface": "#fcf9f8",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#474742",
+                    "on-primary-fixed": "#131f08",
+                    "on-background": "#1b1c1c",
+                    "inverse-on-surface": "#f3f0f0",
+                    "secondary-fixed-dim": "#c8c7c0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Playfair Display"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-lg": ["Manrope"],
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcf9f8;
+            color: #1b1c1c;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ambient-shadow {
+            box-shadow: 0 10px 30px -10px rgba(40, 53, 28, 0.06);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f0eded;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #28351c;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- Sidebar Navigation (Mandatory) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-8 bg-surface-container-low w-64 z-50 border-r border-outline-variant/30">
+<div class="px-8 mb-12">
+<a href="/index.html"><h1 class="font-display-lg text-headline-md text-primary hover:opacity-80 transition-opacity">Hostel Andino</h1></a>
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Panel de Gestión</p>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/galeria.html">
+<span class="material-symbols-outlined">photo_library</span>
+<span class="font-label-sm uppercase tracking-wider">Galería</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/servicios.html">
+<span class="material-symbols-outlined">home_repair_service</span>
+<span class="font-label-sm uppercase tracking-wider">Servicios</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-primary font-bold border-r-4 border-primary bg-surface-container-high transition-all group" href="/admin/tarifas.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-sm uppercase tracking-wider">Tarifas</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/tarifas.html">
+<span class="material-symbols-outlined">sell</span>
+<span class="font-label-sm uppercase tracking-wider">Promociones</span>
+</a>
+</nav>
+<div class="px-8 mt-auto">
+<a class="flex items-center gap-4 py-4 text-secondary hover:text-error transition-colors cursor-pointer" onclick="logout()">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm uppercase tracking-wider">Cerrar Sesión</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-margin-desktop min-h-screen">
+<!-- Header Section -->
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h2 class="font-display-lg text-headline-lg text-primary mb-2">Gestión de Tarifas y Promociones</h2>
+<p class="text-secondary max-w-2xl">Ajusta los valores estacionales y crea ofertas exclusivas para mantener el flujo de huéspedes durante todo el año.</p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container p-4 rounded-xl ambient-shadow">
+<div class="text-right">
+<p class="font-label-sm text-label-sm uppercase text-secondary">Estado Web</p>
+<p class="font-bold text-primary">Promoción Off-Season</p>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none bg-primary" id="promoToggle" onclick="togglePromo(this)">
+<span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
+</button>
+</div>
+</header>
+<!-- Bento Grid Layout for Management -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Rates Table Section (Interative Table) -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-8 ambient-shadow border border-outline-variant/20">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+<h3 class="font-headline-md text-primary">Tarifas por Temporada</h3>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant hover:bg-surface-container transition-colors text-label-sm uppercase tracking-widest font-bold">
+<span class="material-symbols-outlined text-sm">history</span> Historial
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Tipo de Habitación</th>
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Baja (May-Sep)</th>
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Media (Oct-Nov)</th>
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Alta (Dic-Abr)</th>
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary text-right">Acción</th>
+</tr>
+</thead>
+<tbody id="rates-tbody" class="divide-y divide-outline-variant/10">
+  <!-- Se cargará dinámicamente -->
+</tbody>
+</table>
+</div>
+</section>
+<!-- New Promotion Form -->
+<section class="col-span-12 lg:col-span-4 bg-surface-container-highest rounded-xl p-8 ambient-shadow flex flex-col">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">add_circle</span>
+<h3 class="font-headline-md text-primary">Nueva Promoción</h3>
+</div>
+<form id="promo-form" class="flex-1 flex flex-col gap-6">
+<div class="group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2 group-focus-within:text-primary transition-colors">Título de la Oferta</label>
+<input id="promo-title" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary placeholder:text-outline-variant transition-all" placeholder="Ej: Invierno Mágico" type="text" required />
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Descuento (%)</label>
+<div class="relative">
+<input id="promo-discount" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" type="number" value="15" required />
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary">%</span>
+</div>
+</div>
+<div class="group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Validez/Duración</label>
+<input id="promo-duration" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" placeholder="Ej: Todo Julio" type="text" required />
+</div>
+</div>
+<div class="p-4 rounded-lg bg-primary/5 border border-primary/10 flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">info</span>
+<p class="text-xs text-secondary leading-relaxed">Esta promoción se aplicará automáticamente y será visible en el banner promocional del inicio.</p>
+</div>
+<button class="mt-auto w-full bg-primary text-on-primary font-label-sm uppercase tracking-widest py-5 rounded-lg hover:opacity-90 transition-opacity flex justify-center items-center gap-2" type="submit">
+<span class="material-symbols-outlined text-lg">check_circle</span> Publicar Promoción
+                    </button>
+</form>
+</section>
+<!-- Active Promotions Dashboard (Small Cards) -->
+<div class="col-span-12 flex flex-col gap-6 mt-4">
+<div class="flex items-center justify-between">
+<h4 class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Promociones Activas en Web</h4>
+<div class="h-px bg-outline-variant/30 flex-1 mx-6"></div>
+</div>
+<div id="active-promos-grid" class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+  <!-- Se cargará dinámicamente -->
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Footer for Admin Context -->
+<footer class="ml-64 py-12 px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-tertiary-container text-on-tertiary-container">
+<div>
+<h4 class="font-display-lg text-headline-md mb-4">Hostel Andino</h4>
+<p class="opacity-80">Refined Ruggedness en el corazón de la Patagonia.</p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-sm uppercase tracking-widest opacity-60 mb-2">Soporte Técnico</span>
+<a class="hover:text-tertiary-fixed-dim transition-colors" href="https://wa.me/5492983658176" target="_blank">WhatsApp (+54 9 2983-658176)</a>
+<a class="hover:text-tertiary-fixed-dim transition-colors" href="mailto:hostelandinovillapehuenia@gmail.com">Soporte Email</a>
+</div>
+<div class="text-right">
+<p class="opacity-60 mb-4">© 2026 Hostel Andino. Sistema de Gestión Interno.</p>
+<div class="flex justify-end gap-4 opacity-40">
+<span class="material-symbols-outlined">security</span>
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+</div>
+</footer>
+
+<script>
+  // Dynamic Rates and Promotions Manager
+  function renderRates() {
+    const data = window.db.getData();
+    const ratesTbody = document.getElementById('rates-tbody');
+
+    ratesTbody.innerHTML = '';
+    data.tarifas.forEach((room) => {
+      const rowHtml = `
+        <tr class="group hover:bg-surface-container-low transition-colors">
+          <td class="py-6 pr-4">
+            <p class="font-bold text-primary">${room.name}</p>
+            <p class="text-xs text-secondary italic">${room.desc}</p>
+          </td>
+          <td class="py-6">
+            <div class="flex items-center gap-1 group/input">
+              <span class="text-secondary">$</span>
+              <input id="rate-${room.id}-low" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.low}"/>
+            </div>
+          </td>
+          <td class="py-6">
+            <div class="flex items-center gap-1">
+              <span class="text-secondary">$</span>
+              <input id="rate-${room.id}-mid" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.mid}"/>
+            </div>
+          </td>
+          <td class="py-6">
+            <div class="flex items-center gap-1">
+              <span class="text-secondary">$</span>
+              <input id="rate-${room.id}-high" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.high}"/>
+            </div>
+          </td>
+          <td class="py-6 text-right">
+            <button onclick="saveRoomRate(${room.id})" class="text-primary hover:scale-110 transition-transform bg-primary/10 p-2 rounded" title="Guardar">
+              <span class="material-symbols-outlined text-sm">save</span>
+            </button>
+          </td>
+        </tr>
+      `;
+      ratesTbody.insertAdjacentHTML('beforeend', rowHtml);
+    });
+
+    // Toggle Promo Switch state
+    const promoToggleBtn = document.getElementById('promoToggle');
+    const circle = promoToggleBtn.querySelector('span');
+    if (data.promociones.active) {
+      promoToggleBtn.classList.remove('bg-outline-variant');
+      promoToggleBtn.classList.add('bg-primary');
+      circle.classList.remove('translate-x-1');
+      circle.classList.add('translate-x-6');
+    } else {
+      promoToggleBtn.classList.remove('bg-primary');
+      promoToggleBtn.classList.add('bg-outline-variant');
+      circle.classList.remove('translate-x-6');
+      circle.classList.add('translate-x-1');
+    }
+
+    // Render Active Promos list
+    const activePromosGrid = document.getElementById('active-promos-grid');
+    activePromosGrid.innerHTML = '';
+    if (data.promociones.active) {
+      const activeHtml = `
+        <div class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 ambient-shadow group relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+          <div class="flex justify-between items-start mb-4">
+            <span class="bg-primary/10 text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full">Activa</span>
+            <button onclick="deleteActivePromo()" class="text-secondary hover:text-error transition-colors">
+              <span class="material-symbols-outlined text-lg">delete</span>
+            </button>
+          </div>
+          <h5 class="font-bold text-primary text-lg mb-1">${data.promociones.title}</h5>
+          <p class="text-sm text-secondary mb-4">${data.promociones.desc}</p>
+        </div>
+      `;
+      activePromosGrid.insertAdjacentHTML('beforeend', activeHtml);
+    } else {
+      const emptyHtml = `
+        <div class="col-span-3 border-2 border-dashed border-outline-variant/30 p-6 rounded-xl flex flex-col items-center justify-center text-center opacity-60">
+          <span class="material-symbols-outlined text-3xl text-outline-variant mb-2">loyalty</span>
+          <p class="text-sm text-secondary">No hay promociones activas</p>
+        </div>
+      `;
+      activePromosGrid.insertAdjacentHTML('beforeend', emptyHtml);
+    }
+  }
+
+  // Save Room Rate
+  function saveRoomRate(id) {
+    const data = window.db.getData();
+    const room = data.tarifas.find(r => r.id === id);
+    if (!room) return;
+
+    room.low = document.getElementById(`rate-${id}-low`).value.trim();
+    room.mid = document.getElementById(`rate-${id}-mid`).value.trim();
+    room.high = document.getElementById(`rate-${id}-high`).value.trim();
+
+    window.db.saveData(data);
+    alert(`Tarifas de ${room.name} guardadas con éxito!`);
+    renderRates();
+  }
+
+  // Toggle Promo
+  document.getElementById('promoToggle').addEventListener('click', function() {
+    const data = window.db.getData();
+    data.promociones.active = !data.promociones.active;
+    window.db.saveData(data);
+    renderRates();
+  });
+
+  // Create Promo
+  document.getElementById('promo-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const title = document.getElementById('promo-title').value.trim();
+    const discount = document.getElementById('promo-discount').value.trim();
+    const duration = document.getElementById('promo-duration').value.trim() || 'tiempo limitado';
+
+    if (!title || !discount) {
+      alert('Por favor introduce título y descuento.');
+      return;
+    }
+
+    const data = window.db.getData();
+    data.promociones.active = true;
+    data.promociones.title = title;
+    data.promociones.desc = `Aprovechá un ${discount}% de descuento en estadías durante ${duration}.`;
+    
+    window.db.saveData(data);
+    document.getElementById('promo-title').value = '';
+    document.getElementById('promo-discount').value = '15';
+    document.getElementById('promo-duration').value = '';
+    renderRates();
+    alert('Promoción publicada con éxito en la web!');
+  });
+
+  function deleteActivePromo() {
+    if (!confirm('¿Estás seguro de que deseas desactivar la promoción activa?')) return;
+    const data = window.db.getData();
+    data.promociones.active = false;
+    window.db.saveData(data);
+    renderRates();
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', renderRates);
+  renderRates();
+</script>
+</body></html>
+</body></html>

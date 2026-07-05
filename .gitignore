@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.gemini
+*.log
+.system_generated
+.agents
+.vscode
+.idea
+*.log

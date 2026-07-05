@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Acceso de Administrador - Hostel Andino</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#28351c",
+            secondary: "#5f5f59",
+            tertiary: "#402e15",
+            accent: "#cfb290",
+            background: "#fcf9f8",
+          },
+          fontFamily: {
+            display: ["Playfair Display", "serif"],
+            body: ["Manrope", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at center, #3d4b30 0%, #172010 100%);
+      font-family: 'Manrope', sans-serif;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
+
+  <!-- Background decorative glowing circles -->
+  <div class="absolute w-96 h-96 rounded-full bg-primary/20 blur-3xl -top-12 -left-12"></div>
+  <div class="absolute w-96 h-96 rounded-full bg-accent/10 blur-3xl -bottom-12 -right-12"></div>
+
+  <!-- Main Login Card -->
+  <div class="w-full max-w-md glass-card rounded-2xl p-8 md:p-10 shadow-2xl relative z-10 transition-all duration-300 hover:shadow-accent/5">
+    
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="font-display text-3xl font-bold text-white mb-2 tracking-wide">Hostel Andino</h1>
+      <p class="text-xs uppercase tracking-[0.2em] text-accent font-semibold">Panel de Administración</p>
+    </div>
+
+    <!-- Error message area -->
+    <div id="error-alert" class="hidden mb-6 p-4 rounded bg-red-950/50 border border-red-500/50 text-red-200 text-xs flex items-center gap-2 animate-pulse">
+      <span class="material-symbols-outlined text-[16px] text-red-400">error</span>
+      <span id="error-message">Credenciales incorrectas.</span>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6">
+      <!-- Username Field -->
+      <div>
+        <label for="username" class="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">Usuario</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">person</span>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            required 
+            class="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded text-white text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder-white/20"
+            placeholder="Introduce tu usuario"
+          />
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div>
+        <label for="password" class="block text-xs uppercase tracking-widest text-white/80 font-bold mb-2">Contraseña</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">lock</span>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            required 
+            class="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded text-white text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder-white/20"
+            placeholder="••••••••"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="w-full py-4 bg-accent text-tertiary font-bold rounded uppercase tracking-wider text-xs hover:bg-[#dfc2a0] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-lg shadow-accent/10 flex items-center justify-center gap-2"
+      >
+        <span>Ingresar</span>
+        <span class="material-symbols-outlined text-[16px]">login</span>
+      </button>
+    </form>
+
+    <!-- Footer back link -->
+    <div class="mt-8 text-center border-t border-white/10 pt-6">
+      <a href="/index.html" class="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+        <span>Volver al sitio web</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // Check if already logged in
+    if (sessionStorage.getItem('is_admin_logged_in') === 'true') {
+      window.location.href = '/admin/galeria.html';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const usernameInput = document.getElementById('username').value.trim();
+      const passwordInput = document.getElementById('password').value;
+      const errorAlert = document.getElementById('error-alert');
+      const errorMessage = document.getElementById('error-message');
+
+      // Admin credentials config
+      const ADMIN_USER = 'admin';
+      const ADMIN_PASS = 'pehuenia2026';
+
+      if (usernameInput === ADMIN_USER && passwordInput === ADMIN_PASS) {
+        sessionStorage.setItem('is_admin_logged_in', 'true');
+        window.location.href = '/admin/galeria.html';
+      } else {
+        errorAlert.classList.remove('hidden');
+        if (usernameInput !== ADMIN_USER) {
+          errorMessage.textContent = 'Usuario administrador no válido.';
+        } else {
+          errorMessage.textContent = 'Contraseña incorrecta.';
+        }
+      }
+    }
+  </script>
+</body>
+</html>

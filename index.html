@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hostel Andino | Refugio Premium en Villa Pehuenia</title>
+  <meta name="description" content="Hostel Andino en Villa Pehuenia. Refugio de montaña premium rodeado de araucarias y lagos. Habitaciones compartidas y privadas con el mejor confort patagónico."/>
+  <meta name="keywords" content="hostel villa pehuenia, alojamiento villa pehuenia, hostel andino, patagonia argentina, turismo neuquen, refugio de montaña"/>
+  <meta name="author" content="Hostel Andino"/>
+  
+  <!-- Geo Tags (Villa Pehuenia, Neuquén, Argentina) -->
+  <meta name="geo.region" content="AR-Q" />
+  <meta name="geo.placename" content="Villa Pehuenia" />
+  <meta name="geo.position" content="-38.8833;-71.1833" />
+  <meta name="ICBM" content="-38.8833, -71.1833" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://hostel-andino.vercel.app/"/>
+  <meta property="og:title" content="Hostel Andino | Refugio Premium en Villa Pehuenia"/>
+  <meta property="og:description" content="Desconectate en la cima de la montaña. Vistas al lago, chimenea, wifi, pool y todo el confort rústico de la Patagonia."/>
+  <meta property="og:image" content="/portada.webp"/>
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image"/>
+  <meta property="twitter:title" content="Hostel Andino | Refugio Premium en Villa Pehuenia"/>
+  <meta property="twitter:description" content="Desconectate en la cima de la montaña. Vistas al lago, chimenea, wifi, pool y todo el confort rústico de la Patagonia."/>
+  <meta property="twitter:image" content="/portada.webp"/>
+
+  <!-- LocalBusiness Schema (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Hostel",
+    "name": "Hostel Andino",
+    "image": "https://hostel-andino.vercel.app/portada.webp",
+    "@id": "https://hostel-andino.vercel.app/#hostel",
+    "url": "https://hostel-andino.vercel.app/",
+    "telephone": "+5492983658176",
+    "email": "hostelandinovillapehuenia@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Villa Pehuenia",
+      "addressLocality": "Aluminé",
+      "addressRegion": "Neuquén",
+      "postalCode": "8345",
+      "addressCountry": "AR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -38.8833,
+      "longitude": -71.1833
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "sameAs": [
+      "https://wa.me/5492983658176"
+    ]
+  }
+  </script>
+<script src="/admin/db.js" type="module"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 100, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-slider-container {
+            perspective: 1000px;
+        }
+        .fade-slide {
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .infinite-scroll {
+            animation: scroll 40s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .glass-card {
+            backdrop-filter: blur(8px);
+            background: rgba(252, 249, 248, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#281803",
+                      "on-tertiary-container": "#cfb290",
+                      "secondary-container": "#e1e0d9",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#454840",
+                      "outline": "#75786f",
+                      "surface-tint": "#546346",
+                      "on-primary-container": "#acbc9a",
+                      "inverse-primary": "#bccca9",
+                      "secondary": "#5f5f59",
+                      "background": "#fcf9f8",
+                      "on-secondary-fixed": "#1b1c18",
+                      "outline-variant": "#c5c8bd",
+                      "error-container": "#ffdad6",
+                      "tertiary": "#402e15",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "inverse-surface": "#303030",
+                      "surface-container-highest": "#e4e2e1",
+                      "secondary-fixed": "#e4e2dc",
+                      "on-surface": "#1b1c1c",
+                      "tertiary-fixed": "#fdddb9",
+                      "surface-container": "#f0eded",
+                      "primary": "#28351c",
+                      "primary-fixed-dim": "#bccca9",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container-low": "#f6f3f2",
+                      "tertiary-container": "#594429",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed-variant": "#3d4b30",
+                      "primary-fixed": "#d8e8c4",
+                      "on-error-container": "#93000a",
+                      "surface-container-high": "#eae7e7",
+                      "surface-bright": "#fcf9f8",
+                      "on-secondary-container": "#63635e",
+                      "primary-container": "#3e4c31",
+                      "tertiary-fixed-dim": "#e0c29f",
+                      "surface-variant": "#e4e2e1",
+                      "on-tertiary-fixed-variant": "#584329",
+                      "surface": "#fcf9f8",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#474742",
+                      "on-primary-fixed": "#131f08",
+                      "on-background": "#1b1c1c",
+                      "inverse-on-surface": "#f3f0f0",
+                      "secondary-fixed-dim": "#c8c7c0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "margin-desktop": "64px",
+                      "unit": "8px",
+                      "gutter": "24px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Playfair Display"],
+                      "label-sm": ["Manrope"],
+                      "headline-lg": ["Playfair Display"],
+                      "body-lg": ["Manrope"],
+                      "headline-md": ["Playfair Display"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "body-md": ["Manrope"]
+              },
+              "fontSize": {
+                      "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 bg-background/80 backdrop-blur-md transition-all duration-300 ease-in-out">
+<div class="font-display-lg text-headline-md text-primary">Hostel Andino</div>
+<!-- Desktop Nav -->
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 transition-colors" href="#inicio">Inicio</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors" href="#hostel">El Hostel</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors" href="#galeria">Galería</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors" href="#servicios">Servicios</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors" href="#tarifas">Tarifas</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors" href="#contacto">Contacto</a>
+<a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-8 py-3 font-label-sm uppercase tracking-wider transition-all hover:bg-primary-container hover:text-on-primary-container block text-center">Reservar</a>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</nav>
+<!-- 1. Hero Section: Image Slider -->
+<section class="relative h-screen w-full overflow-hidden hero-slider-container" id="inicio">
+<!-- Slides -->
+<div class="absolute inset-0" id="hero-slider">
+<div class="absolute inset-0 opacity-100 transition-opacity duration-1000 fade-slide active-slide" style="background-image: url('/hero01.webp'); background-size: cover; background-position: center bottom;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+</div>
+<div class="absolute inset-0 opacity-0 transition-opacity duration-1000 fade-slide" style="background-image: url('/hero02.webp'); background-size: cover; background-position: center bottom;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+</div>
+<div class="absolute inset-0 opacity-0 transition-opacity duration-1000 fade-slide" style="background-image: url('/hero03.webp'); background-size: cover; background-position: center bottom;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+</div>
+<div class="absolute inset-0 opacity-0 transition-opacity duration-1000 fade-slide" style="background-image: url('/hero04.webp'); background-size: cover; background-position: center bottom;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+</div>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-center items-center text-center px-margin-mobile md:px-margin-desktop">
+<span class="text-white font-label-sm uppercase tracking-[0.2em] mb-4 opacity-0 transform translate-y-4 transition-all duration-700 animate-fade-in-up">Villa Pehuenia, Patagonia</span>
+<h1 class="text-white font-display-lg text-headline-lg-mobile md:text-display-lg max-w-4xl mb-8 opacity-0 transform translate-y-4 transition-all duration-700 delay-300 animate-fade-in-up">
+                Desconectá en Villa Pehuenia
+            </h1>
+<div class="flex flex-col md:flex-row gap-4 opacity-0 transform translate-y-4 transition-all duration-700 delay-500 animate-fade-in-up">
+<a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest hover:scale-105 transition-transform block text-center">Consultar Disponibilidad</a>
+<button class="border border-white text-white px-12 py-5 font-label-sm uppercase tracking-widest backdrop-blur-sm hover:bg-white hover:text-primary transition-all">Explorar el Hostel</button>
+</div>
+</div>
+<!-- Slider Controls -->
+<div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
+<button class="hero-dot w-1.5 h-10 bg-white opacity-100 transition-opacity rounded" onclick="changeSlide(0)"></button>
+<button class="hero-dot w-1.5 h-10 bg-white opacity-40 transition-opacity rounded" onclick="changeSlide(1)"></button>
+<button class="hero-dot w-1.5 h-10 bg-white opacity-40 transition-opacity rounded" onclick="changeSlide(2)"></button>
+<button class="hero-dot w-1.5 h-10 bg-white opacity-40 transition-opacity rounded" onclick="changeSlide(3)"></button>
+</div>
+</section>
+<!-- 2. El Hostel Section -->
+<section class="py-32 bg-background" id="hostel">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-5 mb-12 md:mb-0">
+<span class="font-label-sm text-primary uppercase tracking-widest mb-4 block">Nuestra Esencia</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8">Refugio de calma entre araucarias y lagos.</h2>
+<div class="space-y-6 text-secondary font-body-lg">
+<p>En Hostel Andino, diseñamos una experiencia de desconexión absoluta para aquellos que buscan el equilibrio perfecto entre la naturaleza salvaje de Villa Pehuenia y el confort de un refugio premium. Rodeado de araucarias milenarias y con vistas imponentes a los lagos patagónicos, nuestro espacio invita a relajarse frente a la chimenea, compartir momentos en nuestro salón social o disfrutar de la paz de la cordillera neuquina.</p>
+</div>
+</div>
+<div class="md:col-span-6 md:col-start-7 relative">
+<div class="relative aspect-[4/5] bg-surface-container-low shadow-sm overflow-hidden rounded-lg">
+<img class="w-full h-full object-cover" src="/portada.webp" alt="Nuestra Esencia - Hostel Andino"/>
+<!-- Wavy Bottom Banner -->
+<div class="absolute bottom-0 left-0 right-0 z-10">
+<!-- Wave SVG -->
+<svg class="w-full h-8 -mb-1 block fill-primary" viewBox="0 0 1440 74" preserveAspectRatio="none">
+<path d="M0,32 C240,74 480,74 720,48 C960,22 1200,-32 1440,16 L1440,74 L0,74 Z"></path>
+</svg>
+<!-- Banner Content -->
+<div class="bg-primary px-6 pb-5 pt-1 flex flex-col justify-center gap-1 text-white">
+<span class="font-display-lg text-lg uppercase tracking-wider text-on-tertiary-container font-bold">15 Años de Calidez</span>
+<p class="text-xs opacity-90 font-body-md leading-relaxed">¡Despertá en la cima de la montaña con el mejor amanecer de Villa Pehuenia!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Servicios Premium Section -->
+<section class="py-32 bg-surface-container-low" id="servicios">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+  
+  <!-- 1. NUESTROS SERVICIOS -->
+  <div class="text-center mb-16">
+    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-4 uppercase tracking-wide">Nuestros Servicios</h2>
+    <p class="text-secondary max-w-2xl mx-auto mb-10">Comodidad moderna integrada en el corazón de la naturaleza salvaje de Villa Pehuenia.</p>
+  </div>
+  
+  <div id="nuestros-servicios-list" class="flex flex-wrap justify-center items-center gap-y-4 gap-x-3 text-[#402e15] text-sm md:text-base max-w-4xl mx-auto font-body-md leading-relaxed text-center mb-24">
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">checkroom</span>
+      <span>Cambio de blanquería cada 4 días (salvo que el huésped solicite otra frecuencia).</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">cleaning_services</span>
+      <span>Limpieza diaria.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">translate</span>
+      <span>Traductor bilingüe inglés–español.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">support_agent</span>
+      <span>Recepción las 24 horas.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">smoke_free</span>
+      <span>Áreas públicas y privadas libres de humo.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">ac_unit</span>
+      <span>Guarda de equipos de ski y snowboard.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700, 'FILL' 1;">circle</span>
+      <span>Mesa de pool sin restricciones.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">extension</span>
+      <span>Juegos de mesa.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">sports_esports</span>
+      <span>Nintendo Wii.</span>
+    </span>
+    <span class="text-outline-variant/40">|</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">wifi</span>
+      <span>WiFi.</span>
+    </span>
+  </div>
+
+  <hr class="border-outline-variant/20 mb-24" />
+
+  <!-- 2. INFRAESTRUCTURA Y CONFORT (3 COLUMNAS) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+    <!-- Cocina -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Cocina</h3>
+      </div>
+      <p class="text-sm text-secondary font-body-md font-semibold mb-2">Amplia cocina-comedor equipada con:</p>
+      <ul id="confort-cocina" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>Horno industrial refractario pizzero.</li>
+        <li>Cocina, bacha y heladera industriales.</li>
+        <li>Mesa principal con 14 sillas estilo campo.</li>
+        <li>Mesa individual con 2 sillas.</li>
+        <li>Vajilla completa para 20 huéspedes.</li>
+        <li>Horno microondas.</li>
+      </ul>
+    </div>
+
+    <!-- Estar -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Estar</h3>
+      </div>
+      <p class="text-sm text-secondary font-body-md font-semibold mb-2">Amplio <span class="font-bold">estar</span> equipado con:</p>
+      <ul id="confort-estar" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>Dos cómodos divanes cama.</li>
+        <li>Un sillón confortable de dos cuerpos.</li>
+        <li>TV Smart con servicio de Netflix.</li>
+        <li>Calefacción.</li>
+        <li>Mesa de pool.</li>
+        <li>Biblioteca.</li>
+      </ul>
+    </div>
+
+    <!-- Habitaciones -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Habitaciones</h3>
+      </div>
+      <p class="text-sm text-secondary font-body-md font-semibold mb-2"><span class="font-bold">3 unidades</span>, equipadas con:</p>
+      <ul id="confort-habitaciones" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>En todas las habitaciones, baño privado completo con ducha de alta presión y grifería monocomando.</li>
+        <li>Habitaciones con baño privado y 6 camas cada una.</li>
+        <li>Habitación familiar matrimonial privada con capacidad para 5 personas.</li>
+        <li>Calefacción.</li>
+        <li>Lockers individuales con puertas y llave.</li>
+      </ul>
+    </div>
+
+    <!-- Sanitarios -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Sanitarios</h3>
+      </div>
+      <ul id="confort-sanitarios" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>3 baños privados completos.</li>
+        <li>1 baño adicional de servicio para invitados.</li>
+      </ul>
+    </div>
+
+    <!-- Blanquería -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Blanquería</h3>
+      </div>
+      <p class="text-sm text-secondary font-body-md font-semibold mb-2">Se proveerá al huésped de:</p>
+      <ul id="confort-blanqueria" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>Sábanas.</li>
+        <li>Frazadas.</li>
+        <li>Acolchados.</li>
+      </ul>
+    </div>
+
+    <!-- Estacionamiento y Jardín -->
+    <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Estacionamiento y Jardín</h3>
+      </div>
+      <ul id="confort-estacionamiento" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
+        <li>Estacionamiento no techado.</li>
+        <li>Jardín.</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="border-outline-variant/20 mb-24" />
+
+  <!-- 3. SERVICIOS OPCIONALES -->
+  <div class="text-center mb-12">
+    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8 uppercase tracking-wide">Servicios Opcionales</h2>
+  </div>
+
+  <div id="servicios-opcionales-list" class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+    <!-- Desayuno -->
+    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
+      <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">local_cafe</span>
+      <span class="text-sm text-tertiary font-body-md">Desayuno</span>
+    </div>
+    <!-- Almuerzo y cena -->
+    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
+      <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">restaurant_menu</span>
+      <span class="text-sm text-tertiary font-body-md">Almuerzo y cena</span>
+    </div>
+    <!-- Amenities -->
+    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
+      <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">soap</span>
+      <span class="text-sm text-tertiary font-body-md">Amenities</span>
+    </div>
+    <!-- Transfers -->
+    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
+      <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">airport_shuttle</span>
+      <span class="text-sm text-tertiary font-body-md">Transfers</span>
+    </div>
+  </div>
+
+  <!-- Imagen Desayuno Clásico -->
+  <div class="w-full mb-24">
+    <img src="/desayunoclasico.png" alt="Desayuno Clásico" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" />
+  </div>
+
+  <hr class="border-outline-variant/20 mb-24" />
+
+  <!-- 4. ACTIVIDADES EN DESTINO & ATRACCIONES MAS CERCANAS -->
+  <div class="space-y-16 text-center">
+    <!-- Actividades -->
+    <div>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8 uppercase tracking-wide">Actividades en Destino</h2>
+      <div class="flex flex-wrap justify-center items-center gap-y-4 gap-x-3 text-[#402e15] text-sm md:text-base max-w-4xl mx-auto font-body-md leading-relaxed">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">downhill_skiing</span>
+          <span>Ski</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">snowboarding</span>
+          <span>Snowboard</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">hiking</span>
+          <span>Senderismo</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">landscape</span>
+          <span>Cabalgatas</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">beach_access</span>
+          <span>Playas</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">explore</span>
+          <span>Trekking</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">sailing</span>
+          <span>Actividades náuticas</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">water</span>
+          <span>Pesca</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">directions_bike</span>
+          <span>Mountain biking</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">kayaking</span>
+          <span>Kayaking</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">rowing</span>
+          <span>Rafting</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Atracciones -->
+    <div>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8 uppercase tracking-wide">Atracciones Más Cercanas</h2>
+      <div class="flex flex-wrap justify-center items-center gap-y-4 gap-x-3 text-[#402e15] text-sm md:text-base max-w-5xl mx-auto font-body-md leading-relaxed">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">location_on</span>
+          <span>Paraje La Angostura</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">directions_bus</span>
+          <span>City Tour</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">visibility</span>
+          <span>Mirador del Ciprés</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">visibility</span>
+          <span>Mirador del Golfo</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">visibility</span>
+          <span>Mirador del Litrán</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">visibility</span>
+          <span>Mirador de la Cumbre</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">visibility</span>
+          <span>Mirador de los Lagos</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">water</span>
+          <span>Lago Aluminé</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">terrain</span>
+          <span>Volcán Batea Mahuida</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">alt_route</span>
+          <span>Circuito Pehuenia</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">home</span>
+          <span>Villa Moquehue</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">water</span>
+          <span>Lago Moquehue</span>
+        </span>
+        <span class="text-outline-variant/40">|</span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">flag</span>
+          <span>Paso fronterizo Icalma (límite con Chile)</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+<!-- 4. Galería Section: Bento/Mosaic Grid -->
+<section class="py-32 bg-background" id="galeria">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<span class="font-label-sm text-primary uppercase tracking-widest mb-4 block">Capturas</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Un Vistazo al Paraíso</h2>
+</div>
+<button class="font-label-sm uppercase tracking-widest text-primary border-b border-primary pb-2 hover:opacity-70 transition-opacity">Ver Álbum Completo</button>
+</div>
+<div id="galeria-grid" class="grid grid-cols-1 md:grid-cols-12 gap-4 h-[800px]">
+<div class="md:col-span-8 h-full rounded-lg overflow-hidden group cursor-pointer shadow-lg">
+<img alt="Exterior" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLuyaW76yCqCqzWqiU7tH_5hyczeluyw6PS0vnMiAx0Q-IaBWGZ_6jFUk-oZhoLQIV5hjsSTO9rdKsEnsM3WygTohTlOQ63gTJ5v4IvcUQU0aX_bh-pds6Gkyd26GAFfOlyfE2eMSVV4h602_UsqVIqwvvFhrl7cv2q8RQ-iTUeMBvuffR16MCAqOldZGpAmh1h6chrmn6pGjVcgT-eUSnV1nN-NLR80FZ5mkWGGSfINW2lYwVtDyPrj20Y"/>
+</div>
+<div class="md:col-span-4 flex flex-col gap-4">
+<div class="h-1/2 rounded-lg overflow-hidden group cursor-pointer shadow-lg">
+<img alt="Habitación" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLuDKHIzfHlYpObGbEa-cQiUwlJTUT45DBly-P9yqv2lcD-itHpAa6D3GTTrsq1xNQHPcrLpb6kNj2AG4YLO1u-fYBe3qZpM7qDOU2Z_T0fxThEgRXpAPBlogcg6lxXXhBphzD5_4cKXXIvt8FiZbRLWVUzrgXorrRXuOnqqmgUXUtWCayP5_cOLSxFZHOze1cQ2OvutWGNbw5lem9t_A6JDsAiTMjrvAygNHGdQFWGh-zJY8N8ggdMpYz0"/>
+</div>
+<div class="h-1/2 rounded-lg overflow-hidden group cursor-pointer shadow-lg">
+<img alt="Entorno" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLuOa2vUi83QJ9nIaTbWy0ySQTjCFXx0D_KSr1f-FP86IUKloIqibsgg6ncNv-d-S5qejEJax-fuCCQdzDLYJqbeGGRaNG34pWfd0r1NW2gn8anrtABlzUxXmKbLj0-uLuHoLMrQHtY2CKE5jKxqyYV17QC8AxFLe6DpeZpbGuEeCe2uzL957moOnhPYcOEsl4AZ7vuxGlryj9taOGVUd9i7zvdMP4sdYTgqbLr-btOi48h-5wWAuDzDgjQ"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Videos: Carousel -->
+<section class="py-24 bg-surface-container-highest overflow-hidden">
+<div class="px-margin-mobile md:px-margin-desktop mb-12">
+<h2 class="font-headline-md text-primary text-center">Historias en Movimiento</h2>
+</div>
+<div class="relative w-full overflow-hidden flex">
+<div class="flex infinite-scroll gap-6">
+<!-- Video Item 1 -->
+<div class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-quality 4K video thumbnail showing a panoramic drone shot of the crystal-clear Lake Moquehue in Villa Pehuenia during a quiet, misty morning. The water is perfectly still, reflecting the emerald green of the surrounding forests and the sharp peaks of the Andes. A subtle play button icon is centered in the frame with a refined, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_G1EeWHTFDngTmtA4JGHg7wc4GJnFiFaVLYFjXh1rsSvTE4sR91VZhGev5sN02epTAmq-9DA5ti-HtoNEo8uAHSdEAw2OXuwvC5xlAKBA1WAj_SLWMjCaXJfx0npxWXri__bR1UCw7suano-uD1v6_mYKZjuh9iWrHhZm4Qy6NhmD_xOfdy4PCHk6UGqcJkHu-d5jpL_OW9ig7Q-Nl5QNKIgGRPO3v0ezK4eS3em5me4eYfyMhaDBwh4kRp5Jnyz6HKiNWhPjWAM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</div>
+<!-- Video Item 2 -->
+<div class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="An atmospheric video thumbnail showcasing the warm and cozy interior of Hostel Andino at night. Guests are gathered around a central fireplace, sharing wine and laughter. The lighting is low and amber-toned, highlighting the texture of the reclaimed wood walls and woven textiles. A cinematic 'Refined Ruggedness' vibe dominates the scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqkB4rw4jr6nmCOzH5mEwHcqBrojaFw1quI6arMYTXuA2RIvXwSJJktjL68Rr96zm-_i98a3vLPehe0eJ6ZrFr-7psDhYLiyLb8rn_zkrLsjyqIsToFPD-qvWxOW4SH4JmgTEoHNdI6a0aaEv_PCx-HAPMaBKiY3ovk64gwzPMP32un6ZjU_e_qRaWGjOrkUw9u0IF3_CX6gLC7vL0XEdpec-4td9tmpQVYtnt63AOJKRY300PrIEdmCwW4P2YuPaknxzGOM5y3mc"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</div>
+<!-- Duplicate for seamless scroll -->
+<div class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A vibrant video thumbnail of an outdoor summer BBQ at Hostel Andino. Traditional Argentine 'asado' is being prepared on a large outdoor grill, with the stunning backdrop of the Pehuén forest and snowy mountains. The scene is bright and full of energy, with a focus on fresh ingredients and high-end outdoor living." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBikdfqE0bPh4PqhJUe-kTcsICEc5Hil0dY8njopUF4M7-EbYyR0tqSHjbFmnOuT4VmhkZyD_8cNDMM1MH1D2aaSrLXZzGRSyVRL0SBTjkktWbF5Oy5Q-hsAKPEcdMOB8ecQD2EDEC20Pb1jydxCahcfXSAiF1PNMgWZKsEQY2yN4qmVpcf_z7HkqC6r5MWcVgZFsfqb4KQGikagMIxaKZFGgQr7MIsiQcKajXEA_CUmDpqvT0IkVS1pfoeeauG1M2ilDD7Gv4Uu2g"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</div>
+<!-- Repeat set -->
+<div class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-quality 4K video thumbnail showing a panoramic drone shot of the crystal-clear Lake Moquehue in Villa Pehuenia during a quiet, misty morning. The water is perfectly still, reflecting the emerald green of the surrounding forests and the sharp peaks of the Andes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmzQ90hFWrIAuInniKfM5KNMnpqqfeEcdUYvgEOWhr0CbIKzyl6X7rzuiv0utWbHWGLoTGQtgkDffAjIGdOr83ne5VF6kHC5KIwjv5CbncNZqDeoOKIkFCNo9izS0n4N2Wvupe4CYuB_T9joljBV7VzimVI71Uqt-I6XBF0ewRy7JfP5Y4MIfMXwObbsg1ofsIsnyvC3Pz6CX8sVTFLzK_9w1ICzgaDMh6KwHxUAoMvjd31pzICJn5SkGkmF8Yd199-yHSlR0l73I"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Tarifas Section -->
+<section class="py-32 bg-background" id="tarifas">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<span class="font-label-sm text-primary uppercase tracking-widest mb-4 block">Planificá tu Estadía</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Tarifas &amp; Promociones</h2>
+</div>
+<div id="rates-public-container" class="max-w-4xl mx-auto space-y-4">
+<div class="flex justify-between items-center py-8 border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors px-4">
+<div class="flex flex-col">
+<span class="font-headline-md text-primary">Habitación Compartida</span>
+<span class="text-secondary text-sm">6 camas, baño privado, lockers</span>
+</div>
+<span class="font-headline-md text-primary">$18.500 / noche</span>
+</div>
+<div class="flex justify-between items-center py-8 border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors px-4">
+<div class="flex flex-col">
+<span class="font-headline-md text-primary">Habitación Doble Superior</span>
+<span class="text-secondary text-sm">Cama Queen, vista al lago, desayuno incluido</span>
+</div>
+<span class="font-headline-md text-primary">$45.000 / noche</span>
+</div>
+<!-- Highlighted Promo -->
+<div class="mt-12 bg-tertiary-container text-on-tertiary-container p-12 relative overflow-hidden">
+<div class="relative z-10">
+<span class="font-label-sm uppercase tracking-widest opacity-80 mb-2 block">Oportunidad Especial</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">Promoción fuera de temporada</h3>
+<p class="text-on-tertiary-container/80 max-w-lg mb-8">Disfrutá del silencio de Villa Pehuenia entre Mayo y Junio con un 30% de descuento en estadías mayores a 3 noches.</p>
+<button class="bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold">Solicitar Promo</button>
+</div>
+<span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 pointer-events-none">sell</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. Contacto & Footer Section -->
+<section class="py-32 bg-surface-container" id="contacto">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+<!-- Contact Form -->
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8">Estamos cerca.</h2>
+<form class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="border-b border-outline focus-within:border-primary transition-colors">
+<label class="font-label-sm uppercase text-secondary block mb-2">Nombre</label>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Tu nombre" type="text"/>
+</div>
+<div class="border-b border-outline focus-within:border-primary transition-colors">
+<label class="font-label-sm uppercase text-secondary block mb-2">Email</label>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="email@ejemplo.com" type="email"/>
+</div>
+</div>
+<div class="border-b border-outline focus-within:border-primary transition-colors">
+<label class="font-label-sm uppercase text-secondary block mb-2">Mensaje</label>
+<textarea class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="¿En qué podemos ayudarte?" rows="4"></textarea>
+</div>
+<button class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest w-full md:w-auto">Enviar Mensaje</button>
+</form>
+</div>
+<!-- Map & Info -->
+<div class="flex flex-col">
+<div class="h-80 w-full bg-surface-container-high rounded-lg mb-8 overflow-hidden grayscale contrast-125 shadow-md">
+<div class="w-full h-full bg-cover bg-center" data-location="Villa Pehuenia, Neuquen, Argentina" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAC_BxhGGEEwObgbRGp4gerutF-vgZ40_v__uXdbGrmYmwATT1WSQ-LJzjJh9sR0AKrCMnU_R5xleCWFJKykAHZpSCasttMCGrZoAJiCfqWHuOHo9jO6o3Wu37TvVqvhPVHMqcBb-KIQATq_TzT_BHqSKOTeq2Qs5tx3UwWJRf_KLPWwIF4vrRdd2E8VUR4hgMGRzvCzE9OQHOUQCrZPYpZ8Tnx_hr2ok-iHZQyyHW-sABHjRJVR6qyPA_FbpIlebSdobplGlTDwDY')"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h4 class="font-label-sm uppercase text-primary mb-4">Ubicación</h4>
+<p class="text-secondary font-body-md">Calle Principal s/n,<br/>Villa Pehuenia, Neuquén, Argentina</p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-sm uppercase text-primary mb-4">Contacto Directo</h4>
+<a class="flex items-center gap-2 text-secondary hover:text-primary transition-colors" href="mailto:hostelandinovillapehuenia@gmail.com">
+<span class="material-symbols-outlined">mail</span>
+                                hostelandinovillapehuenia@gmail.com
+                            </a>
+<a class="flex items-center gap-2 text-primary font-bold group" href="https://wa.me/5492983658176" target="_blank">
+<div class="w-10 h-10 rounded-full overflow-hidden inline-block align-middle mr-2 border border-primary/20">
+<img alt="WhatsApp" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxyIgYjlH_TmvSMPHKhewpg7TcNo7Q7pk8bKgjDqnd2_dGM5TxLJRlOM3-uikKkYlzdsodnWf2UlqfUxpehapQh37BIhbVF5nwkZ-RiNYn2Pw-MwcAsrgKWfCfvmBsknR0HbU-V1Etz0B6fQE0uAOXGAFKgP5UPfxbu6BFs0GyYKmJQgTvxrHefRmmxDs2YE1NVmROiLzRF0VwoX6XUUe5350m-ckjOMqTcJyxT363Ft98PS4kOTtT8lWI3k_rVn54rmRJ_Wqqw-g"/>
+</div>
+                                Escribinos por WhatsApp (+54 9 2983-658176)
+                                <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-tertiary-container text-on-tertiary-container grid grid-cols-1 md:grid-cols-3 gap-gutter items-center border-t border-white/10">
+<div class="font-display-lg text-headline-md">Hostel Andino</div>
+<div class="text-center md:text-left font-body-md opacity-80">
+            © 2026 Hostel Andino. Refined Ruggedness.
+            <span class="mx-2">|</span>
+            <a href="/admin/login.html" class="hover:text-tertiary-fixed-dim underline transition-colors">Admin Panel</a>
+        </div>
+<div class="flex justify-center md:justify-end gap-6">
+<a class="hover:text-tertiary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Instagram</a>
+<a class="hover:text-tertiary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Facebook</a>
+<a class="hover:text-tertiary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">TripAdvisor</a>
+</div>
+</footer>
+<script>
+        // Simple Hero Slider logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('#hero-slider > div');
+        const dots = document.querySelectorAll('.hero-dot');
+
+        function changeSlide(index) {
+            slides[currentSlide].classList.remove('opacity-100');
+            slides[currentSlide].classList.add('opacity-0');
+            dots[currentSlide].classList.remove('opacity-100');
+            dots[currentSlide].classList.add('opacity-40');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.remove('opacity-0');
+            slides[currentSlide].classList.add('opacity-100');
+            dots[currentSlide].classList.remove('opacity-40');
+            dots[currentSlide].classList.add('opacity-100');
+        }
+
+        // Auto-advance
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            changeSlide(next);
+        }, 6000);
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('h-16', 'shadow-sm');
+                nav.classList.remove('h-20');
+            } else {
+                nav.classList.remove('h-16', 'shadow-sm');
+                nav.classList.add('h-20');
+            }
+        });
+
+        // Dynamic DB renderers
+        function renderHomeDynamicContent() {
+            const data = window.db.getData();
+
+            // 1. Nuestros Servicios List
+            const nuestrosContainer = document.getElementById('nuestros-servicios-list');
+            if (nuestrosContainer) {
+                nuestrosContainer.innerHTML = data.servicios.nuestros.map((srv, idx) => `
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">${srv.icon}</span>
+                        <span>${srv.text}</span>
+                    </span>
+                    ${idx < data.servicios.nuestros.length - 1 ? '<span class="text-outline-variant/40">|</span>' : ''}
+                `).join('');
+            }
+
+            // 2. Confort Categories
+            const categories = ['cocina', 'estar', 'habitaciones', 'sanitarios', 'blanqueria', 'estacionamiento'];
+            categories.forEach(cat => {
+                const listEl = document.getElementById(`confort-${cat}`);
+                if (listEl && data.servicios.confort[cat]) {
+                    listEl.innerHTML = data.servicios.confort[cat].map(item => `
+                        <li>${item}</li>
+                    `).join('');
+                }
+            });
+
+            // 3. Servicios Opcionales
+            const opcionalesContainer = document.getElementById('servicios-opcionales-list');
+            if (opcionalesContainer) {
+                opcionalesContainer.innerHTML = data.servicios.opcionales.map(opc => `
+                    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">${opc.icon}</span>
+                        <span class="text-sm text-tertiary font-body-md">${opc.name}</span>
+                    </div>
+                `).join('');
+            }
+
+            // 4. Galería de Fotos
+            const galeriaGrid = document.getElementById('galeria-grid');
+            if (galeriaGrid) {
+                const visiblePhotos = data.galeria.filter(p => p.visible);
+                galeriaGrid.innerHTML = '';
+                if (visiblePhotos.length > 0) {
+                    // Feature large photo (first one)
+                    const largePhoto = visiblePhotos[0];
+                    let html = `
+                        <div class="md:col-span-8 h-full rounded-lg overflow-hidden group cursor-pointer shadow-lg">
+                            <img alt="${largePhoto.alt}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="${largePhoto.src}"/>
+                        </div>
+                    `;
+
+                    // Secondary photos container (first 2 remaining)
+                    const secondary = visiblePhotos.slice(1, 3);
+                    if (secondary.length > 0) {
+                        html += `<div class="md:col-span-4 flex flex-col gap-4">`;
+                        secondary.forEach(photo => {
+                            html += `
+                                <div class="h-1/2 rounded-lg overflow-hidden group cursor-pointer shadow-lg">
+                                    <img alt="${photo.alt}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="${photo.src}"/>
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                    }
+                    galeriaGrid.innerHTML = html;
+                }
+            }
+
+            // 5. Rates and Promotion
+            const ratesContainer = document.getElementById('rates-public-container');
+            if (ratesContainer) {
+                let selectedSeason = localStorage.getItem('selected_season') || 'low';
+                const setSeason = (season) => {
+                    localStorage.setItem('selected_season', season);
+                    renderRatesUI();
+                };
+                window.setSeason = setSeason;
+
+                function renderRatesUI() {
+                    const activeSeason = localStorage.getItem('selected_season') || 'low';
+                    const activeClass = 'bg-primary text-white';
+                    const inactiveClass = 'bg-surface-container-low text-primary hover:bg-surface-container';
+
+                    let ratesHtml = `
+                        <!-- Season Selector Tabs -->
+                        <div class="flex justify-center gap-4 mb-8">
+                            <button onclick="setSeason('low')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'low' ? activeClass : inactiveClass}">Temp. Baja</button>
+                            <button onclick="setSeason('mid')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'mid' ? activeClass : inactiveClass}">Temp. Media</button>
+                            <button onclick="setSeason('high')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'high' ? activeClass : inactiveClass}">Temp. Alta</button>
+                        </div>
+                        
+                        <!-- Rates rows -->
+                        <div class="space-y-4">
+                    `;
+
+                    data.tarifas.forEach(room => {
+                        const price = room[activeSeason] ? `$${parseInt(room[activeSeason]).toLocaleString('es-AR')}` : '$0';
+                        ratesHtml += `
+                            <div class="flex justify-between items-center py-6 border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors px-4">
+                                <div class="flex flex-col">
+                                    <span class="font-headline-md text-primary">${room.name}</span>
+                                    <span class="text-secondary text-sm">${room.desc}</span>
+                                </div>
+                                <span class="font-headline-md text-primary">${price} / noche</span>
+                            </div>
+                        `;
+                    });
+
+                    ratesHtml += `</div>`;
+
+                    if (data.promociones.active) {
+                        ratesHtml += `
+                            <!-- Highlighted Promo -->
+                            <div class="mt-12 bg-tertiary-container text-on-tertiary-container p-12 relative overflow-hidden rounded-xl">
+                                <div class="relative z-10">
+                                    <span class="font-label-sm uppercase tracking-widest opacity-80 mb-2 block">Oportunidad Especial</span>
+                                    <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${data.promociones.title}</h3>
+                                    <p class="text-on-tertiary-container/80 max-w-lg mb-8">${data.promociones.desc}</p>
+                                    <a href="https://wa.me/5492983658176" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${data.promociones.cta_text || 'Solicitar Promo'}</a>
+                                </div>
+                                <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 pointer-events-none">sell</span>
+                            </div>
+                        `;
+                    }
+
+                    ratesContainer.innerHTML = ratesHtml;
+                }
+
+                renderRatesUI();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHomeDynamicContent();
+        });
+    </script>
+</body></html>

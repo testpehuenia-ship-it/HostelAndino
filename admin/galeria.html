@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<script>
+  if (sessionStorage.getItem('is_admin_logged_in') !== 'true') {
+    window.location.href = '/admin/login.html';
+  }
+  function logout() {
+    sessionStorage.removeItem('is_admin_logged_in');
+    window.location.href = '/admin/login.html';
+  }
+</script>
+<script src="/admin/db.js" type="module"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Contenido Multimedia - Hostel Andino</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#281803",
+                        "on-tertiary-container": "#cfb290",
+                        "secondary-container": "#e1e0d9",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#454840",
+                        "outline": "#75786f",
+                        "surface-tint": "#546346",
+                        "on-primary-container": "#acbc9a",
+                        "inverse-primary": "#bccca9",
+                        "secondary": "#5f5f59",
+                        "background": "#fcf9f8",
+                        "on-secondary-fixed": "#1b1c18",
+                        "outline-variant": "#c5c8bd",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#402e15",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#303030",
+                        "surface-container-highest": "#e4e2e1",
+                        "secondary-fixed": "#e4e2dc",
+                        "on-surface": "#1b1c1c",
+                        "tertiary-fixed": "#fdddb9",
+                        "surface-container": "#f0eded",
+                        "primary": "#28351c",
+                        "primary-fixed-dim": "#bccca9",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary-container": "#594429",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#3d4b30",
+                        "primary-fixed": "#d8e8c4",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae7e7",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-container": "#63635e",
+                        "primary-container": "#3e4c31",
+                        "tertiary-fixed-dim": "#e0c29f",
+                        "surface-variant": "#e4e2e1",
+                        "on-tertiary-fixed-variant": "#584329",
+                        "surface": "#fcf9f8",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474742",
+                        "on-primary-fixed": "#131f08",
+                        "on-background": "#1b1c1c",
+                        "inverse-on-surface": "#f3f0f0",
+                        "secondary-fixed-dim": "#c8c7c0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Playfair Display"],
+                        "label-sm": ["Manrope"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f6f3f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #acbc9a;
+            border-radius: 10px;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 30px -5px rgba(40, 53, 28, 0.05);
+        }
+        .switch-checkbox:checked + .switch-label {
+            background-color: #28351c;
+        }
+        .switch-checkbox:checked + .switch-label .switch-dot {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-8 bg-surface-container-low w-64 z-50 border-r border-outline-variant/30">
+<div class="px-6 mb-12">
+<a href="/index.html"><h1 class="font-display-lg text-headline-md text-primary hover:opacity-80 transition-opacity">Hostel Andino</h1></a>
+<div class="flex items-center mt-6 gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a lodge manager, dressed in refined outdoor apparel, looking friendly and capable. The lighting is soft and natural, suggesting a bright office with wood accents. High-end lifestyle photography style, professional and welcoming atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnccZkrAboQbs2VzIGLPltMZWMlNdUrMWqGzOIbO6CCMpIdUdPpfYLJl04AM2iTv3sTI200eFX7LJNkhsTPrtyf6H0jHrPcbLWuqpbvUke6rHu4FeN_ZUodbadvtQjTj_uTvtZ-F0zDQp_73s1WWy68TebyG6rq0GXwPA0w-xUcSZwDSCh_-b8quAHt8KHndVXH6nONkFkYznYTHuGsq_xQ9XVAQarLTh8jw8hwz_eFPTVGyJ3QlAQN2edTfhnNyhXbC-wzGDKsIY"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Admin Hostel</p>
+<p class="text-[10px] text-secondary">Panel de Gestión</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-high transition-all" href="/admin/galeria.html">
+<span class="material-symbols-outlined fill-icon">photo_library</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Galería</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="/admin/servicios.html">
+<span class="material-symbols-outlined">home_repair_service</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Servicios</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Tarifas</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html">
+<span class="material-symbols-outlined">sell</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Promociones</span>
+</a>
+</nav>
+<div class="px-2 mt-auto">
+<a class="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-secondary hover:bg-error-container hover:text-error transition-all opacity-80 hover:opacity-100 cursor-pointer" onclick="logout()">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Cerrar Sesión</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-margin-desktop">
+<!-- Header Section -->
+<header class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Gestión de Contenido Multimedia</h2>
+<p class="text-body-md text-secondary max-w-2xl">Administra las imágenes de la galería principal y los videos promocionales de YouTube que se muestran en el sitio web.</p>
+</header>
+<!-- Gallery Section -->
+<section class="mb-16">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Galería de Fotos</h3>
+<p class="text-label-sm text-secondary uppercase tracking-widest">Formatos permitidos: JPG, PNG, WEBP (Max 5MB)</p>
+</div>
+<button id="btn-upload-photo" class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container hover:text-on-primary-container transition-all duration-300">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+                    Subir Foto
+                </button>
+</div>
+<!-- Bento Grid Gallery -->
+<div id="photos-grid" class="grid grid-cols-12 gap-6 auto-rows-[240px]">
+  <!-- Se cargará dinámicamente -->
+</div>
+</section>
+<!-- Divider -->
+<hr class="border-outline-variant/30 mb-16"/>
+<!-- YouTube Videos Section -->
+<section class="mb-16">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Videos de YouTube</h3>
+<p class="text-body-md text-secondary mb-8">Agrega enlaces de YouTube para mostrar recorridos virtuales o experiencias de otros huéspedes en el carrusel de inicio.</p>
+<!-- Video Input Card -->
+<div class="bg-surface-container-low rounded-xl p-8 mb-12 border border-outline-variant/20 custom-shadow">
+<div class="flex flex-col md:flex-row gap-6 items-end">
+<div class="flex-1 space-y-2">
+<label class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Enlace del Video</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary">link</span>
+<input id="video-url-input" class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border-b border-primary/20 focus:border-primary outline-none text-body-md transition-colors placeholder:text-secondary/40" placeholder="https://www.youtube.com/watch?v=..." type="text"/>
+</div>
+<p class="text-[11px] text-secondary italic">Pega aquí el enlace de YouTube para agregarlo al carrusel</p>
+</div>
+<button id="btn-add-video" class="bg-primary text-on-primary px-8 py-3 rounded-full font-label-sm text-label-sm uppercase tracking-wider hover:opacity-90 transition-opacity">
+                        Agregar Video
+                    </button>
+</div>
+</div>
+<!-- Video Grid -->
+<div id="videos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Se cargará dinámicamente -->
+<div class="group">
+<div class="aspect-video relative rounded-xl overflow-hidden bg-black mb-4 custom-shadow">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A cinematic thumbnail of a YouTube video showing a drone shot over the hostel and surrounding mountains. A large play icon is overlaid in the center. Professional travel vlog style, vibrant colors, clear mountain air, high-quality production." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8_qmOxPvD_QIZQgCrxuG3P8vLxSkWCOicZ99GrcwCtvJqYniOq09y2LxmMnE8O1I8HE5_U45A0Ywuh_V0yQNbDJMU8yJHRgiVxdBecXlOf1LIFdQ_IF3DEPf1GDnUa0HeXF9FiGN-oXMyRp6NzCco9gd3nljGE38_jYSi8POU9eFN6zZk7PlpNPVwcGyZsG15gdH6s97Drbc5rBzA0dtoW6VFV31P4XPKlAP65p9wkpuiQHDlEdARkA4IdAZhwlb5rZfnWIk5_uM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[64px] opacity-80 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-body-lg text-body-lg text-primary font-bold">Experiencia de Invierno 2024</h4>
+<p class="text-label-sm text-secondary">Añadido: 12 Mar 2024</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="hidden switch-checkbox" type="checkbox"/>
+<div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
+<div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
+</div>
+</label>
+<span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">Visible</span>
+</div>
+<button class="p-2 text-secondary hover:text-error transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Video Item 2 -->
+<div class="group">
+<div class="aspect-video relative rounded-xl overflow-hidden bg-black mb-4 custom-shadow">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A YouTube video thumbnail showing a group of friends laughing around a bonfire outside the lodge at night. The sky is filled with stars. Warm campfire glow, high-end lifestyle videography, cozy and social atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6jUGzLzfMVpBDLNjNj0SifssKLxaXIoQWCOhQALgErADGm6s2M6tL3IsKXDNs93xXTkEPSOR-VsPl92GglNgX0_5aNgRMPcZbZvVBBKq-Vss3kUgkJoL1nSufI8oJSnwYKx6QYCHksGQ2Ir6xavdQ3OKbpBxIMpkdildbuQ_1HareKCT-tlE89Zmr-gK1XDPKbDn-UgVLNqNgqgQ-0CXq2uJUg6F4muxINkllUDDrqTdF-oCtfJdDtksS10_re0tx_5jeqplWV9k"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[64px] opacity-80 group-hover:scale-110 transition-transform">play_circle</span>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="ml-64 bg-tertiary-container text-on-tertiary-container py-12 px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter mt-auto">
+<div>
+<h5 class="font-display-lg text-headline-md mb-4">Hostel Andino</h5>
+<p class="text-body-md opacity-80">© 2026 Hostel Andino. Refined Ruggedness.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h6 class="font-label-sm text-label-sm uppercase tracking-widest mb-2 opacity-60">Enlaces Rápidos</h6>
+<a class="hover:text-tertiary-fixed-dim transition-colors" href="/index.html">Inicio</a>
+<a class="hover:text-tertiary-fixed-dim transition-colors" href="/index.html#hostel">El Hostel</a>
+<a class="hover:text-tertiary-fixed-dim transition-colors" href="/index.html#servicios">Servicios</a>
+</div>
+<div class="flex flex-col gap-2">
+<h6 class="font-label-sm text-label-sm uppercase tracking-widest mb-2 opacity-60">Contacto Admin</h6>
+<a href="mailto:hostelandinovillapehuenia@gmail.com" class="flex items-center gap-2 hover:text-tertiary-fixed-dim transition-colors"><span class="material-symbols-outlined text-[18px]">email</span> hostelandinovillapehuenia@gmail.com</a>
+<a href="https://wa.me/5492983658176" target="_blank" class="flex items-center gap-2 hover:text-tertiary-fixed-dim transition-colors"><span class="material-symbols-outlined text-[18px]">phone</span> +54 9 2983-658176</a>
+</div>
+</footer>
+
+<script>
+  // Dynamic Photo and Video Manager
+  function renderGallery() {
+    const data = window.db.getData();
+    const photosGrid = document.getElementById('photos-grid');
+    const videosGrid = document.getElementById('videos-grid');
+
+    // 1. Render Photos
+    photosGrid.innerHTML = '';
+    data.galeria.forEach((photo) => {
+      const isLarge = photo.size === 'large';
+      const colSpan = isLarge ? 'col-span-8 row-span-2' : 'col-span-4 row-span-1';
+      const visibleClass = photo.visible ? '' : 'opacity-60 grayscale';
+      const toggleText = photo.visible ? 'Visible' : 'Oculto';
+      const isChecked = photo.visible ? 'checked' : '';
+
+      const photoHtml = `
+        <div class="${colSpan} relative group overflow-hidden rounded-xl bg-surface-container custom-shadow ${visibleClass}">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="${photo.alt}" src="${photo.src}"/>
+          <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+            <button onclick="deletePhoto(${photo.id})" class="w-10 h-10 rounded-full bg-error text-white flex items-center justify-center hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-xl">delete</span>
+            </button>
+            <div class="flex flex-col items-end bg-background/90 p-2 rounded">
+              <label class="inline-flex items-center cursor-pointer">
+                <input ${isChecked} onchange="togglePhotoVisibility(${photo.id}, this)" class="hidden" type="checkbox"/>
+                <div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
+                  <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
+                </div>
+              </label>
+              <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
+            </div>
+          </div>
+          ${isLarge ? '<div class="absolute bottom-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded text-label-sm text-primary">Portada Principal</div>' : ''}
+        </div>
+      `;
+      photosGrid.insertAdjacentHTML('beforeend', photoHtml);
+    });
+
+    // 2. Render Videos
+    videosGrid.innerHTML = '';
+    data.videos.forEach((video) => {
+      const visibleClass = video.visible ? '' : 'opacity-60 grayscale';
+      const toggleText = video.visible ? 'Visible' : 'Oculto';
+      const isChecked = video.visible ? 'checked' : '';
+
+      const videoHtml = `
+        <div class="group ${visibleClass}">
+          <div class="aspect-video relative rounded-xl overflow-hidden bg-black mb-4 custom-shadow">
+            <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${video.src}" alt="${video.title}"/>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-[64px] opacity-80 group-hover:scale-110 transition-transform">play_circle</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-body-lg text-body-lg text-primary font-bold">${video.title}</h4>
+              <p class="text-label-sm text-secondary">Añadido: Reciente</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex flex-col items-end">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input ${isChecked} onchange="toggleVideoVisibility(${video.id}, this)" class="hidden" type="checkbox"/>
+                  <div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
+                    <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
+                  </div>
+                </label>
+                <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
+              </div>
+              <button onclick="deleteVideo(${video.id})" class="p-2 text-secondary hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      videosGrid.insertAdjacentHTML('beforeend', videoHtml);
+    });
+  }
+
+  // Photo handlers
+  document.getElementById('btn-upload-photo').addEventListener('click', () => {
+    const src = prompt('Introduce la URL de la imagen (ej: /portada.webp o enlace web):');
+    if (!src) return;
+    const alt = prompt('Introduce el título/descripción de la imagen (ej: Vista de Habitación):') || 'Imagen de Galería';
+    
+    const data = window.db.getData();
+    const newId = data.galeria.length > 0 ? Math.max(...data.galeria.map(p => p.id)) + 1 : 1;
+    
+    data.galeria.push({
+      id: newId,
+      src: src,
+      alt: alt,
+      visible: true,
+      size: 'small'
+    });
+    
+    window.db.saveData(data);
+    renderGallery();
+  });
+
+  function deletePhoto(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta foto?')) return;
+    const data = window.db.getData();
+    data.galeria = data.galeria.filter(p => p.id !== id);
+    window.db.saveData(data);
+    renderGallery();
+  }
+
+  function togglePhotoVisibility(id, cb) {
+    const data = window.db.getData();
+    const photo = data.galeria.find(p => p.id === id);
+    if (photo) {
+      photo.visible = cb.checked;
+      window.db.saveData(data);
+      renderGallery();
+    }
+  }
+
+  // Video handlers
+  document.getElementById('btn-add-video').addEventListener('click', () => {
+    const url = document.getElementById('video-url-input').value.trim();
+    if (!url) {
+      alert('Introduce un enlace de YouTube válido.');
+      return;
+    }
+    const data = window.db.getData();
+    const newId = data.videos.length > 0 ? Math.max(...data.videos.map(v => v.id)) + 1 : 1;
+    
+    data.videos.push({
+      id: newId,
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_G1EeWHTFDngTmtA4JGHg7wc4GJnFiFaVLYFjXh1rsSvTE4sR91VZhGev5sN02epTAmq-9DA5ti-HtoNEo8uAHSdEAw2OXuwvC5xlAKBA1WAj_SLWMjCaXJfx0npxWXri__bR1UCw7suano-uD1v6_mYKZjuh9iWrHhZm4Qy6NhmD_xOfdy4PCHk6UGqcJkHu-d5jpL_OW9ig7Q-Nl5QNKIgGRPO3v0ezK4eS3em5me4eYfyMhaDBwh4kRp5Jnyz6HKiNWhPjWAM",
+      title: "Video Nuevo " + newId,
+      visible: true
+    });
+    
+    window.db.saveData(data);
+    document.getElementById('video-url-input').value = '';
+    renderGallery();
+  });
+
+  function deleteVideo(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este video?')) return;
+    const data = window.db.getData();
+    data.videos = data.videos.filter(v => v.id !== id);
+    window.db.saveData(data);
+    renderGallery();
+  }
+
+  function toggleVideoVisibility(id, cb) {
+    const data = window.db.getData();
+    const video = data.videos.find(v => v.id === id);
+    if (video) {
+      video.visible = cb.checked;
+      window.db.saveData(data);
+      renderGallery();
+    }
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', renderGallery);
+  renderGallery();
+</script>
+</body></html>
