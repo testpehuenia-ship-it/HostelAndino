@@ -188,9 +188,14 @@
 <span class="material-symbols-outlined text-primary">calendar_month</span>
 <h3 class="font-headline-md text-primary">Tarifas por Temporada</h3>
 </div>
-<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant hover:bg-surface-container transition-colors text-label-sm uppercase tracking-widest font-bold">
-<span class="material-symbols-outlined text-sm">history</span> Historial
-                    </button>
+<div class="flex items-center gap-2">
+  <button onclick="addRoomType()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white hover:opacity-90 transition-opacity text-label-sm uppercase tracking-widest font-bold">
+    <span class="material-symbols-outlined text-sm">add</span> Nueva Habitación
+  </button>
+  <button class="flex items-center gap-2 px-4 py-2 border border-outline-variant hover:bg-surface-container transition-colors text-label-sm uppercase tracking-widest font-bold">
+    <span class="material-symbols-outlined text-sm">history</span> Historial
+  </button>
+</div>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left">
@@ -285,8 +290,8 @@
       const rowHtml = `
         <tr class="group hover:bg-surface-container-low transition-colors">
           <td class="py-6 pr-4">
-            <p class="font-bold text-primary">${room.name}</p>
-            <p class="text-xs text-secondary italic">${room.desc}</p>
+            <input id="rate-${room.id}-name" class="block font-bold text-primary bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 mb-1 w-full" type="text" value="${room.name}" />
+            <input id="rate-${room.id}-desc" class="block text-xs text-secondary italic bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 w-full" type="text" value="${room.desc}" />
           </td>
           <td class="py-6">
             <div class="flex items-center gap-1 group/input">
@@ -307,9 +312,14 @@
             </div>
           </td>
           <td class="py-6 text-right">
-            <button onclick="saveRoomRate(${room.id})" class="text-primary hover:scale-110 transition-transform bg-primary/10 p-2 rounded" title="Guardar">
-              <span class="material-symbols-outlined text-sm">save</span>
-            </button>
+            <div class="flex justify-end gap-2">
+              <button onclick="saveRoomRate(${room.id})" class="text-primary hover:scale-110 transition-transform bg-primary/10 p-2 rounded" title="Guardar">
+                <span class="material-symbols-outlined text-sm">save</span>
+              </button>
+              <button onclick="deleteRoomRate(${room.id})" class="text-error hover:scale-110 transition-transform bg-error/10 p-2 rounded" title="Eliminar">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
           </td>
         </tr>
       `;
@@ -366,12 +376,42 @@
     const room = data.tarifas.find(r => r.id === id);
     if (!room) return;
 
+    room.name = document.getElementById(`rate-${id}-name`).value.trim();
+    room.desc = document.getElementById(`rate-${id}-desc`).value.trim();
     room.low = document.getElementById(`rate-${id}-low`).value.trim();
     room.mid = document.getElementById(`rate-${id}-mid`).value.trim();
     room.high = document.getElementById(`rate-${id}-high`).value.trim();
 
     window.db.saveData(data);
-    alert(`Tarifas de ${room.name} guardadas con éxito!`);
+    alert(`Habitación "${room.name}" y tarifas guardadas con éxito!`);
+    renderRates();
+  }
+
+  // Delete Room Rate
+  function deleteRoomRate(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este tipo de habitación y todas sus tarifas de la web?')) return;
+    const data = window.db.getData();
+    data.tarifas = data.tarifas.filter(r => r.id !== id);
+    window.db.saveData(data);
+    alert('Habitación eliminada correctamente.');
+    renderRates();
+  }
+
+  // Add Room Type
+  function addRoomType() {
+    const data = window.db.getData();
+    const newId = data.tarifas.length > 0 ? Math.max(...data.tarifas.map(r => r.id)) + 1 : 1;
+    
+    data.tarifas.push({
+      id: newId,
+      name: "Nueva Habitación",
+      desc: "Características de la habitación",
+      low: "0",
+      mid: "0",
+      high: "0"
+    });
+    
+    window.db.saveData(data);
     renderRates();
   }
 
