@@ -86,8 +86,8 @@ const defaultHostelData = {
     { id: 6, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBcn-sWMyp_d0LPrlvzpyp3FHaoG0e7tn60mvEn5zAEyuKblJwLhiDfJiuYc5aVJqPXsz8XaG9RwTR50W8BtEYHshwPFkIe32IyRu9L8v31eu1g_HUgWgwBUEutx39slRi9p5cP3FXrg77vIV5pcT-i67v39eAzGfe7XvJAOR-8W_0CjiwyV-JAvDsGvCUlAO1C-4RWkgDGjnKzs8bb7Bzbr6Gsf0EleOA0Ow9Atu6Rta1kI6ZFLdbP2pRYA4gsqasYM35DtLTp-X8", alt: "Bienestar", visible: true, size: "small" }
   ],
   videos: [
-    { id: 1, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_G1EeWHTFDngTmtA4JGHg7wc4GJnFiFaVLYFjXh1rsSvTE4sR91VZhGev5sN02epTAmq-9DA5ti-HtoNEo8uAHSdEAw2OXuwvC5xlAKBA1WAj_SLWMjCaXJfx0npxWXri__bR1UCw7suano-uD1v6_mYKZjuh9iWrHhZm4Qy6NhmD_xOfdy4PCHk6UGqcJkHu-d5jpL_OW9ig7Q-Nl5QNKIgGRPO3v0ezK4eS3em5me4eYfyMhaDBwh4kRp5Jnyz6HKiNWhPjWAM", title: "Moquehue Aéreo", visible: true },
-    { id: 2, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAqkB4rw4jr6nmCOzH5mEwHcqBrojaFw1quI6arMYTXuA2RIvXwSJJktjL68Rr96zm-_i98a3vLPehe0eJ6ZrFr-7psDhYLiyLb8rn_zkrLsjyqIsToFPD-qvWxOW4SH4JmgTEoHNdI6a0aaEv_PCx-HAPMaBKiY3ovk64gwzPMP32un6ZjU_e_qRaWGjOrkUw9u0IF3_CX6gLC7vL0XEdpec-4td9tmpQVYtnt63AOJKRY300PrIEdmCwW4P2YuPaknxzGOM5y3mc", title: "Tour por el Hostel", visible: true }
+    { id: 1, src: "https://www.youtube.com/watch?v=FqV18l8L2jY", title: "Moquehue Aéreo", visible: true },
+    { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
   ]
 };
 
@@ -99,7 +99,31 @@ window.db = {
       data = JSON.stringify(defaultHostelData);
       localStorage.setItem('hostel_data', data);
     }
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    
+    // Auto-repair step: if any video is using the old static Google Photos URL, replace it with a demo YouTube video
+    let changed = false;
+    if (parsed.videos) {
+      parsed.videos.forEach(v => {
+        if (v.src && v.src.includes('lh3.googleusercontent.com/aida-public')) {
+          if (v.id === 1) {
+            v.src = "https://www.youtube.com/watch?v=FqV18l8L2jY";
+          } else if (v.id === 2) {
+            v.src = "https://www.youtube.com/watch?v=eE726q08jNs";
+          } else {
+            // It's a new video the user added before our fix. Let's turn it into a working youtube link as a fallback
+            v.src = "https://www.youtube.com/watch?v=FqV18l8L2jY";
+          }
+          changed = true;
+        }
+      });
+    }
+    
+    if (changed) {
+      localStorage.setItem('hostel_data', JSON.stringify(parsed));
+    }
+    
+    return parsed;
   },
   saveData: (data) => {
     localStorage.setItem('hostel_data', JSON.stringify(data));
