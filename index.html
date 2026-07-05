@@ -632,7 +632,7 @@
 <h2 class="font-headline-md text-primary text-center">Historias en Movimiento</h2>
 </div>
 <div class="relative w-full overflow-hidden flex">
-<div class="flex infinite-scroll gap-6">
+<div id="videos-public-scroll" class="flex infinite-scroll gap-6">
 <!-- Video Item 1 -->
 <div class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
 <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-quality 4K video thumbnail showing a panoramic drone shot of the crystal-clear Lake Moquehue in Villa Pehuenia during a quiet, misty morning. The water is perfectly still, reflecting the emerald green of the surrounding forests and the sharp peaks of the Andes. A subtle play button icon is centered in the frame with a refined, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_G1EeWHTFDngTmtA4JGHg7wc4GJnFiFaVLYFjXh1rsSvTE4sR91VZhGev5sN02epTAmq-9DA5ti-HtoNEo8uAHSdEAw2OXuwvC5xlAKBA1WAj_SLWMjCaXJfx0npxWXri__bR1UCw7suano-uD1v6_mYKZjuh9iWrHhZm4Qy6NhmD_xOfdy4PCHk6UGqcJkHu-d5jpL_OW9ig7Q-Nl5QNKIgGRPO3v0ezK4eS3em5me4eYfyMhaDBwh4kRp5Jnyz6HKiNWhPjWAM"/>
@@ -871,6 +871,83 @@
                         html += `</div>`;
                     }
                     galeriaGrid.innerHTML = html;
+                }
+            }
+
+            // Helper de Videos
+            window.parseVideoUrl = function(url) {
+                const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+                const matches = String(url).match(ytRegex);
+                if (matches && matches[1]) {
+                    const videoId = matches[1];
+                    return {
+                        thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                        embed: `https://www.youtube.com/embed/${videoId}?autoplay=1`,
+                        isYoutube: true
+                    };
+                }
+                return {
+                    thumbnail: url,
+                    embed: url,
+                    isYoutube: false
+                };
+            };
+
+            window.playVideoPreview = function(url) {
+                const videoInfo = parseVideoUrl(url);
+                let modal = document.getElementById('preview-video-modal');
+                if (!modal) {
+                    const modalHtml = `
+                        <div id="preview-video-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4" onclick="closeVideoPreview()">
+                            <div class="relative w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+                                <button onclick="closeVideoPreview()" class="absolute top-4 right-4 text-white hover:text-outline-variant transition-colors z-50 bg-black/40 p-2 rounded-full flex items-center justify-center">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                                <div id="video-modal-content" class="w-full h-full"></div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', modalHtml);
+                    modal = document.getElementById('preview-video-modal');
+                }
+                
+                const container = document.getElementById('video-modal-content');
+                if (videoInfo.isYoutube) {
+                    container.innerHTML = `<iframe class="w-full h-full border-none" src="${videoInfo.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+                } else {
+                    container.innerHTML = `<video class="w-full h-full" src="${url}" controls autoplay></video>`;
+                }
+                modal.classList.remove('hidden');
+            };
+
+            window.closeVideoPreview = function() {
+                const modal = document.getElementById('preview-video-modal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    document.getElementById('video-modal-content').innerHTML = '';
+                }
+            };
+
+            // 4.b. Videos Dynamic Render
+            const videosScroll = document.getElementById('videos-public-scroll');
+            if (videosScroll && data.videos) {
+                const visibleVideos = data.videos.filter(v => v.visible);
+                if (visibleVideos.length > 0) {
+                    const renderList = [...visibleVideos, ...visibleVideos, ...visibleVideos];
+                    videosScroll.innerHTML = renderList.map(video => {
+                        const videoInfo = parseVideoUrl(video.src);
+                        return `
+                            <div onclick="playVideoPreview('${video.src}')" class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
+                                <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${videoInfo.thumbnail}" alt="${video.title}"/>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
+                                </div>
+                                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded text-white text-xs font-bold uppercase tracking-wider">${video.title}</div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    videosScroll.innerHTML = '<p class="text-secondary text-center w-full my-8">No hay videos disponibles.</p>';
                 }
             }
 

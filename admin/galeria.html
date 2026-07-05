@@ -319,17 +319,37 @@
       photosGrid.insertAdjacentHTML('beforeend', photoHtml);
     });
 
+    // Helper para parsear URLs de video (YouTube o directo)
+    window.parseVideoUrl = function(url) {
+      const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+      const matches = String(url).match(ytRegex);
+      if (matches && matches[1]) {
+        const videoId = matches[1];
+        return {
+          thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+          embed: `https://www.youtube.com/embed/${videoId}?autoplay=1`,
+          isYoutube: true
+        };
+      }
+      return {
+        thumbnail: url,
+        embed: url,
+        isYoutube: false
+      };
+    };
+
     // 2. Render Videos
     videosGrid.innerHTML = '';
     data.videos.forEach((video) => {
       const visibleClass = video.visible ? '' : 'opacity-60 grayscale';
       const toggleText = video.visible ? 'Visible' : 'Oculto';
       const isChecked = video.visible ? 'checked' : '';
+      const videoInfo = parseVideoUrl(video.src);
 
       const videoHtml = `
         <div class="group ${visibleClass}">
-          <div class="aspect-video relative rounded-xl overflow-hidden bg-black mb-4 custom-shadow">
-            <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${video.src}" alt="${video.title}"/>
+          <div class="aspect-video relative rounded-xl overflow-hidden bg-black mb-4 custom-shadow cursor-pointer" onclick="playVideoPreview('${video.src}')">
+            <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${videoInfo.thumbnail}" alt="${video.title}"/>
             <div class="absolute inset-0 flex items-center justify-center">
               <span class="material-symbols-outlined text-white text-[64px] opacity-80 group-hover:scale-110 transition-transform">play_circle</span>
             </div>
@@ -359,6 +379,42 @@
       videosGrid.insertAdjacentHTML('beforeend', videoHtml);
     });
   }
+
+  // Preview Video Player Modal helper
+  window.playVideoPreview = function(url) {
+    const videoInfo = parseVideoUrl(url);
+    let modal = document.getElementById('preview-video-modal');
+    if (!modal) {
+      const modalHtml = `
+        <div id="preview-video-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4" onclick="closeVideoPreview()">
+          <div class="relative w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeVideoPreview()" class="absolute top-4 right-4 text-white hover:text-outline-variant transition-colors z-50 bg-black/40 p-2 rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+            <div id="video-modal-content" class="w-full h-full"></div>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      modal = document.getElementById('preview-video-modal');
+    }
+    
+    const container = document.getElementById('video-modal-content');
+    if (videoInfo.isYoutube) {
+      container.innerHTML = `<iframe class="w-full h-full border-none" src="${videoInfo.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    } else {
+      container.innerHTML = `<video class="w-full h-full" src="${url}" controls autoplay></video>`;
+    }
+    modal.classList.remove('hidden');
+  };
+
+  window.closeVideoPreview = function() {
+    const modal = document.getElementById('preview-video-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.getElementById('video-modal-content').innerHTML = '';
+    }
+  };
 
   // Photo handlers
   document.getElementById('btn-upload-photo').addEventListener('click', () => {
@@ -408,11 +464,12 @@
     }
     const data = window.db.getData();
     const newId = data.videos.length > 0 ? Math.max(...data.videos.map(v => v.id)) + 1 : 1;
+    const title = prompt('Introduce el título para este video:') || ('Video Nuevo ' + newId);
     
     data.videos.push({
       id: newId,
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_G1EeWHTFDngTmtA4JGHg7wc4GJnFiFaVLYFjXh1rsSvTE4sR91VZhGev5sN02epTAmq-9DA5ti-HtoNEo8uAHSdEAw2OXuwvC5xlAKBA1WAj_SLWMjCaXJfx0npxWXri__bR1UCw7suano-uD1v6_mYKZjuh9iWrHhZm4Qy6NhmD_xOfdy4PCHk6UGqcJkHu-d5jpL_OW9ig7Q-Nl5QNKIgGRPO3v0ezK4eS3em5me4eYfyMhaDBwh4kRp5Jnyz6HKiNWhPjWAM",
-      title: "Video Nuevo " + newId,
+      src: url,
+      title: title,
       visible: true
     });
     
