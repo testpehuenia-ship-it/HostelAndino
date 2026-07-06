@@ -613,10 +613,17 @@
 </div>
 <div class="relative w-full overflow-hidden py-4">
   <div id="galeria-slider-viewport" class="w-full overflow-hidden py-6 px-4">
-    <div id="galeria-slider-track" class="flex transition-transform duration-500 ease-out gap-6 items-center w-max">
+    <div id="galeria-slider-track" class="flex flex-nowrap transition-transform duration-500 ease-out gap-6 items-center w-max">
       <!-- Carga dinámica -->
     </div>
   </div>
+  <!-- Botones de Navegación -->
+  <button id="btn-galeria-prev" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 hover:bg-white text-primary flex items-center justify-center shadow-lg transition-all z-30 hover:scale-110">
+    <span class="material-symbols-outlined">chevron_left</span>
+  </button>
+  <button id="btn-galeria-next" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 hover:bg-white text-primary flex items-center justify-center shadow-lg transition-all z-30 hover:scale-110">
+    <span class="material-symbols-outlined">chevron_right</span>
+  </button>
 </div>
 <!-- 5. Videos: Carousel -->
 <section class="py-24 bg-surface-container-highest overflow-hidden">
@@ -865,6 +872,9 @@
                             sliderTrack.style.transition = 'transform 500ms ease-out';
                         }
                         
+                        // Forzar reflow del DOM para que el cambio de transición se aplique inmediatamente
+                        sliderTrack.offsetHeight;
+                        
                         const viewportWidth = document.getElementById('galeria-slider-viewport').offsetWidth;
                         const slideSize = cardWidth + gap;
                         
@@ -895,6 +905,31 @@
                             }, 500);
                         }
                     };
+
+                    const prevSlide = () => {
+                        slideIndex--;
+                        updateSliderPosition(true);
+                        
+                        if (slideIndex < visiblePhotos.length) {
+                            setTimeout(() => {
+                                slideIndex = (visiblePhotos.length * 2) - 1;
+                                updateSliderPosition(false);
+                            }, 500);
+                        }
+                    };
+
+                    // Vincular Botones
+                    document.getElementById('btn-galeria-next').addEventListener('click', () => {
+                        nextSlide();
+                        clearInterval(autoSlide);
+                        autoSlide = setInterval(nextSlide, 4000);
+                    });
+
+                    document.getElementById('btn-galeria-prev').addEventListener('click', () => {
+                        prevSlide();
+                        clearInterval(autoSlide);
+                        autoSlide = setInterval(nextSlide, 4000);
+                    });
 
                     let autoSlide = setInterval(nextSlide, 4000);
 
