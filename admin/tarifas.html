@@ -225,7 +225,7 @@
 <label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2 group-focus-within:text-primary transition-colors">Título de la Oferta</label>
 <input id="promo-title" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary placeholder:text-outline-variant transition-all" placeholder="Ej: Invierno Mágico" type="text" required />
 </div>
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-4 items-center">
 <div class="group">
 <label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Descuento (%)</label>
 <div class="relative">
@@ -233,14 +233,14 @@
 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary">%</span>
 </div>
 </div>
+<div class="flex gap-2 text-secondary text-[11px] leading-tight bg-primary/5 p-3 rounded-lg border border-primary/10">
+<span class="material-symbols-outlined text-primary text-xs flex-shrink-0 mt-0.5">info</span>
+<p>Esta promoción se aplicará automáticamente y será visible en el banner del inicio.</p>
+</div>
+</div>
 <div class="group">
-<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Validez/Duración</label>
-<input id="promo-duration" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" placeholder="Ej: Todo Julio" type="text" required />
-</div>
-</div>
-<div class="p-4 rounded-lg bg-primary/5 border border-primary/10 flex gap-3">
-<span class="material-symbols-outlined text-primary text-sm">info</span>
-<p class="text-xs text-secondary leading-relaxed">Esta promoción se aplicará automáticamente y será visible en el banner promocional del inicio.</p>
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Texto Promoción</label>
+<input id="promo-duration" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" placeholder="Ej: Mayo y Junio en estadías mayores a 3 noches" type="text" required />
 </div>
 <button class="mt-auto w-full bg-primary text-on-primary font-label-sm uppercase tracking-widest py-5 rounded-lg hover:opacity-90 transition-opacity flex justify-center items-center gap-2" type="submit">
 <span class="material-symbols-outlined text-lg">check_circle</span> Publicar Promoción
