@@ -165,39 +165,117 @@
               </div>
             </div>
 
-            <!-- 4 Templates Selection -->
+            <!-- 8 Templates Selection -->
             <div>
-              <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-4">Plantilla / Silueta Inferior (Elige 1)</label>
+              <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-4">Plantilla / Silueta Inferior (Elige 1 o ninguna)</label>
               <div class="grid grid-cols-4 gap-4">
                 
-                <!-- Option 1: Wave -->
+                <!-- Option 0: Ninguna -->
                 <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="1" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()" checked>
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">waves</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Ondas (Wave)</span>
+                  <input type="radio" name="edit-template-radio" value="0" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <span class="material-symbols-outlined text-xl text-primary mb-1">visibility_off</span>
+                  <span class="text-[10px] uppercase font-bold text-secondary">Ninguna</span>
                 </label>
-                
-                <!-- Option 2: Glass Card -->
+
+                <!-- Option 1: Winter -->
+                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
+                  <input type="radio" name="edit-template-radio" value="1" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <span class="material-symbols-outlined text-xl text-primary mb-1">ac_unit</span>
+                  <span class="text-[10px] uppercase font-bold text-secondary">Invierno</span>
+                </label>
+
+                <!-- Option 2: Autumn -->
                 <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
                   <input type="radio" name="edit-template-radio" value="2" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <span class="material-symbols-outlined text-xl text-primary mb-1">eco</span>
+                  <span class="text-[10px] uppercase font-bold text-secondary">Otoño</span>
+                </label>
+
+                <!-- Option 3: Spring -->
+                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
+                  <input type="radio" name="edit-template-radio" value="3" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <span class="material-symbols-outlined text-xl text-primary mb-1">local_florist</span>
+                  <span class="text-[10px] uppercase font-bold text-secondary">Primavera</span>
+                </label>
+
+                <!-- Option 4: Summer -->
+                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
+                  <input type="radio" name="edit-template-radio" value="4" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <span class="material-symbols-outlined text-xl text-primary mb-1">wb_sunny</span>
+                  <span class="text-[10px] uppercase font-bold text-secondary">Verano</span>
+                </label>
+
+                <!-- Option 5: Glass Card -->
+                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
+                  <input type="radio" name="edit-template-radio" value="5" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
                   <span class="material-symbols-outlined text-xl text-primary mb-1">credit_card</span>
                   <span class="text-[10px] uppercase font-bold text-secondary">Tarjeta Vidrio</span>
                 </label>
                 
-                <!-- Option 3: Gradient Fade -->
+                <!-- Option 6: Gradient Fade -->
                 <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="3" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <input type="radio" name="edit-template-radio" value="6" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
                   <span class="material-symbols-outlined text-xl text-primary mb-1">gradient</span>
                   <span class="text-[10px] uppercase font-bold text-secondary">Difuminado</span>
                 </label>
                 
-                <!-- Option 4: Angled Cut -->
+                <!-- Option 7: Angled Cut -->
                 <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="4" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
+                  <input type="radio" name="edit-template-radio" value="7" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
                   <span class="material-symbols-outlined text-xl text-primary mb-1">change_history</span>
                   <span class="text-[10px] uppercase font-bold text-secondary">Corte Diagonal</span>
                 </label>
                 
+              </div>
+            </div>
+
+            <!-- Position text & color customization -->
+            <div class="grid grid-cols-2 gap-6 bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+              <div class="col-span-2">
+                <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ubicación del Texto</h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Horizontal (Izquierda a Derecha): <span id="val-text-left">50</span>%</label>
+                    <input id="edit-slide-text-left" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-text-left').innerText=this.value; updateLivePreview();" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Vertical (Arriba a Abajo): <span id="val-text-top">50</span>%</label>
+                    <input id="edit-slide-text-top" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-text-top').innerText=this.value; updateLivePreview();" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-2">
+                <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Estilos de Fondo del Texto</h4>
+                <div class="grid grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Texto</label>
+                    <input id="edit-slide-text-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Fondo</label>
+                    <input id="edit-slide-bg-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Opacidad Fondo: <span id="val-bg-opacity">0</span></label>
+                    <input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image positioning adjustments -->
+            <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ajuste de Encuadre de la Foto (PC y Celular)</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Posición X (%): <span id="val-img-x">50</span>%</label>
+                  <input id="edit-slide-img-x" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-x').innerText=this.value; updateLivePreview();" />
+                </div>
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Posición Y (%): <span id="val-img-y">50</span>%</label>
+                  <input id="edit-slide-img-y" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-y').innerText=this.value; updateLivePreview();" />
+                </div>
               </div>
             </div>
 
@@ -353,16 +431,34 @@
       }
 
       // Populate text inputs
-      document.getElementById('edit-slide-title').value = slide.title;
-      document.getElementById('edit-slide-subtitle').value = slide.subtitle;
+      document.getElementById('edit-slide-title').value = slide.title || '';
+      document.getElementById('edit-slide-subtitle').value = slide.subtitle || '';
       document.getElementById('edit-slide-font').value = slide.fontStyle || 'Playfair Display';
       document.getElementById('edit-slide-size-pc').value = slide.fontSizePc || 72;
       document.getElementById('edit-slide-size-mobile').value = slide.fontSizeMobile || 36;
 
+      // Populate text positioning sliders
+      document.getElementById('edit-slide-text-left').value = slide.textLeft !== undefined ? slide.textLeft : 50;
+      document.getElementById('val-text-left').innerText = slide.textLeft !== undefined ? slide.textLeft : 50;
+      document.getElementById('edit-slide-text-top').value = slide.textTop !== undefined ? slide.textTop : 50;
+      document.getElementById('val-text-top').innerText = slide.textTop !== undefined ? slide.textTop : 50;
+
+      // Populate text styling inputs
+      document.getElementById('edit-slide-text-color').value = slide.textColor || '#ffffff';
+      document.getElementById('edit-slide-bg-color').value = slide.textBgColor || '#000000';
+      document.getElementById('edit-slide-bg-opacity').value = slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0;
+      document.getElementById('val-bg-opacity').innerText = ((slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100).toFixed(2);
+
+      // Populate background image placement inputs
+      document.getElementById('edit-slide-img-x').value = slide.imgPosX !== undefined ? slide.imgPosX : 50;
+      document.getElementById('val-img-x').innerText = slide.imgPosX !== undefined ? slide.imgPosX : 50;
+      document.getElementById('edit-slide-img-y').value = slide.imgPosY !== undefined ? slide.imgPosY : 50;
+      document.getElementById('val-img-y').innerText = slide.imgPosY !== undefined ? slide.imgPosY : 50;
+
       // Radio template value
       const radios = document.getElementsByName('edit-template-radio');
       radios.forEach(radio => {
-        radio.checked = (parseInt(radio.value) === parseInt(slide.template));
+        radio.checked = (parseInt(radio.value) === parseInt(slide.template || 0));
       });
 
       updateLivePreview();
@@ -380,7 +476,6 @@
           let width = img.width;
           let height = img.height;
           
-          // Downscale to max 1440px width for Hero banners high resolution but low localstorage footprint
           const maxDim = 1440;
           if (width > maxDim || height > maxDim) {
             if (width > height) {
@@ -410,6 +505,15 @@
       reader.readAsDataURL(file);
     };
 
+    // Helper to convert HEX to RGBA with alpha
+    function hexToRgba(hex, alpha) {
+      hex = hex.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
     window.updateLivePreview = function() {
       const imgPreview = document.getElementById('edit-slide-preview');
       const title = document.getElementById('edit-slide-title').value || '';
@@ -417,38 +521,65 @@
       const font = document.getElementById('edit-slide-font').value;
       const sizePc = document.getElementById('edit-slide-size-pc').value || 72;
       const sizeMobile = document.getElementById('edit-slide-size-mobile').value || 36;
+
+      // Custom styling inputs
+      const textLeft = document.getElementById('edit-slide-text-left').value;
+      const textTop = document.getElementById('edit-slide-text-top').value;
+      const textColor = document.getElementById('edit-slide-text-color').value;
+      const textBgColor = document.getElementById('edit-slide-bg-color').value;
+      const textBgOpacity = parseFloat(document.getElementById('edit-slide-bg-opacity').value) / 100;
+      
+      const imgPosX = document.getElementById('edit-slide-img-x').value;
+      const imgPosY = document.getElementById('edit-slide-img-y').value;
       
       const selectedRadio = document.querySelector('input[name="edit-template-radio"]:checked');
-      const templateVal = selectedRadio ? parseInt(selectedRadio.value) : 1;
+      const templateVal = selectedRadio ? parseInt(selectedRadio.value) : 0;
 
-      // Update background src in previews
+      // Update background src and positions in previews
       const bgSrc = imgPreview.src || '';
-      document.getElementById('pc-bg').style.backgroundImage = `url('${bgSrc}')`;
-      document.getElementById('mobile-bg').style.backgroundImage = `url('${bgSrc}')`;
+      const pcBg = document.getElementById('pc-bg');
+      const mobBg = document.getElementById('mobile-bg');
+      pcBg.style.backgroundImage = `url('${bgSrc}')`;
+      pcBg.style.backgroundPosition = `${imgPosX}% ${imgPosY}%`;
+      
+      mobBg.style.backgroundImage = `url('${bgSrc}')`;
+      mobBg.style.backgroundPosition = `${imgPosX}% ${imgPosY}%`;
 
-      // Draw active template SVG or Overlay
+      // Draw active template SVG, PNG or Overlay
       const getTemplateHtml = (isMobileView = false) => {
-        if (templateVal === 1) {
-          // Wave SVG
-          return `
-            <svg class="absolute bottom-0 left-0 w-full text-surface-bright fill-current" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0,32L120,42.7C240,53,480,75,720,74.7C960,75,1200,53,1320,42.7L1440,32L1440,120L1320,120C1200,120,960,120,720,120C480,120,240,120,120,120L0,120Z"></path>
-            </svg>
-          `;
+        if (templateVal === 0) {
+          return '';
+        } else if (templateVal === 1) {
+          // Winter template png
+          return `<img src="/template_winter.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
         } else if (templateVal === 2) {
+          // Autumn template png
+          return `<img src="/template_autumn.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
+        } else if (templateVal === 3) {
+          // Spring template png
+          return `<img src="/template_spring.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
+        } else if (templateVal === 4) {
+          // Summer template png
+          return `<img src="/template_summer.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
+        } else if (templateVal === 5) {
           // Glass card overlay
-          const pad = isMobileView ? 'p-3 text-[10px]' : 'p-6';
+          const pad = isMobileView ? 'p-3' : 'p-6';
           const pos = isMobileView ? 'bottom-4' : 'bottom-10';
+          const style = `
+            background-color: ${hexToRgba(textBgColor, Math.max(0.2, textBgOpacity))};
+            color: ${textColor};
+            font-family: '${font}';
+          `;
           return `
-            <div class="absolute ${pos} left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl ${pad} text-center max-w-xl w-[90%]">
-              <span class="block text-white uppercase tracking-[0.2em] mb-1 ${isMobileView ? 'text-[8px]' : 'text-xs'}">${subtitle}</span>
-              <h2 class="text-white font-bold leading-tight" style="font-family: '${font}'; font-size: ${isMobileView ? (sizeMobile*0.8) + 'px' : (sizePc*0.8) + 'px'}">${title}</h2>
+            <div class="absolute ${pos} left-1/2 -translate-x-1/2 backdrop-blur-md border border-white/30 rounded-2xl ${pad} text-center max-w-xl w-[90%] z-20" style="${style}">
+              <span class="block uppercase tracking-[0.2em] mb-1 ${isMobileView ? 'text-[8px]' : 'text-xs'}" style="color: ${textColor}">${subtitle}</span>
+              <h2 class="font-bold leading-tight" style="font-size: ${isMobileView ? (sizeMobile*0.8) + 'px' : (sizePc*0.8) + 'px'}">${title}</h2>
             </div>
           `;
-        } else if (templateVal === 3) {
+        } else if (templateVal === 6) {
           // Dark Gradient fade
           return `<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent"></div>`;
-        } else if (templateVal === 4) {
+        } else if (templateVal === 7) {
           // Angled Cut SVG
           return `
             <svg class="absolute bottom-0 left-0 w-full text-surface-bright fill-current" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
@@ -469,22 +600,59 @@
       const mobTitle = document.getElementById('mobile-title-preview');
       const mobSub = document.getElementById('mobile-sub-preview');
 
-      // If template is glass card (2), standard overlay text is hidden to avoid duplicates
-      if (templateVal === 2) {
+      // If template is glass card (5), standard overlay text is hidden to avoid duplicates
+      if (templateVal === 5) {
         pcTitle.innerText = '';
         pcSub.innerText = '';
+        pcTitle.parentElement.style.backgroundColor = 'transparent';
         mobTitle.innerText = '';
         mobSub.innerText = '';
+        mobTitle.parentElement.style.backgroundColor = 'transparent';
       } else {
         pcTitle.innerText = title;
         pcSub.innerText = subtitle;
         pcTitle.style.fontFamily = `'${font}', serif`;
         pcTitle.style.fontSize = `${sizePc}px`;
+        pcTitle.style.color = textColor;
+        pcSub.style.color = textColor;
+        
+        // Position & Background box styles for text
+        const pcTextContainer = pcTitle.parentElement;
+        pcTextContainer.style.left = `${textLeft}%`;
+        pcTextContainer.style.top = `${textTop}%`;
+        pcTextContainer.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
+        pcTextContainer.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
+        if (textBgOpacity > 0) {
+          pcTextContainer.style.padding = '1.5rem 3rem';
+          pcTextContainer.style.borderRadius = '1rem';
+          pcTextContainer.style.backdropFilter = 'blur(4px)';
+        } else {
+          pcTextContainer.style.padding = '0';
+          pcTextContainer.style.borderRadius = '0';
+          pcTextContainer.style.backdropFilter = 'none';
+        }
 
         mobTitle.innerText = title;
         mobSub.innerText = subtitle;
         mobTitle.style.fontFamily = `'${font}', serif`;
         mobTitle.style.fontSize = `${sizeMobile}px`;
+        mobTitle.style.color = textColor;
+        mobSub.style.color = textColor;
+
+        const mobTextContainer = mobTitle.parentElement;
+        mobTextContainer.style.left = `${textLeft}%`;
+        mobTextContainer.style.top = `${textTop}%`;
+        mobTextContainer.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
+        mobTextContainer.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
+        if (textBgOpacity > 0) {
+          mobTextContainer.style.padding = '0.75rem 1.5rem';
+          mobTextContainer.style.borderRadius = '0.5rem';
+          mobTextContainer.style.backdropFilter = 'blur(4px)';
+        } else {
+          mobTextContainer.style.padding = '0';
+          mobTextContainer.style.borderRadius = '0';
+          mobTextContainer.style.backdropFilter = 'none';
+        }
       }
     };
 
@@ -499,10 +667,19 @@
       slide.fontStyle = document.getElementById('edit-slide-font').value;
       slide.fontSizePc = parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
       slide.fontSizeMobile = parseInt(document.getElementById('edit-slide-size-mobile').value) || 36;
+      
+      slide.textLeft = parseInt(document.getElementById('edit-slide-text-left').value);
+      slide.textTop = parseInt(document.getElementById('edit-slide-text-top').value);
+      slide.textColor = document.getElementById('edit-slide-text-color').value;
+      slide.textBgColor = document.getElementById('edit-slide-bg-color').value;
+      slide.textBgOpacity = parseInt(document.getElementById('edit-slide-bg-opacity').value);
+      
+      slide.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
+      slide.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
       slide.src = document.getElementById('edit-slide-preview').src;
 
       const selectedRadio = document.querySelector('input[name="edit-template-radio"]:checked');
-      slide.template = selectedRadio ? parseInt(selectedRadio.value) : 1;
+      slide.template = selectedRadio ? parseInt(selectedRadio.value) : 0;
 
       saveToDatabase();
       renderSlidesList();

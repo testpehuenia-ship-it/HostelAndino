@@ -90,10 +90,10 @@ const defaultHostelData = {
     { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
   ],
   hero: [
-    { id: 1, src: "/hero01.webp", template: 1, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
-    { id: 2, src: "/hero02.webp", template: 1, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
-    { id: 3, src: "/hero03.webp", template: 1, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
-    { id: 4, src: "/hero04.webp", template: 1, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" }
+    { id: 1, src: "/hero01.webp", template: 1, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", textLeft: 50, textTop: 50, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 2, src: "/hero02.webp", template: 2, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", textLeft: 50, textTop: 50, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 3, src: "/hero03.webp", template: 3, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", textLeft: 50, textTop: 50, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 4, src: "/hero04.webp", template: 4, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", textLeft: 50, textTop: 50, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
   ]
 };
 
@@ -124,10 +124,20 @@ window.db = {
       });
     }
 
-    // Auto-repair/Migration: Ensure hero exists in database
+    // Auto-repair/Migration: Ensure hero exists in database and has all properties
     if (!parsed.hero) {
       parsed.hero = JSON.parse(JSON.stringify(defaultHostelData.hero));
       changed = true;
+    } else {
+      parsed.hero.forEach(h => {
+        if (h.textLeft === undefined) { h.textLeft = 50; changed = true; }
+        if (h.textTop === undefined) { h.textTop = 50; changed = true; }
+        if (h.textColor === undefined) { h.textColor = "#ffffff"; changed = true; }
+        if (h.textBgColor === undefined) { h.textBgColor = "#000000"; changed = true; }
+        if (h.textBgOpacity === undefined) { h.textBgOpacity = 0; changed = true; }
+        if (h.imgPosX === undefined) { h.imgPosX = 50; changed = true; }
+        if (h.imgPosY === undefined) { h.imgPosY = 50; changed = true; }
+      });
     }
     
     if (changed) {
