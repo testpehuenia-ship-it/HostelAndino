@@ -221,6 +221,56 @@
 <section class="relative h-screen w-full overflow-hidden hero-slider-container" id="inicio">
   <!-- Carga dinámica desde la base de datos (db.js) -->
 </section>
+
+<!-- Booking Search Bar (WhatsApp) -->
+<section id="buscador-reserva" class="relative z-20 -mt-16 md:-mt-24 px-4 md:px-margin-desktop w-full max-w-6xl mx-auto">
+  <div class="bg-[#e6d5c1] p-6 md:p-8 rounded-2xl shadow-xl border border-white/40">
+    <form id="whatsapp-booking-form" class="flex flex-col md:flex-row items-end gap-4">
+      
+      <div class="w-full md:w-1/4">
+        <label for="checkin" class="block font-label-sm uppercase tracking-widest text-primary mb-2 text-xs">Llegada</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-primary/60">calendar_today</span>
+          <input type="date" id="checkin" required class="w-full bg-white/60 border border-white/40 rounded-lg py-3 pl-10 pr-4 text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all appearance-none" />
+        </div>
+      </div>
+      
+      <div class="w-full md:w-1/4">
+        <label for="checkout" class="block font-label-sm uppercase tracking-widest text-primary mb-2 text-xs">Salida</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-primary/60">event</span>
+          <input type="date" id="checkout" required class="w-full bg-white/60 border border-white/40 rounded-lg py-3 pl-10 pr-4 text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all appearance-none" />
+        </div>
+      </div>
+      
+      <div class="w-full md:w-1/4">
+        <label for="huespedes" class="block font-label-sm uppercase tracking-widest text-primary mb-2 text-xs">Huéspedes</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-primary/60">group</span>
+          <select id="huespedes" required class="w-full bg-white/60 border border-white/40 rounded-lg py-3 pl-10 pr-10 text-primary font-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all appearance-none">
+            <option value="" disabled selected>Seleccionar...</option>
+            <option value="1">1 Persona</option>
+            <option value="2">2 Personas</option>
+            <option value="3">3 Personas</option>
+            <option value="4">4 Personas</option>
+            <option value="5">5 Personas</option>
+            <option value="6+">6 o más Personas</option>
+          </select>
+          <span class="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 text-primary/60 pointer-events-none">expand_more</span>
+        </div>
+      </div>
+      
+      <div class="w-full md:w-1/4 mt-4 md:mt-0">
+        <button type="submit" class="w-full h-full bg-primary text-on-primary py-3 px-6 rounded-lg font-label-sm uppercase tracking-widest hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center justify-center gap-2 group">
+          <span>Consultar</span>
+          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
 <!-- 2. El Hostel Section -->
 <section class="py-32 bg-background" id="hostel">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
@@ -1179,6 +1229,56 @@
                     link.addEventListener('click', () => {
                         if (isMenuOpen) toggleMenu();
                     });
+                });
+            }
+            // WhatsApp Booking Form Logic
+            const bookingForm = document.getElementById('whatsapp-booking-form');
+            if (bookingForm) {
+                // Set min date to today for checkin
+                const today = new Date().toISOString().split('T')[0];
+                const checkinInput = document.getElementById('checkin');
+                const checkoutInput = document.getElementById('checkout');
+                
+                checkinInput.min = today;
+                
+                checkinInput.addEventListener('change', (e) => {
+                    // Checkout must be at least 1 day after checkin
+                    if (e.target.value) {
+                        const nextDay = new Date(e.target.value);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        checkoutInput.min = nextDay.toISOString().split('T')[0];
+                        
+                        // If checkout is before new min date, reset it
+                        if (checkoutInput.value && checkoutInput.value <= e.target.value) {
+                            checkoutInput.value = checkoutInput.min;
+                        }
+                    }
+                });
+
+                bookingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const checkin = checkinInput.value;
+                    const checkout = checkoutInput.value;
+                    const huespedes = document.getElementById('huespedes').value;
+                    
+                    // Format dates (YYYY-MM-DD to DD/MM/YYYY)
+                    const formatData = (dateString) => {
+                        const [year, month, day] = dateString.split('-');
+                        return `${day}/${month}/${year}`;
+                    };
+                    
+                    const checkinFormatted = formatData(checkin);
+                    const checkoutFormatted = formatData(checkout);
+                    
+                    const message = `Hola, me gustaría consultar disponibilidad para ingresar el *${checkinFormatted}* y salir el *${checkoutFormatted}* para *${huespedes}*.`;
+                    
+                    // Número de WhatsApp del Hostel
+                    const phoneNumber = "5492983658176";
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                    
+                    window.open(whatsappUrl, '_blank');
                 });
             }
         });
