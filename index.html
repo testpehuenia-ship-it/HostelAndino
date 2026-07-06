@@ -800,95 +800,41 @@
                         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
                     };
 
-                    let templateHtml = '';
-                    const templateVal = parseInt(slide.template || 0);
-
-                    if (templateVal === 1) {
-                        templateHtml = `<img src="/template_winter.png" class="absolute bottom-0 left-0 w-full h-[18%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-                    } else if (templateVal === 2) {
-                        templateHtml = `<img src="/template_autumn.png" class="absolute bottom-0 left-0 w-full h-[18%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-                    } else if (templateVal === 3) {
-                        templateHtml = `<img src="/template_spring.png" class="absolute bottom-0 left-0 w-full h-[18%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-                    } else if (templateVal === 4) {
-                        templateHtml = `<img src="/template_summer.png" class="absolute bottom-0 left-0 w-full h-[18%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-                    } else if (templateVal === 5) {
-                        const font = slide.fontStyle || 'Playfair Display';
-                        const textBgColor = slide.textBgColor || '#000000';
-                        const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
-                        const textColor = slide.textColor || '#ffffff';
-                        
-                        const style = `
-                            background-color: ${hexToRgba(textBgColor, Math.max(0.2, textBgOpacity))};
-                            color: ${textColor};
-                            font-family: '${font}', serif;
-                        `;
-                        templateHtml = `
-                            <div class="absolute bottom-16 md:bottom-24 left-1/2 -translate-x-1/2 backdrop-blur-md border border-white/30 rounded-2xl p-6 md:p-8 text-center max-w-xl w-[90%] z-20 pointer-events-auto shadow-xl" style="${style}">
-                              <span class="block uppercase tracking-[0.2em] mb-2 text-[10px] md:text-xs" style="color: ${textColor}">${slide.subtitle}</span>
-                              <h2 class="font-bold leading-tight" style="font-size: clamp(20px, 5vw, ${(slide.fontSizePc || 72)*0.8}px);">${slide.title}</h2>
-                            </div>
-                        `;
-                    } else if (templateVal === 6) {
-                        templateHtml = `<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent"></div>`;
-                    } else if (templateVal === 7) {
-                        templateHtml = `
-                            <svg class="absolute bottom-0 left-0 w-full text-[#f7f6f3] fill-current" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-                              <polygon points="0,40 1440,0 1440,100 0,100"></polygon>
-                            </svg>
+                    const font = slide.fontStyle || 'Playfair Display';
+                    const titleStyle = `font-family: '${font}', serif; font-size: clamp(${slide.fontSizeMobile || 36}px, 6vw, ${slide.fontSizePc || 72}px); color: ${slide.textColor || '#ffffff'};`;
+                    
+                    const textLeft = slide.textLeft !== undefined ? slide.textLeft : 50;
+                    const textTop = slide.textTop !== undefined ? slide.textTop : 50;
+                    const textBgColor = slide.textBgColor || '#000000';
+                    const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
+                    
+                    // Custom positioning and box background styling
+                    let boxStyle = `
+                        left: ${textLeft}%; 
+                        top: ${textTop}%; 
+                        transform: translate(-${textLeft}%, -${textTop}%);
+                        background-color: ${hexToRgba(textBgColor, textBgOpacity)};
+                    `;
+                    
+                    if (textBgOpacity > 0) {
+                        boxStyle += `
+                            padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem);
+                            border-radius: 1.5rem;
+                            backdrop-filter: blur(4px);
+                            -webkit-backdrop-filter: blur(4px);
                         `;
                     }
                     
-                    let centerTextHtml = '';
-                    if (templateVal !== 5) {
-                        const font = slide.fontStyle || 'Playfair Display';
-                        const titleStyle = `font-family: '${font}', serif; font-size: clamp(${slide.fontSizeMobile || 36}px, 6vw, ${slide.fontSizePc || 72}px); color: ${slide.textColor || '#ffffff'};`;
-                        
-                        const textLeft = slide.textLeft !== undefined ? slide.textLeft : 50;
-                        const textTop = slide.textTop !== undefined ? slide.textTop : 50;
-                        const textBgColor = slide.textBgColor || '#000000';
-                        const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
-                        
-                        // Custom positioning and box background styling
-                        let boxStyle = `
-                            left: ${textLeft}%; 
-                            top: ${textTop}%; 
-                            transform: translate(-${textLeft}%, -${textTop}%);
-                            background-color: ${hexToRgba(textBgColor, textBgOpacity)};
-                        `;
-                        
-                        if (textBgOpacity > 0) {
-                            boxStyle += `
-                                padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem);
-                                border-radius: 1.5rem;
-                                backdrop-filter: blur(4px);
-                                -webkit-backdrop-filter: blur(4px);
-                            `;
-                        }
-                        
-                        centerTextHtml = `
-                            <div class="absolute z-10 flex flex-col justify-center items-center text-center w-[90%] max-w-4xl text-white pointer-events-none" style="${boxStyle}">
-                              <span class="font-label-sm uppercase tracking-[0.2em] mb-4 text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}">${slide.subtitle}</span>
-                              <h1 class="font-display-lg mb-8 leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
-                              <div class="flex flex-col md:flex-row gap-4 pointer-events-auto">
-                                <a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest hover:scale-105 transition-transform block text-center shadow-lg">Consultar Disponibilidad</a>
-                                <button onclick="document.getElementById('hostel').scrollIntoView({ behavior: 'smooth' })" class="border border-white text-white px-12 py-5 font-label-sm uppercase tracking-widest backdrop-blur-sm hover:bg-white hover:text-primary transition-all">Explorar el Hostel</button>
-                              </div>
-                            </div>
-                        `;
-                    } else {
-                        // For Glass Card style, center container holds buttons with specific positioning
-                        const textLeft = slide.textLeft !== undefined ? slide.textLeft : 50;
-                        const textTop = slide.textTop !== undefined ? slide.textTop : 40;
-                        
-                        centerTextHtml = `
-                            <div class="absolute z-10 flex flex-col justify-center items-center text-center w-[90%] pointer-events-none" style="left: ${textLeft}%; top: ${textTop}%; transform: translate(-${textLeft}%, -${textTop}%);">
-                              <div class="flex flex-col md:flex-row gap-4 pointer-events-auto">
-                                <a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest hover:scale-105 transition-transform block text-center shadow-lg">Consultar Disponibilidad</a>
-                                <button onclick="document.getElementById('hostel').scrollIntoView({ behavior: 'smooth' })" class="border border-white text-white px-12 py-5 font-label-sm uppercase tracking-widest backdrop-blur-sm hover:bg-white hover:text-primary transition-all">Explorar el Hostel</button>
-                              </div>
-                            </div>
-                        `;
-                    }
+                    const centerTextHtml = `
+                        <div class="absolute z-10 flex flex-col justify-center items-center text-center w-[90%] max-w-4xl text-white pointer-events-none" style="${boxStyle}">
+                          <span class="font-label-sm uppercase tracking-[0.2em] mb-4 text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}">${slide.subtitle}</span>
+                          <h1 class="font-display-lg mb-8 leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
+                          <div class="flex flex-col md:flex-row gap-4 pointer-events-auto">
+                            <a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest hover:scale-105 transition-transform block text-center shadow-lg">Consultar Disponibilidad</a>
+                            <button onclick="document.getElementById('hostel').scrollIntoView({ behavior: 'smooth' })" class="border border-white text-white px-12 py-5 font-label-sm uppercase tracking-widest backdrop-blur-sm hover:bg-white hover:text-primary transition-all">Explorar el Hostel</button>
+                          </div>
+                        </div>
+                    `;
                     
                     const imgPosX = slide.imgPosX !== undefined ? slide.imgPosX : 50;
                     const imgPosY = slide.imgPosY !== undefined ? slide.imgPosY : 50;
@@ -896,7 +842,6 @@
                     slidesHtml += `
                         <div class="absolute inset-0 transition-opacity duration-1000 fade-slide ${opacityClass}" style="background-image: url('${slide.src}'); background-size: cover; background-position: ${imgPosX}% ${imgPosY}%;">
                             <div class="absolute inset-0 bg-black/10"></div>
-                            ${templateHtml}
                             ${centerTextHtml}
                         </div>
                     `;

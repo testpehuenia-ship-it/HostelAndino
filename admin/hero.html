@@ -84,7 +84,7 @@
     <header class="h-20 border-b border-outline-variant/30 flex items-center justify-between px-12 bg-surface-bright">
       <div class="flex items-center gap-4">
         <span class="material-symbols-outlined text-primary text-2xl">image</span>
-        <h2 class="text-lg font-bold text-primary">Administración de Hero Slider</h2>
+        <h2 class="text-lg font-bold text-primary">Editor Visual del Hero Slider</h2>
       </div>
       <a href="/index.html" class="flex items-center gap-2 border border-[#cfb290] px-4 py-2 hover:bg-[#cfb290]/10 transition-colors rounded text-sm text-tertiary">
         <span class="material-symbols-outlined text-sm">visibility</span> Ver Web
@@ -94,7 +94,7 @@
     <div class="flex-1 p-12 grid grid-cols-12 gap-8">
       
       <!-- Left side: Slides List & Config Editor Form -->
-      <section class="col-span-12 lg:col-span-7 flex flex-col gap-8">
+      <section class="col-span-12 lg:col-span-6 flex flex-col gap-8">
         
         <!-- Grid of current slides -->
         <div class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm">
@@ -157,123 +157,47 @@
               </div>
               <div>
                 <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Tamaño Texto PC (px)</label>
-                <input id="edit-slide-size-pc" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="20" max="120" oninput="updateLivePreview()" />
+                <input id="edit-slide-size-pc" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="10" max="150" oninput="updateLivePreview()" />
               </div>
               <div>
                 <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Tamaño Celular (px)</label>
-                <input id="edit-slide-size-mobile" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="10" max="60" oninput="updateLivePreview()" />
+                <input id="edit-slide-size-mobile" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="8" max="100" oninput="updateLivePreview()" />
               </div>
             </div>
 
-            <!-- 8 Templates Selection -->
-            <div>
-              <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-4">Plantilla / Silueta Inferior (Elige 1 o ninguna)</label>
-              <div class="grid grid-cols-4 gap-4">
-                
-                <!-- Option 0: Ninguna -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="0" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">visibility_off</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Ninguna</span>
-                </label>
+            <!-- Hidden Inputs backed by WYSIWYG Drag/Resize -->
+            <input type="hidden" id="edit-slide-text-left" value="50">
+            <input type="hidden" id="edit-slide-text-top" value="50">
 
-                <!-- Option 1: Winter -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="1" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">ac_unit</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Invierno</span>
-                </label>
-
-                <!-- Option 2: Autumn -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="2" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">eco</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Otoño</span>
-                </label>
-
-                <!-- Option 3: Spring -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="3" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">local_florist</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Primavera</span>
-                </label>
-
-                <!-- Option 4: Summer -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="4" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">wb_sunny</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Verano</span>
-                </label>
-
-                <!-- Option 5: Glass Card -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="5" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">credit_card</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Tarjeta Vidrio</span>
-                </label>
-                
-                <!-- Option 6: Gradient Fade -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="6" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">gradient</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Difuminado</span>
-                </label>
-                
-                <!-- Option 7: Angled Cut -->
-                <label class="cursor-pointer flex flex-col items-center p-3 rounded-lg border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-all">
-                  <input type="radio" name="edit-template-radio" value="7" class="text-primary focus:ring-0 mb-2" onchange="updateLivePreview()">
-                  <span class="material-symbols-outlined text-xl text-primary mb-1">change_history</span>
-                  <span class="text-[10px] uppercase font-bold text-secondary">Corte Diagonal</span>
-                </label>
-                
-              </div>
-            </div>
-
-            <!-- Position text & color customization -->
-            <div class="grid grid-cols-2 gap-6 bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-              <div class="col-span-2">
-                <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ubicación del Texto</h4>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Horizontal (Izquierda a Derecha): <span id="val-text-left">50</span>%</label>
-                    <input id="edit-slide-text-left" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-text-left').innerText=this.value; updateLivePreview();" />
-                  </div>
-                  <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Vertical (Arriba a Abajo): <span id="val-text-top">50</span>%</label>
-                    <input id="edit-slide-text-top" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-text-top').innerText=this.value; updateLivePreview();" />
-                  </div>
+            <!-- Color and background styling -->
+            <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Estilos de Color y Fondo del Bloque de Texto</h4>
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Texto</label>
+                  <input id="edit-slide-text-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" />
                 </div>
-              </div>
-
-              <div class="col-span-2">
-                <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Estilos de Fondo del Texto</h4>
-                <div class="grid grid-cols-3 gap-4">
-                  <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Texto</label>
-                    <input id="edit-slide-text-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" />
-                  </div>
-                  <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Fondo</label>
-                    <input id="edit-slide-bg-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" />
-                  </div>
-                  <div>
-                    <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Opacidad Fondo: <span id="val-bg-opacity">0</span></label>
-                    <input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" />
-                  </div>
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Fondo</label>
+                  <input id="edit-slide-bg-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" />
+                </div>
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Opacidad Fondo: <span id="val-bg-opacity">0</span></label>
+                  <input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" />
                 </div>
               </div>
             </div>
 
             <!-- Image positioning adjustments -->
             <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ajuste de Encuadre de la Foto (PC y Celular)</h4>
+              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ajuste de Encuadre de la Foto de Fondo (%)</h4>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Posición X (%): <span id="val-img-x">50</span>%</label>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Desplazamiento X (Izq/Der): <span id="val-img-x">50</span>%</label>
                   <input id="edit-slide-img-x" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-x').innerText=this.value; updateLivePreview();" />
                 </div>
                 <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Posición Y (%): <span id="val-img-y">50</span>%</label>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Desplazamiento Y (Arr/Aba): <span id="val-img-y">50</span>%</label>
                   <input id="edit-slide-img-y" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-y').innerText=this.value; updateLivePreview();" />
                 </div>
               </div>
@@ -294,12 +218,15 @@
 
       </section>
 
-      <!-- Right side: Realtime Live Preview (PC / Mobile simulation switcher) -->
-      <section class="col-span-12 lg:col-span-5 flex flex-col gap-6">
-        <div class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col items-center sticky top-28">
+      <!-- Right side: Realtime WYSIWYG Live Preview (PC / Mobile simulation switcher) -->
+      <section class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+        <div class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col items-center sticky top-28 select-none">
           
-          <div class="w-full flex justify-between items-center mb-6 border-b border-outline-variant/20 pb-4">
-            <h4 class="font-bold text-primary text-sm uppercase tracking-wider">Previsualización Interactiva</h4>
+          <div class="w-full flex justify-between items-center mb-4 border-b border-outline-variant/20 pb-4">
+            <div>
+              <h4 class="font-bold text-primary text-sm uppercase tracking-wider">Previsualización Interactiva</h4>
+              <p class="text-[10px] text-secondary mt-1">¡Arrastrá el texto para moverlo! Arrastrá la esquina ↘ para cambiar el tamaño.</p>
+            </div>
             <div class="bg-surface-container-low p-1 rounded-lg flex gap-1">
               <button id="btn-view-pc" onclick="switchPreviewMode('pc')" class="px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold transition-all">
                 <span class="material-symbols-outlined text-sm">desktop_windows</span> PC
@@ -311,34 +238,35 @@
           </div>
 
           <!-- PC Preview Screen Frame -->
-          <div id="frame-pc" class="w-full preview-desktop relative overflow-hidden bg-black rounded-lg shadow-inner border border-outline-variant/30 flex items-center justify-center">
+          <div id="frame-pc" class="w-full preview-desktop relative overflow-hidden bg-black rounded-lg shadow-inner border border-outline-variant/30 select-none">
             <div id="pc-bg" class="absolute inset-0 bg-cover bg-center transition-all"></div>
+            <div class="absolute inset-0 bg-black/10"></div>
             
-            <!-- Templates overlays inside preview -->
-            <div id="pc-template-container" class="absolute inset-0"></div>
-
-            <!-- Content text overlay inside preview -->
-            <div class="absolute inset-0 z-10 flex flex-col justify-center items-center text-center p-6 text-white pointer-events-none">
-              <span id="pc-sub-preview" class="uppercase tracking-[0.2em] mb-2 text-xs opacity-90"></span>
-              <h1 id="pc-title-preview" class="max-w-2xl font-bold leading-tight"></h1>
+            <!-- Draggable text block -->
+            <div id="pc-draggable-text" class="absolute cursor-move select-none p-4 text-center text-white border border-dashed border-white/20 hover:border-white/80 transition-colors flex flex-col items-center justify-center" style="min-width: 120px;">
+              <span id="pc-sub-preview" class="uppercase tracking-[0.2em] mb-2 text-xs opacity-90 select-none pointer-events-none">Subtítulo</span>
+              <h1 id="pc-title-preview" class="font-bold leading-tight select-none pointer-events-none">Título del Hero</h1>
+              
+              <!-- Scale Font Handle -->
+              <div class="resize-handle-br absolute bottom-0 right-0 w-5 h-5 bg-white/40 hover:bg-white text-black text-[9px] font-bold flex items-center justify-center cursor-se-resize rounded-tl shadow z-30">↘</div>
             </div>
           </div>
 
           <!-- Mobile Preview Screen Frame -->
-          <div id="frame-mobile" class="preview-mobile relative overflow-hidden bg-black rounded-[2rem] border-[6px] border-tertiary shadow-2xl flex items-center justify-center hidden">
+          <div id="frame-mobile" class="preview-mobile relative overflow-hidden bg-black rounded-[2rem] border-[6px] border-tertiary shadow-2xl flex items-center justify-center hidden select-none">
             <div id="mobile-bg" class="absolute inset-0 bg-cover bg-center transition-all"></div>
+            <div class="absolute inset-0 bg-black/10"></div>
             
-            <!-- Templates overlays inside preview -->
-            <div id="mobile-template-container" class="absolute inset-0"></div>
-
-            <!-- Content text overlay inside preview -->
-            <div class="absolute inset-0 z-10 flex flex-col justify-center items-center text-center p-4 text-white pointer-events-none">
-              <span id="mobile-sub-preview" class="uppercase tracking-[0.2em] mb-1 text-[8px] opacity-90"></span>
-              <h1 id="mobile-title-preview" class="max-w-xs font-bold leading-tight"></h1>
+            <!-- Draggable text block -->
+            <div id="mobile-draggable-text" class="absolute cursor-move select-none p-2 text-center text-white border border-dashed border-white/20 hover:border-white/80 transition-colors flex flex-col items-center justify-center" style="min-width: 80px;">
+              <span id="mobile-sub-preview" class="uppercase tracking-[0.2em] mb-1 text-[8px] opacity-90 select-none pointer-events-none">Subtítulo</span>
+              <h1 id="mobile-title-preview" class="font-bold leading-tight select-none pointer-events-none">Título</h1>
+              
+              <!-- Scale Font Handle -->
+              <div class="resize-handle-br absolute bottom-0 right-0 w-4 h-4 bg-white/40 hover:bg-white text-black text-[8px] font-bold flex items-center justify-center cursor-se-resize rounded-tl shadow z-30">↘</div>
             </div>
           </div>
 
-          <p class="text-[11px] text-secondary mt-4 italic text-center">La vista previa refleja el recorte de la silueta en la zona inferior y la tipografía seleccionada en tiempo real.</p>
         </div>
       </section>
 
@@ -359,7 +287,10 @@
       slidesData = data.hero || [];
       renderSlidesList();
       
-      // Select first slide if exists to show editor
+      // Bind drag and resize handles
+      makeDraggableAndResizable(document.getElementById('pc-draggable-text'), false);
+      makeDraggableAndResizable(document.getElementById('mobile-draggable-text'), true);
+
       if (slidesData.length > 0) {
         editSlide(slidesData[0].id);
       }
@@ -377,11 +308,9 @@
         `;
       }).join('');
 
-      // Show/Hide Add button based on limit of 6
       const btnAdd = document.getElementById('btn-add-slide');
       if (slidesData.length >= 6) {
         btnAdd.classList.add('opacity-50', 'pointer-events-none');
-        btnAdd.title = "Límite máximo de 6 diapositivas alcanzado";
       } else {
         btnAdd.classList.remove('opacity-50', 'pointer-events-none');
       }
@@ -397,12 +326,19 @@
       const newSlide = {
         id: nextId,
         src: "/hero01.webp",
-        template: 1,
+        template: 0,
         title: "Nueva Diapositiva",
         subtitle: "Villa Pehuenia, Patagonia",
         fontSizePc: 72,
         fontSizeMobile: 36,
-        fontStyle: "Playfair Display"
+        fontStyle: "Playfair Display",
+        textLeft: 50,
+        textTop: 50,
+        textColor: "#ffffff",
+        textBgColor: "#000000",
+        textBgOpacity: 0,
+        imgPosX: 50,
+        imgPosY: 50
       };
 
       slidesData.push(newSlide);
@@ -418,7 +354,6 @@
       document.getElementById('slide-editor-card').classList.remove('hidden');
       document.getElementById('edit-slide-id').value = slide.id;
       
-      // Image elements
       const img = document.getElementById('edit-slide-preview');
       const noImg = document.getElementById('edit-slide-no-img');
       if (slide.src) {
@@ -430,36 +365,24 @@
         noImg.classList.remove('hidden');
       }
 
-      // Populate text inputs
       document.getElementById('edit-slide-title').value = slide.title || '';
       document.getElementById('edit-slide-subtitle').value = slide.subtitle || '';
       document.getElementById('edit-slide-font').value = slide.fontStyle || 'Playfair Display';
       document.getElementById('edit-slide-size-pc').value = slide.fontSizePc || 72;
       document.getElementById('edit-slide-size-mobile').value = slide.fontSizeMobile || 36;
 
-      // Populate text positioning sliders
       document.getElementById('edit-slide-text-left').value = slide.textLeft !== undefined ? slide.textLeft : 50;
-      document.getElementById('val-text-left').innerText = slide.textLeft !== undefined ? slide.textLeft : 50;
       document.getElementById('edit-slide-text-top').value = slide.textTop !== undefined ? slide.textTop : 50;
-      document.getElementById('val-text-top').innerText = slide.textTop !== undefined ? slide.textTop : 50;
 
-      // Populate text styling inputs
       document.getElementById('edit-slide-text-color').value = slide.textColor || '#ffffff';
       document.getElementById('edit-slide-bg-color').value = slide.textBgColor || '#000000';
       document.getElementById('edit-slide-bg-opacity').value = slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0;
       document.getElementById('val-bg-opacity').innerText = ((slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100).toFixed(2);
 
-      // Populate background image placement inputs
       document.getElementById('edit-slide-img-x').value = slide.imgPosX !== undefined ? slide.imgPosX : 50;
       document.getElementById('val-img-x').innerText = slide.imgPosX !== undefined ? slide.imgPosX : 50;
       document.getElementById('edit-slide-img-y').value = slide.imgPosY !== undefined ? slide.imgPosY : 50;
       document.getElementById('val-img-y').innerText = slide.imgPosY !== undefined ? slide.imgPosY : 50;
-
-      // Radio template value
-      const radios = document.getElementsByName('edit-template-radio');
-      radios.forEach(radio => {
-        radio.checked = (parseInt(radio.value) === parseInt(slide.template || 0));
-      });
 
       updateLivePreview();
     };
@@ -505,9 +428,8 @@
       reader.readAsDataURL(file);
     };
 
-    // Helper to convert HEX to RGBA with alpha
     function hexToRgba(hex, alpha) {
-      hex = hex.replace('#', '');
+      hex = (hex || '#000000').replace('#', '');
       const r = parseInt(hex.substring(0, 2), 16);
       const g = parseInt(hex.substring(2, 4), 16);
       const b = parseInt(hex.substring(4, 6), 16);
@@ -522,7 +444,6 @@
       const sizePc = document.getElementById('edit-slide-size-pc').value || 72;
       const sizeMobile = document.getElementById('edit-slide-size-mobile').value || 36;
 
-      // Custom styling inputs
       const textLeft = document.getElementById('edit-slide-text-left').value;
       const textTop = document.getElementById('edit-slide-text-top').value;
       const textColor = document.getElementById('edit-slide-text-color').value;
@@ -531,11 +452,8 @@
       
       const imgPosX = document.getElementById('edit-slide-img-x').value;
       const imgPosY = document.getElementById('edit-slide-img-y').value;
-      
-      const selectedRadio = document.querySelector('input[name="edit-template-radio"]:checked');
-      const templateVal = selectedRadio ? parseInt(selectedRadio.value) : 0;
 
-      // Update background src and positions in previews
+      // Update background positions
       const bgSrc = imgPreview.src || '';
       const pcBg = document.getElementById('pc-bg');
       const mobBg = document.getElementById('mobile-bg');
@@ -545,116 +463,196 @@
       mobBg.style.backgroundImage = `url('${bgSrc}')`;
       mobBg.style.backgroundPosition = `${imgPosX}% ${imgPosY}%`;
 
-      // Draw active template SVG, PNG or Overlay
-      const getTemplateHtml = (isMobileView = false) => {
-        if (templateVal === 0) {
-          return '';
-        } else if (templateVal === 1) {
-          // Winter template png
-          return `<img src="/template_winter.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-        } else if (templateVal === 2) {
-          // Autumn template png
-          return `<img src="/template_autumn.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-        } else if (templateVal === 3) {
-          // Spring template png
-          return `<img src="/template_spring.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-        } else if (templateVal === 4) {
-          // Summer template png
-          return `<img src="/template_summer.png" class="absolute bottom-0 left-0 w-full h-[30%] md:h-[22%] object-cover pointer-events-none z-10" />`;
-        } else if (templateVal === 5) {
-          // Glass card overlay
-          const pad = isMobileView ? 'p-3' : 'p-6';
-          const pos = isMobileView ? 'bottom-4' : 'bottom-10';
-          const style = `
-            background-color: ${hexToRgba(textBgColor, Math.max(0.2, textBgOpacity))};
-            color: ${textColor};
-            font-family: '${font}';
-          `;
-          return `
-            <div class="absolute ${pos} left-1/2 -translate-x-1/2 backdrop-blur-md border border-white/30 rounded-2xl ${pad} text-center max-w-xl w-[90%] z-20" style="${style}">
-              <span class="block uppercase tracking-[0.2em] mb-1 ${isMobileView ? 'text-[8px]' : 'text-xs'}" style="color: ${textColor}">${subtitle}</span>
-              <h2 class="font-bold leading-tight" style="font-size: ${isMobileView ? (sizeMobile*0.8) + 'px' : (sizePc*0.8) + 'px'}">${title}</h2>
-            </div>
-          `;
-        } else if (templateVal === 6) {
-          // Dark Gradient fade
-          return `<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent"></div>`;
-        } else if (templateVal === 7) {
-          // Angled Cut SVG
-          return `
-            <svg class="absolute bottom-0 left-0 w-full text-surface-bright fill-current" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="0,40 1440,0 1440,100 0,100"></polygon>
-            </svg>
-          `;
-        }
-        return '';
-      };
-
-      // Set Template Overlays in previews
-      document.getElementById('pc-template-container').innerHTML = getTemplateHtml(false);
-      document.getElementById('mobile-template-container').innerHTML = getTemplateHtml(true);
-
-      // Render Texts overlay
+      // PC Draggable Text Update
+      const pcDrag = document.getElementById('pc-draggable-text');
       const pcTitle = document.getElementById('pc-title-preview');
       const pcSub = document.getElementById('pc-sub-preview');
+
+      pcTitle.innerText = title;
+      pcSub.innerText = subtitle;
+      pcTitle.style.fontFamily = `'${font}', serif`;
+      pcTitle.style.fontSize = `${sizePc}px`;
+      pcTitle.style.color = textColor;
+      pcSub.style.color = textColor;
+      
+      pcDrag.style.left = `${textLeft}%`;
+      pcDrag.style.top = `${textTop}%`;
+      pcDrag.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
+      pcDrag.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
+      if (textBgOpacity > 0) {
+        pcDrag.style.padding = '1rem 2rem';
+        pcDrag.style.borderRadius = '1rem';
+        pcDrag.style.backdropFilter = 'blur(4px)';
+      } else {
+        pcDrag.style.padding = '0';
+        pcDrag.style.borderRadius = '0';
+        pcDrag.style.backdropFilter = 'none';
+      }
+
+      // Mobile Draggable Text Update
+      const mobDrag = document.getElementById('mobile-draggable-text');
       const mobTitle = document.getElementById('mobile-title-preview');
       const mobSub = document.getElementById('mobile-sub-preview');
 
-      // If template is glass card (5), standard overlay text is hidden to avoid duplicates
-      if (templateVal === 5) {
-        pcTitle.innerText = '';
-        pcSub.innerText = '';
-        pcTitle.parentElement.style.backgroundColor = 'transparent';
-        mobTitle.innerText = '';
-        mobSub.innerText = '';
-        mobTitle.parentElement.style.backgroundColor = 'transparent';
+      mobTitle.innerText = title;
+      mobSub.innerText = subtitle;
+      mobTitle.style.fontFamily = `'${font}', serif`;
+      mobTitle.style.fontSize = `${sizeMobile}px`;
+      mobTitle.style.color = textColor;
+      mobSub.style.color = textColor;
+
+      mobDrag.style.left = `${textLeft}%`;
+      mobDrag.style.top = `${textTop}%`;
+      mobDrag.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
+      mobDrag.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
+      if (textBgOpacity > 0) {
+        mobDrag.style.padding = '0.5rem 1rem';
+        mobDrag.style.borderRadius = '0.5rem';
+        mobDrag.style.backdropFilter = 'blur(4px)';
       } else {
-        pcTitle.innerText = title;
-        pcSub.innerText = subtitle;
-        pcTitle.style.fontFamily = `'${font}', serif`;
-        pcTitle.style.fontSize = `${sizePc}px`;
-        pcTitle.style.color = textColor;
-        pcSub.style.color = textColor;
-        
-        // Position & Background box styles for text
-        const pcTextContainer = pcTitle.parentElement;
-        pcTextContainer.style.left = `${textLeft}%`;
-        pcTextContainer.style.top = `${textTop}%`;
-        pcTextContainer.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
-        pcTextContainer.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
-        if (textBgOpacity > 0) {
-          pcTextContainer.style.padding = '1.5rem 3rem';
-          pcTextContainer.style.borderRadius = '1rem';
-          pcTextContainer.style.backdropFilter = 'blur(4px)';
-        } else {
-          pcTextContainer.style.padding = '0';
-          pcTextContainer.style.borderRadius = '0';
-          pcTextContainer.style.backdropFilter = 'none';
-        }
-
-        mobTitle.innerText = title;
-        mobSub.innerText = subtitle;
-        mobTitle.style.fontFamily = `'${font}', serif`;
-        mobTitle.style.fontSize = `${sizeMobile}px`;
-        mobTitle.style.color = textColor;
-        mobSub.style.color = textColor;
-
-        const mobTextContainer = mobTitle.parentElement;
-        mobTextContainer.style.left = `${textLeft}%`;
-        mobTextContainer.style.top = `${textTop}%`;
-        mobTextContainer.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
-        mobTextContainer.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
-        if (textBgOpacity > 0) {
-          mobTextContainer.style.padding = '0.75rem 1.5rem';
-          mobTextContainer.style.borderRadius = '0.5rem';
-          mobTextContainer.style.backdropFilter = 'blur(4px)';
-        } else {
-          mobTextContainer.style.padding = '0';
-          mobTextContainer.style.borderRadius = '0';
-          mobTextContainer.style.backdropFilter = 'none';
-        }
+        mobDrag.style.padding = '0';
+        mobDrag.style.borderRadius = '0';
+        mobDrag.style.backdropFilter = 'none';
       }
     };
+
+    // WYSIWYG Drag-and-Resize engine
+    function makeDraggableAndResizable(el, isMobileView) {
+      let isDragging = false;
+      let isResizingFont = false;
+      let startX, startY, startLeft, startTop, startFontSize;
+
+      el.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('resize-handle-br')) {
+          isResizingFont = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          startFontSize = isMobileView 
+            ? parseInt(document.getElementById('edit-slide-size-mobile').value) || 36
+            : parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        const parent = el.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+        
+        startLeft = ((el.offsetLeft + el.offsetWidth / 2) / parentRect.width) * 100;
+        startTop = ((el.offsetTop + el.offsetHeight / 2) / parentRect.height) * 100;
+        
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging && !isResizingFont) return;
+        
+        const parent = el.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+
+        if (isDragging) {
+          const deltaX = e.clientX - startX;
+          const deltaY = e.clientY - startY;
+
+          const percentX = (deltaX / parentRect.width) * 100;
+          const percentY = (deltaY / parentRect.height) * 100;
+
+          let newLeft = Math.max(0, Math.min(100, Math.round(startLeft + percentX)));
+          let newTop = Math.max(0, Math.min(100, Math.round(startTop + percentY)));
+
+          document.getElementById('edit-slide-text-left').value = newLeft;
+          document.getElementById('edit-slide-text-top').value = newTop;
+
+          updateLivePreview();
+        }
+
+        if (isResizingFont) {
+          const deltaX = e.clientX - startX;
+          const scaleFactor = 0.35;
+          const newFontSize = Math.max(8, Math.round(startFontSize + deltaX * scaleFactor));
+
+          if (isMobileView) {
+            document.getElementById('edit-slide-size-mobile').value = newFontSize;
+          } else {
+            document.getElementById('edit-slide-size-pc').value = newFontSize;
+          }
+          updateLivePreview();
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        isResizingFont = false;
+      });
+
+      // Touch handlers for mobile dashboard compatibility
+      el.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        if (e.target.classList.contains('resize-handle-br')) {
+          isResizingFont = true;
+          startX = touch.clientX;
+          startY = touch.clientY;
+          startFontSize = isMobileView 
+            ? parseInt(document.getElementById('edit-slide-size-mobile').value) || 36
+            : parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
+          return;
+        }
+
+        isDragging = true;
+        startX = touch.clientX;
+        startY = touch.clientY;
+        
+        const parent = el.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+        
+        startLeft = ((el.offsetLeft + el.offsetWidth / 2) / parentRect.width) * 100;
+        startTop = ((el.offsetTop + el.offsetHeight / 2) / parentRect.height) * 100;
+      }, { passive: true });
+
+      el.addEventListener('touchmove', (e) => {
+        if (!isDragging && !isResizingFont) return;
+        const touch = e.touches[0];
+        const parent = el.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+
+        if (isDragging) {
+          const deltaX = touch.clientX - startX;
+          const deltaY = touch.clientY - startY;
+          const percentX = (deltaX / parentRect.width) * 100;
+          const percentY = (deltaY / parentRect.height) * 100;
+
+          let newLeft = Math.max(0, Math.min(100, Math.round(startLeft + percentX)));
+          let newTop = Math.max(0, Math.min(100, Math.round(startTop + percentY)));
+
+          document.getElementById('edit-slide-text-left').value = newLeft;
+          document.getElementById('edit-slide-text-top').value = newTop;
+
+          updateLivePreview();
+        }
+
+        if (isResizingFont) {
+          const deltaX = touch.clientX - startX;
+          const scaleFactor = 0.35;
+          const newFontSize = Math.max(8, Math.round(startFontSize + deltaX * scaleFactor));
+
+          if (isMobileView) {
+            document.getElementById('edit-slide-size-mobile').value = newFontSize;
+          } else {
+            document.getElementById('edit-slide-size-pc').value = newFontSize;
+          }
+          updateLivePreview();
+        }
+      }, { passive: true });
+
+      el.addEventListener('touchend', () => {
+        isDragging = false;
+        isResizingFont = false;
+      });
+    }
 
     window.saveSlide = function(e) {
       e.preventDefault();
@@ -677,9 +675,7 @@
       slide.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
       slide.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
       slide.src = document.getElementById('edit-slide-preview').src;
-
-      const selectedRadio = document.querySelector('input[name="edit-template-radio"]:checked');
-      slide.template = selectedRadio ? parseInt(selectedRadio.value) : 0;
+      slide.template = 0; // templates are completely removed
 
       saveToDatabase();
       renderSlidesList();
@@ -727,6 +723,7 @@
         frameMob.classList.remove('hidden');
         framePc.classList.add('hidden');
       }
+      updateLivePreview();
     };
 
     window.logout = function() {
@@ -734,7 +731,6 @@
       window.location.href = '/admin/login.html';
     };
 
-    // Auth validation
     if (sessionStorage.getItem('is_admin_logged_in') !== 'true') {
       window.location.href = '/admin/login.html';
     }
