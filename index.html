@@ -187,7 +187,7 @@
         }
     </script>
 </head>
-<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
 <!-- Top Navigation Bar -->
 <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 bg-background/80 backdrop-blur-md transition-all duration-300 ease-in-out">
 <div class="font-display-lg text-headline-md text-primary">Hostel Andino</div>
@@ -202,10 +202,21 @@
 <a href="https://wa.me/5492983658176" target="_blank" class="bg-primary text-on-primary px-8 py-3 font-label-sm uppercase tracking-wider transition-all hover:bg-primary-container hover:text-on-primary-container block text-center">Reservar</a>
 </div>
 <!-- Mobile Menu Toggle -->
-<button class="md:hidden text-primary p-2">
+<button id="mobile-menu-btn" class="md:hidden text-primary p-2 z-50">
 <span class="material-symbols-outlined">menu</span>
 </button>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-0 bg-background/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col justify-center items-center gap-8">
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#inicio">Inicio</a>
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#hostel">El Hostel</a>
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#galeria">Galería</a>
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#servicios">Servicios</a>
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#tarifas">Tarifas</a>
+  <a class="mobile-link font-display-lg text-headline-md text-primary transition-colors" href="#contacto">Contacto</a>
+  <a href="https://wa.me/5492983658176" target="_blank" class="mobile-link bg-primary text-on-primary px-10 py-4 font-label-sm uppercase tracking-wider mt-4">Reservar Ahora</a>
+</div>
 <!-- 1. Hero Section: Image Slider -->
 <section class="relative h-screen w-full overflow-hidden hero-slider-container" id="inicio">
   <!-- Carga dinámica desde la base de datos (db.js) -->
@@ -311,7 +322,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Cocina</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Cocina</h3>
       </div>
       <p class="text-sm text-secondary font-body-md font-semibold mb-2">Amplia cocina-comedor equipada con:</p>
       <ul id="confort-cocina" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
@@ -328,7 +339,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Estar</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Estar</h3>
       </div>
       <p class="text-sm text-secondary font-body-md font-semibold mb-2">Amplio <span class="font-bold">estar</span> equipado con:</p>
       <ul id="confort-estar" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
@@ -345,7 +356,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Habitaciones</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Habitaciones</h3>
       </div>
       <p class="text-sm text-secondary font-body-md font-semibold mb-2"><span class="font-bold">3 unidades</span>, equipadas con:</p>
       <ul id="confort-habitaciones" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
@@ -361,7 +372,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Sanitarios</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Sanitarios</h3>
       </div>
       <ul id="confort-sanitarios" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
         <li>3 baños privados completos.</li>
@@ -373,7 +384,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Blanquería</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Blanquería</h3>
       </div>
       <p class="text-sm text-secondary font-body-md font-semibold mb-2">Se proveerá al huésped de:</p>
       <ul id="confort-blanqueria" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
@@ -387,7 +398,7 @@
     <div class="bg-background p-8 rounded border border-outline-variant/20 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-green-600 font-bold text-3xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        <h3 class="text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide">Estacionamiento y Jardín</h3>
+        <h3 class="text-xl md:text-headline-md font-bold font-display-lg text-[#28351c] uppercase tracking-wide break-words">Estacionamiento y Jardín</h3>
       </div>
       <ul id="confort-estacionamiento" class="list-disc pl-5 space-y-1.5 text-sm text-secondary font-body-md">
         <li>Estacionamiento no techado.</li>
@@ -790,7 +801,7 @@
                     const getBoxSizing = (w, h) => {
                         let style = '';
                         if (w > 0) style += `width: ${w}%; white-space: normal; word-break: break-word;`;
-                        else style += `width: auto; white-space: nowrap;`;
+                        else style += `width: auto; white-space: normal; word-wrap: break-word; max-width: 90vw;`;
                         if (h > 0) style += `height: ${h}px;`;
                         return style;
                     };
@@ -1142,6 +1153,34 @@
                 }
             };
             checkDbAndRender();
+
+            // Mobile Menu Logic
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            let isMenuOpen = false;
+
+            if (menuBtn && mobileMenu) {
+                const toggleMenu = () => {
+                    isMenuOpen = !isMenuOpen;
+                    if (isMenuOpen) {
+                        mobileMenu.classList.remove('translate-x-full');
+                        menuBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        mobileMenu.classList.add('translate-x-full');
+                        menuBtn.innerHTML = '<span class="material-symbols-outlined">menu</span>';
+                        document.body.style.overflow = '';
+                    }
+                };
+
+                menuBtn.addEventListener('click', toggleMenu);
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (isMenuOpen) toggleMenu();
+                    });
+                });
+            }
         });
     </script>
 </body></html>
