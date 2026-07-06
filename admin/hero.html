@@ -8,732 +8,431 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Manrope:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
-  
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#28351c',
-            'on-primary': '#f7f6f3',
-            secondary: '#cfb290',
-            tertiary: '#402e15',
-            error: '#ba1a1a',
-            'surface-container-low': '#f0efe9',
-            'surface-container-high': '#e6e4dc',
-            'surface-container-highest': '#dad8ce',
-            'surface-bright': '#fcfbfa',
-            outline: '#7c776c',
-            'outline-variant': '#cdcaae'
-          }
-        }
-      }
-    }
+    tailwind.config = { theme: { extend: { colors: {
+      primary: '#28351c', 'on-primary': '#f7f6f3', secondary: '#cfb290', tertiary: '#402e15',
+      error: '#ba1a1a', 'surface-container-low': '#f0efe9', 'surface-container-high': '#e6e4dc',
+      'surface-container-highest': '#dad8ce', 'surface-bright': '#fcfbfa', outline: '#7c776c', 'outline-variant': '#cdcaae'
+    }}}}
   </script>
   <style>
-    body {
-      font-family: 'Manrope', sans-serif;
-      background-color: #f7f6f3;
-    }
-    .preview-desktop {
-      aspect-ratio: 16 / 9;
-    }
-    .preview-mobile {
-      aspect-ratio: 9 / 16;
-      width: 180px;
-    }
+    body { font-family: 'Manrope', sans-serif; background-color: #f7f6f3; }
+    .preview-desktop { aspect-ratio: 16 / 9; }
+    .preview-mobile { aspect-ratio: 9 / 16; width: 200px; }
+    /* WYSIWYG text box handles */
+    .text-box { position: absolute; border: 2px dashed transparent; cursor: default; transition: border-color 0.15s; }
+    .text-box:hover, .text-box.selected { border-color: rgba(255,255,255,0.8); }
+    .text-box.selected { border-color: #cfb290; }
+    .handle { position: absolute; width: 10px; height: 10px; background: #cfb290; border: 1px solid #fff; z-index: 40; display: none; }
+    .text-box.selected .handle { display: block; }
+    .handle-tl { top: -5px; left: -5px; cursor: nwse-resize; }
+    .handle-tc { top: -5px; left: 50%; margin-left: -5px; cursor: ns-resize; }
+    .handle-tr { top: -5px; right: -5px; cursor: nesw-resize; }
+    .handle-ml { top: 50%; margin-top: -5px; left: -5px; cursor: ew-resize; }
+    .handle-mr { top: 50%; margin-top: -5px; right: -5px; cursor: ew-resize; }
+    .handle-bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
+    .handle-bc { bottom: -5px; left: 50%; margin-left: -5px; cursor: ns-resize; }
+    .handle-br { bottom: -5px; right: -5px; cursor: nwse-resize; }
   </style>
 </head>
-<body class="flex min-h-screen">
-
-  <!-- Sidebar Navigation -->
+<body class="flex min-h-screen" oncontextmenu="return false;">
   <aside class="fixed left-0 top-0 h-full flex flex-col py-8 bg-surface-container-low w-64 z-50 border-r border-outline-variant/30">
     <div class="px-8 mb-12">
-      <a href="/index.html"><h1 class="font-display-lg text-headline-md text-primary hover:opacity-80 transition-opacity font-bold text-xl">Hostel Andino</h1></a>
-      <p class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Panel de Gestión</p>
+      <a href="/index.html"><h1 class="text-primary font-bold text-xl hover:opacity-80 transition-opacity">Hostel Andino</h1></a>
+      <p class="text-xs uppercase tracking-wider text-secondary">Panel de Gestión</p>
     </div>
     <nav class="flex-1 flex flex-col gap-2">
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/galeria.html">
-        <span class="material-symbols-outlined">photo_library</span>
-        <span class="font-label-sm uppercase tracking-wider">Galería</span>
-      </a>
-      <a class="flex items-center gap-4 px-8 py-4 text-primary font-bold border-r-4 border-primary bg-surface-container-high transition-all group" href="/admin/hero.html">
-        <span class="material-symbols-outlined">image</span>
-        <span class="font-label-sm uppercase tracking-wider">Hero Slider</span>
-      </a>
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/tarifas.html">
-        <span class="material-symbols-outlined">payments</span>
-        <span class="font-label-sm uppercase tracking-wider">Tarifas</span>
-      </a>
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all group" href="/admin/tarifas.html">
-        <span class="material-symbols-outlined">sell</span>
-        <span class="font-label-sm uppercase tracking-wider">Promociones</span>
-      </a>
+      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/galeria.html"><span class="material-symbols-outlined">photo_library</span><span class="text-xs uppercase tracking-wider">Galería</span></a>
+      <a class="flex items-center gap-4 px-8 py-4 text-primary font-bold border-r-4 border-primary bg-surface-container-high" href="/admin/hero.html"><span class="material-symbols-outlined">image</span><span class="text-xs uppercase tracking-wider">Hero Slider</span></a>
+      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html"><span class="material-symbols-outlined">payments</span><span class="text-xs uppercase tracking-wider">Tarifas</span></a>
+      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html"><span class="material-symbols-outlined">sell</span><span class="text-xs uppercase tracking-wider">Promociones</span></a>
     </nav>
-    <div class="px-8 mt-auto">
-      <a class="flex items-center gap-4 py-4 text-secondary hover:text-error transition-colors cursor-pointer" onclick="logout()">
-        <span class="material-symbols-outlined">logout</span>
-        <span class="font-label-sm uppercase tracking-wider">Cerrar Sesión</span>
-      </a>
-    </div>
+    <div class="px-8 mt-auto"><a class="flex items-center gap-4 py-4 text-secondary hover:text-error transition-colors cursor-pointer" onclick="logout()"><span class="material-symbols-outlined">logout</span><span class="text-xs uppercase tracking-wider">Cerrar Sesión</span></a></div>
   </aside>
 
-  <!-- Main Content Wrapper -->
   <main class="flex-1 pl-64 min-h-screen flex flex-col">
-    <!-- Topbar -->
     <header class="h-20 border-b border-outline-variant/30 flex items-center justify-between px-12 bg-surface-bright">
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-outlined text-primary text-2xl">image</span>
-        <h2 class="text-lg font-bold text-primary">Editor Visual del Hero Slider</h2>
-      </div>
-      <a href="/index.html" class="flex items-center gap-2 border border-[#cfb290] px-4 py-2 hover:bg-[#cfb290]/10 transition-colors rounded text-sm text-tertiary">
-        <span class="material-symbols-outlined text-sm">visibility</span> Ver Web
-      </a>
+      <div class="flex items-center gap-4"><span class="material-symbols-outlined text-primary text-2xl">image</span><h2 class="text-lg font-bold text-primary">Editor Visual del Hero Slider</h2></div>
+      <a href="/index.html" class="flex items-center gap-2 border border-secondary px-4 py-2 hover:bg-secondary/10 transition-colors rounded text-sm text-tertiary"><span class="material-symbols-outlined text-sm">visibility</span> Ver Web</a>
     </header>
 
     <div class="flex-1 p-12 grid grid-cols-12 gap-8">
-      
-      <!-- Left side: Slides List & Config Editor Form -->
-      <section class="col-span-12 lg:col-span-6 flex flex-col gap-8">
-        
-        <!-- Grid of current slides -->
-        <div class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm">
+      <!-- Left: Slides List + Config -->
+      <section class="col-span-12 lg:col-span-5 flex flex-col gap-8">
+        <div class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 shadow-sm">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="font-bold text-primary text-base uppercase tracking-wider">Tus Diapositivas (${window.db ? window.db.getData().hero.length : 0}/6)</h3>
-            <button onclick="addHeroSlide()" id="btn-add-slide" class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-lg text-xs uppercase tracking-wider hover:opacity-90 transition-all">
-              <span class="material-symbols-outlined text-sm">add</span> Añadir Diapositiva
-            </button>
+            <h3 class="font-bold text-primary text-sm uppercase tracking-wider">Diapositivas</h3>
+            <button onclick="addHeroSlide()" id="btn-add-slide" class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-lg text-xs uppercase tracking-wider hover:opacity-90"><span class="material-symbols-outlined text-sm">add</span> Añadir</button>
           </div>
-          
-          <div id="slides-list" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Dynamic listing -->
-          </div>
+          <div id="slides-list" class="grid grid-cols-3 gap-3"></div>
         </div>
 
-        <!-- Slide Settings Editor Form -->
-        <div id="slide-editor-card" class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm hidden">
-          <h3 class="font-bold text-primary text-base uppercase tracking-wider mb-6" id="editor-title">Editar Diapositiva</h3>
-          
-          <form id="slide-form" class="flex flex-col gap-6" onsubmit="saveSlide(event)">
+        <div id="slide-editor-card" class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 shadow-sm hidden">
+          <h3 class="font-bold text-primary text-sm uppercase tracking-wider mb-4">Configuración</h3>
+          <form id="slide-form" class="flex flex-col gap-5" onsubmit="saveSlide(event)">
             <input type="hidden" id="edit-slide-id">
             <input type="file" id="slide-file-input" accept="image/*" class="hidden" onchange="handleSlideImageUpload(event)">
-            
-            <!-- Image Selector -->
+            <!-- Image -->
             <div>
-              <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Imagen del Fondo</label>
-              <div class="flex items-center gap-4">
-                <div class="w-24 h-16 rounded overflow-hidden bg-surface-container-low border border-outline-variant/30 flex items-center justify-center">
-                  <img id="edit-slide-preview" class="w-full h-full object-cover hidden">
-                  <span id="edit-slide-no-img" class="material-symbols-outlined text-outline-variant">image</span>
-                </div>
-                <button type="button" onclick="document.getElementById('slide-file-input').click()" class="border border-[#cfb290] hover:bg-[#cfb290]/10 text-primary px-4 py-2 rounded text-xs uppercase tracking-wider">
-                  Seleccionar Archivo
-                </button>
+              <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Imagen de Fondo</label>
+              <div class="flex items-center gap-3">
+                <div class="w-20 h-14 rounded overflow-hidden bg-surface-container-low border border-outline-variant/30 flex items-center justify-center"><img id="edit-slide-preview" class="w-full h-full object-cover hidden"><span id="edit-slide-no-img" class="material-symbols-outlined text-outline-variant">image</span></div>
+                <button type="button" onclick="document.getElementById('slide-file-input').click()" class="border border-secondary hover:bg-secondary/10 text-primary px-3 py-1.5 rounded text-xs uppercase tracking-wider">Seleccionar</button>
               </div>
             </div>
-
-            <!-- Title & Subtitle Texts -->
-            <div class="grid grid-cols-2 gap-4">
-              <div class="group">
-                <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Título Principal (H1)</label>
-                <input id="edit-slide-title" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" placeholder="Ej: Desconectá en Villa Pehuenia" type="text" oninput="updateLivePreview()" />
-              </div>
-              <div class="group">
-                <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Subtítulo / Etiqueta</label>
-                <input id="edit-slide-subtitle" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" placeholder="Ej: Villa Pehuenia, Patagonia" type="text" oninput="updateLivePreview()" />
+            <!-- Title & Subtitle -->
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Título</label><input id="edit-slide-title" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="text" oninput="updateLivePreview()" /></div>
+              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Subtítulo</label><input id="edit-slide-subtitle" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="text" oninput="updateLivePreview()" /></div>
+            </div>
+            <!-- Font / Size -->
+            <div class="grid grid-cols-3 gap-3">
+              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tipografía</label>
+                <select id="edit-slide-font" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" onchange="updateLivePreview()">
+                  <option value="Playfair Display">Playfair Display</option><option value="Manrope">Manrope</option><option value="Lora">Lora</option><option value="Outfit">Outfit</option>
+                </select></div>
+              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tamaño PC</label><input id="edit-slide-size-pc" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="number" min="10" max="150" oninput="updateLivePreview()" /></div>
+              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tamaño Cel</label><input id="edit-slide-size-mobile" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="number" min="8" max="100" oninput="updateLivePreview()" /></div>
+            </div>
+            <!-- Hidden position data -->
+            <input type="hidden" id="edit-title-left" value="50"><input type="hidden" id="edit-title-top" value="45">
+            <input type="hidden" id="edit-sub-left" value="50"><input type="hidden" id="edit-sub-top" value="35">
+            <!-- Colors -->
+            <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-2">Colores</h4>
+              <div class="grid grid-cols-3 gap-3">
+                <div><label class="block text-[10px] uppercase text-secondary mb-1">Texto</label><input id="edit-slide-text-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" /></div>
+                <div><label class="block text-[10px] uppercase text-secondary mb-1">Fondo</label><input id="edit-slide-bg-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" /></div>
+                <div><label class="block text-[10px] uppercase text-secondary mb-1">Opacidad: <span id="val-bg-opacity">0</span></label><input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" /></div>
               </div>
             </div>
-
-            <!-- Typography Style & Size -->
-            <div class="grid grid-cols-3 gap-4">
-              <div>
-                <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Estilo de Letra</label>
-                <select id="edit-slide-font" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" onchange="updateLivePreview()">
-                  <option value="Playfair Display">Playfair Display (Tema Principal)</option>
-                  <option value="Manrope">Manrope (Moderno/Limpio)</option>
-                  <option value="Lora">Lora (Elegante Serif)</option>
-                  <option value="Outfit">Outfit (Tecnológico/Llamativo)</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Tamaño Texto PC (px)</label>
-                <input id="edit-slide-size-pc" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="10" max="150" oninput="updateLivePreview()" />
-              </div>
-              <div>
-                <label class="block font-label-sm text-xs uppercase tracking-widest text-secondary mb-2">Tamaño Celular (px)</label>
-                <input id="edit-slide-size-mobile" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-3 text-primary" type="number" min="8" max="100" oninput="updateLivePreview()" />
+            <!-- Image position -->
+            <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-2">Encuadre Foto</h4>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="block text-[10px] uppercase text-secondary mb-1">X: <span id="val-img-x">50</span>%</label><input id="edit-slide-img-x" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-x').innerText=this.value; updateLivePreview();" /></div>
+                <div><label class="block text-[10px] uppercase text-secondary mb-1">Y: <span id="val-img-y">50</span>%</label><input id="edit-slide-img-y" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-y').innerText=this.value; updateLivePreview();" /></div>
               </div>
             </div>
-
-            <!-- Hidden Inputs backed by WYSIWYG Drag/Resize -->
-            <input type="hidden" id="edit-slide-text-left" value="50">
-            <input type="hidden" id="edit-slide-text-top" value="50">
-
-            <!-- Color and background styling -->
-            <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Estilos de Color y Fondo del Bloque de Texto</h4>
-              <div class="grid grid-cols-3 gap-4">
-                <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Texto</label>
-                  <input id="edit-slide-text-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" />
-                </div>
-                <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Color Fondo</label>
-                  <input id="edit-slide-bg-color" class="w-full h-10 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" />
-                </div>
-                <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Opacidad Fondo: <span id="val-bg-opacity">0</span></label>
-                  <input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" />
-                </div>
-              </div>
+            <!-- Buttons -->
+            <div class="flex gap-3 mt-2">
+              <button type="submit" class="flex-1 bg-primary text-on-primary py-3 rounded-lg font-bold text-xs uppercase tracking-widest hover:opacity-90 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Guardar</button>
+              <button type="button" onclick="deleteCurrentSlide()" class="bg-error/10 text-error px-4 rounded-lg font-bold text-xs uppercase hover:bg-error/25 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">delete</span></button>
             </div>
-
-            <!-- Image positioning adjustments -->
-            <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-              <h4 class="font-bold text-primary text-xs uppercase tracking-wider mb-3">Ajuste de Encuadre de la Foto de Fondo (%)</h4>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Desplazamiento X (Izq/Der): <span id="val-img-x">50</span>%</label>
-                  <input id="edit-slide-img-x" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-x').innerText=this.value; updateLivePreview();" />
-                </div>
-                <div>
-                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Desplazamiento Y (Arr/Aba): <span id="val-img-y">50</span>%</label>
-                  <input id="edit-slide-img-y" class="w-full accent-primary" type="range" min="0" max="100" value="50" oninput="document.getElementById('val-img-y').innerText=this.value; updateLivePreview();" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Save & Delete Action Buttons -->
-            <div class="flex gap-4 mt-4">
-              <button type="submit" class="flex-1 bg-primary text-on-primary py-4 rounded-lg font-bold text-sm uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">save</span> Guardar Diapositiva
-              </button>
-              <button type="button" onclick="deleteCurrentSlide()" class="bg-error/10 text-error px-6 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-error/25 transition-all flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">delete</span> Eliminar
-              </button>
-            </div>
-
           </form>
         </div>
-
       </section>
 
-      <!-- Right side: Realtime WYSIWYG Live Preview (PC / Mobile simulation switcher) -->
-      <section class="col-span-12 lg:col-span-6 flex flex-col gap-6">
-        <div class="bg-surface-bright p-8 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col items-center sticky top-28 select-none">
-          
-          <div class="w-full flex justify-between items-center mb-4 border-b border-outline-variant/20 pb-4">
+      <!-- Right: WYSIWYG Preview -->
+      <section class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+        <div class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col items-center sticky top-28 select-none">
+          <div class="w-full flex justify-between items-center mb-3 border-b border-outline-variant/20 pb-3">
             <div>
-              <h4 class="font-bold text-primary text-sm uppercase tracking-wider">Previsualización Interactiva</h4>
-              <p class="text-[10px] text-secondary mt-1">¡Arrastrá el texto para moverlo! Arrastrá la esquina ↘ para cambiar el tamaño.</p>
+              <h4 class="font-bold text-primary text-sm uppercase tracking-wider">Previsualización</h4>
+              <p class="text-[10px] text-secondary mt-0.5"><strong>Clic derecho</strong> + arrastrar para mover. <strong>Handles</strong> para escalar tamaño. Clic en título o subtítulo para seleccionar.</p>
             </div>
             <div class="bg-surface-container-low p-1 rounded-lg flex gap-1">
-              <button id="btn-view-pc" onclick="switchPreviewMode('pc')" class="px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold transition-all">
-                <span class="material-symbols-outlined text-sm">desktop_windows</span> PC
-              </button>
-              <button id="btn-view-mobile" onclick="switchPreviewMode('mobile')" class="px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs transition-all">
-                <span class="material-symbols-outlined text-sm">phone_iphone</span> Celular
-              </button>
+              <button id="btn-view-pc" onclick="switchPreviewMode('pc')" class="px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold"><span class="material-symbols-outlined text-sm">desktop_windows</span> PC</button>
+              <button id="btn-view-mobile" onclick="switchPreviewMode('mobile')" class="px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs"><span class="material-symbols-outlined text-sm">phone_iphone</span> Celular</button>
             </div>
           </div>
 
-          <!-- PC Preview Screen Frame -->
+          <!-- PC Preview -->
           <div id="frame-pc" class="w-full preview-desktop relative overflow-hidden bg-black rounded-lg shadow-inner border border-outline-variant/30 select-none">
-            <div id="pc-bg" class="absolute inset-0 bg-cover bg-center transition-all"></div>
+            <div id="pc-bg" class="absolute inset-0 bg-cover bg-center"></div>
             <div class="absolute inset-0 bg-black/10"></div>
-            
-            <!-- Draggable text block -->
-            <div id="pc-draggable-text" class="absolute cursor-move select-none p-4 text-center text-white border border-dashed border-white/20 hover:border-white/80 transition-colors flex flex-col items-center justify-center" style="min-width: 120px;">
-              <span id="pc-sub-preview" class="uppercase tracking-[0.2em] mb-2 text-xs opacity-90 select-none pointer-events-none">Subtítulo</span>
-              <h1 id="pc-title-preview" class="font-bold leading-tight select-none pointer-events-none">Título del Hero</h1>
-              
-              <!-- Scale Font Handle -->
-              <div class="resize-handle-br absolute bottom-0 right-0 w-5 h-5 bg-white/40 hover:bg-white text-black text-[9px] font-bold flex items-center justify-center cursor-se-resize rounded-tl shadow z-30">↘</div>
+            <!-- Title box -->
+            <div id="pc-title-box" class="text-box select-none z-20" onclick="selectBox('title')">
+              <h1 id="pc-title-preview" class="font-bold leading-tight text-white pointer-events-none whitespace-nowrap">Título</h1>
+              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
+              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
+              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
+            </div>
+            <!-- Subtitle box -->
+            <div id="pc-sub-box" class="text-box select-none z-20" onclick="selectBox('sub')">
+              <span id="pc-sub-preview" class="uppercase tracking-[0.2em] text-xs text-white opacity-90 pointer-events-none whitespace-nowrap">Subtítulo</span>
+              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
+              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
+              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
             </div>
           </div>
 
-          <!-- Mobile Preview Screen Frame -->
-          <div id="frame-mobile" class="preview-mobile relative overflow-hidden bg-black rounded-[2rem] border-[6px] border-tertiary shadow-2xl flex items-center justify-center hidden select-none">
-            <div id="mobile-bg" class="absolute inset-0 bg-cover bg-center transition-all"></div>
+          <!-- Mobile Preview -->
+          <div id="frame-mobile" class="preview-mobile relative overflow-hidden bg-black rounded-[2rem] border-[6px] border-tertiary shadow-2xl hidden select-none">
+            <div id="mobile-bg" class="absolute inset-0 bg-cover bg-center"></div>
             <div class="absolute inset-0 bg-black/10"></div>
-            
-            <!-- Draggable text block -->
-            <div id="mobile-draggable-text" class="absolute cursor-move select-none p-2 text-center text-white border border-dashed border-white/20 hover:border-white/80 transition-colors flex flex-col items-center justify-center" style="min-width: 80px;">
-              <span id="mobile-sub-preview" class="uppercase tracking-[0.2em] mb-1 text-[8px] opacity-90 select-none pointer-events-none">Subtítulo</span>
-              <h1 id="mobile-title-preview" class="font-bold leading-tight select-none pointer-events-none">Título</h1>
-              
-              <!-- Scale Font Handle -->
-              <div class="resize-handle-br absolute bottom-0 right-0 w-4 h-4 bg-white/40 hover:bg-white text-black text-[8px] font-bold flex items-center justify-center cursor-se-resize rounded-tl shadow z-30">↘</div>
+            <div id="mob-title-box" class="text-box select-none z-20" onclick="selectBox('title')">
+              <h1 id="mobile-title-preview" class="font-bold leading-tight text-white pointer-events-none whitespace-nowrap">Título</h1>
+              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
+              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
+              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
+            </div>
+            <div id="mob-sub-box" class="text-box select-none z-20" onclick="selectBox('sub')">
+              <span id="mobile-sub-preview" class="uppercase tracking-[0.2em] text-[8px] text-white opacity-90 pointer-events-none whitespace-nowrap">Subtítulo</span>
+              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
+              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
+              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
             </div>
           </div>
-
         </div>
       </section>
-
     </div>
   </main>
 
   <script type="module">
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(initHeroDashboard, 150);
-    });
+    document.addEventListener('DOMContentLoaded', () => setTimeout(initHeroDashboard, 150));
 
-    let slidesData = [];
-    let activePreviewMode = 'pc';
+    let slidesData = [], activePreviewMode = 'pc', selectedBoxType = 'title';
 
     function initHeroDashboard() {
       if (!window.db) return;
-      const data = window.db.getData();
-      slidesData = data.hero || [];
+      slidesData = window.db.getData().hero || [];
       renderSlidesList();
-      
-      // Bind drag and resize handles
-      makeDraggableAndResizable(document.getElementById('pc-draggable-text'), false);
-      makeDraggableAndResizable(document.getElementById('mobile-draggable-text'), true);
-
-      if (slidesData.length > 0) {
-        editSlide(slidesData[0].id);
-      }
+      // Bind drag (right-click) and resize (handles) for PC and Mobile boxes
+      ['pc-title-box','pc-sub-box','mob-title-box','mob-sub-box'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) initWYSIWYG(el, id.includes('mob'), id.includes('title') ? 'title' : 'sub');
+      });
+      if (slidesData.length > 0) editSlide(slidesData[0].id);
     }
 
     function renderSlidesList() {
-      const listContainer = document.getElementById('slides-list');
-      listContainer.innerHTML = slidesData.map((slide, index) => {
-        return `
-          <div onclick="editSlide(${slide.id})" class="group cursor-pointer bg-surface-container-low hover:bg-surface-container-high rounded-xl p-4 border border-outline-variant/20 transition-all text-center flex flex-col items-center gap-2 relative overflow-hidden">
-            <div class="w-full h-20 bg-cover bg-center rounded-lg border border-outline-variant/30" style="background-image: url('${slide.src}')"></div>
-            <span class="text-xs font-bold text-primary truncate w-full">${slide.title || 'Diapositiva ' + (index + 1)}</span>
-            <span class="text-[9px] uppercase tracking-wider bg-primary/10 text-primary px-2 py-0.5 rounded-full">Slide ${index + 1}</span>
-          </div>
-        `;
-      }).join('');
-
-      const btnAdd = document.getElementById('btn-add-slide');
-      if (slidesData.length >= 6) {
-        btnAdd.classList.add('opacity-50', 'pointer-events-none');
-      } else {
-        btnAdd.classList.remove('opacity-50', 'pointer-events-none');
-      }
+      document.getElementById('slides-list').innerHTML = slidesData.map((s, i) => `
+        <div onclick="editSlide(${s.id})" class="cursor-pointer bg-surface-container-low hover:bg-surface-container-high rounded-xl p-3 border border-outline-variant/20 transition-all text-center flex flex-col items-center gap-1.5">
+          <div class="w-full h-16 bg-cover bg-center rounded-lg border border-outline-variant/30" style="background-image: url('${s.src}')"></div>
+          <span class="text-[10px] font-bold text-primary truncate w-full">${s.title || 'Slide ' + (i+1)}</span>
+        </div>
+      `).join('');
+      const btn = document.getElementById('btn-add-slide');
+      btn.classList.toggle('opacity-50', slidesData.length >= 6);
+      btn.classList.toggle('pointer-events-none', slidesData.length >= 6);
     }
 
     window.addHeroSlide = function() {
-      if (slidesData.length >= 6) {
-        alert('Límite máximo alcanzado (6 diapositivas).');
-        return;
-      }
-
+      if (slidesData.length >= 6) return alert('Máximo 6 diapositivas.');
       const nextId = slidesData.length > 0 ? Math.max(...slidesData.map(s => s.id)) + 1 : 1;
-      const newSlide = {
-        id: nextId,
-        src: "/hero01.webp",
-        template: 0,
-        title: "Nueva Diapositiva",
-        subtitle: "Villa Pehuenia, Patagonia",
-        fontSizePc: 72,
-        fontSizeMobile: 36,
-        fontStyle: "Playfair Display",
-        textLeft: 50,
-        textTop: 50,
-        textColor: "#ffffff",
-        textBgColor: "#000000",
-        textBgOpacity: 0,
-        imgPosX: 50,
-        imgPosY: 50
-      };
-
-      slidesData.push(newSlide);
-      saveToDatabase();
-      renderSlidesList();
-      editSlide(nextId);
+      slidesData.push({ id: nextId, src: "/hero01.webp", template: 0, title: "Nueva Diapositiva", subtitle: "Villa Pehuenia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, subLeft: 50, subTop: 35, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 });
+      saveToDatabase(); renderSlidesList(); editSlide(nextId);
     };
 
     window.editSlide = function(id) {
-      const slide = slidesData.find(s => s.id === id);
-      if (!slide) return;
-
+      const s = slidesData.find(x => x.id === id);
+      if (!s) return;
       document.getElementById('slide-editor-card').classList.remove('hidden');
-      document.getElementById('edit-slide-id').value = slide.id;
-      
-      const img = document.getElementById('edit-slide-preview');
-      const noImg = document.getElementById('edit-slide-no-img');
-      if (slide.src) {
-        img.src = slide.src;
-        img.classList.remove('hidden');
-        noImg.classList.add('hidden');
-      } else {
-        img.classList.add('hidden');
-        noImg.classList.remove('hidden');
-      }
-
-      document.getElementById('edit-slide-title').value = slide.title || '';
-      document.getElementById('edit-slide-subtitle').value = slide.subtitle || '';
-      document.getElementById('edit-slide-font').value = slide.fontStyle || 'Playfair Display';
-      document.getElementById('edit-slide-size-pc').value = slide.fontSizePc || 72;
-      document.getElementById('edit-slide-size-mobile').value = slide.fontSizeMobile || 36;
-
-      document.getElementById('edit-slide-text-left').value = slide.textLeft !== undefined ? slide.textLeft : 50;
-      document.getElementById('edit-slide-text-top').value = slide.textTop !== undefined ? slide.textTop : 50;
-
-      document.getElementById('edit-slide-text-color').value = slide.textColor || '#ffffff';
-      document.getElementById('edit-slide-bg-color').value = slide.textBgColor || '#000000';
-      document.getElementById('edit-slide-bg-opacity').value = slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0;
-      document.getElementById('val-bg-opacity').innerText = ((slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100).toFixed(2);
-
-      document.getElementById('edit-slide-img-x').value = slide.imgPosX !== undefined ? slide.imgPosX : 50;
-      document.getElementById('val-img-x').innerText = slide.imgPosX !== undefined ? slide.imgPosX : 50;
-      document.getElementById('edit-slide-img-y').value = slide.imgPosY !== undefined ? slide.imgPosY : 50;
-      document.getElementById('val-img-y').innerText = slide.imgPosY !== undefined ? slide.imgPosY : 50;
-
+      document.getElementById('edit-slide-id').value = s.id;
+      const img = document.getElementById('edit-slide-preview'), noImg = document.getElementById('edit-slide-no-img');
+      if (s.src) { img.src = s.src; img.classList.remove('hidden'); noImg.classList.add('hidden'); }
+      else { img.classList.add('hidden'); noImg.classList.remove('hidden'); }
+      document.getElementById('edit-slide-title').value = s.title || '';
+      document.getElementById('edit-slide-subtitle').value = s.subtitle || '';
+      document.getElementById('edit-slide-font').value = s.fontStyle || 'Playfair Display';
+      document.getElementById('edit-slide-size-pc').value = s.fontSizePc || 72;
+      document.getElementById('edit-slide-size-mobile').value = s.fontSizeMobile || 36;
+      document.getElementById('edit-title-left').value = s.titleLeft ?? 50;
+      document.getElementById('edit-title-top').value = s.titleTop ?? 45;
+      document.getElementById('edit-sub-left').value = s.subLeft ?? 50;
+      document.getElementById('edit-sub-top').value = s.subTop ?? 35;
+      document.getElementById('edit-slide-text-color').value = s.textColor || '#ffffff';
+      document.getElementById('edit-slide-bg-color').value = s.textBgColor || '#000000';
+      document.getElementById('edit-slide-bg-opacity').value = s.textBgOpacity ?? 0;
+      document.getElementById('val-bg-opacity').innerText = ((s.textBgOpacity ?? 0) / 100).toFixed(2);
+      document.getElementById('edit-slide-img-x').value = s.imgPosX ?? 50;
+      document.getElementById('val-img-x').innerText = s.imgPosX ?? 50;
+      document.getElementById('edit-slide-img-y').value = s.imgPosY ?? 50;
+      document.getElementById('val-img-y').innerText = s.imgPosY ?? 50;
       updateLivePreview();
     };
 
-    window.handleSlideImageUpload = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
+    window.handleSlideImageUpload = function(e) {
+      const file = e.target.files[0]; if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = ev => {
         const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          
-          const maxDim = 1440;
-          if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-          
-          document.getElementById('edit-slide-preview').src = compressedBase64;
+        img.onload = () => {
+          const c = document.createElement('canvas'); let w = img.width, h = img.height;
+          if (w > 1440 || h > 1440) { if (w > h) { h = Math.round(h * 1440 / w); w = 1440; } else { w = Math.round(w * 1440 / h); h = 1440; } }
+          c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
+          document.getElementById('edit-slide-preview').src = c.toDataURL('image/jpeg', 0.75);
           document.getElementById('edit-slide-preview').classList.remove('hidden');
           document.getElementById('edit-slide-no-img').classList.add('hidden');
-          
           updateLivePreview();
         };
-        img.src = e.target.result;
+        img.src = ev.target.result;
       };
       reader.readAsDataURL(file);
     };
 
-    function hexToRgba(hex, alpha) {
-      hex = (hex || '#000000').replace('#', '');
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
+    function hexToRgba(hex, a) { hex = (hex||'#000').replace('#',''); return `rgba(${parseInt(hex.substring(0,2),16)},${parseInt(hex.substring(2,4),16)},${parseInt(hex.substring(4,6),16)},${a})`; }
 
-    window.updateLivePreview = function() {
-      const imgPreview = document.getElementById('edit-slide-preview');
-      const title = document.getElementById('edit-slide-title').value || '';
-      const subtitle = document.getElementById('edit-slide-subtitle').value || '';
-      const font = document.getElementById('edit-slide-font').value;
-      const sizePc = document.getElementById('edit-slide-size-pc').value || 72;
-      const sizeMobile = document.getElementById('edit-slide-size-mobile').value || 36;
-
-      const textLeft = document.getElementById('edit-slide-text-left').value;
-      const textTop = document.getElementById('edit-slide-text-top').value;
-      const textColor = document.getElementById('edit-slide-text-color').value;
-      const textBgColor = document.getElementById('edit-slide-bg-color').value;
-      const textBgOpacity = parseFloat(document.getElementById('edit-slide-bg-opacity').value) / 100;
-      
-      const imgPosX = document.getElementById('edit-slide-img-x').value;
-      const imgPosY = document.getElementById('edit-slide-img-y').value;
-
-      // Update background positions
-      const bgSrc = imgPreview.src || '';
-      const pcBg = document.getElementById('pc-bg');
-      const mobBg = document.getElementById('mobile-bg');
-      pcBg.style.backgroundImage = `url('${bgSrc}')`;
-      pcBg.style.backgroundPosition = `${imgPosX}% ${imgPosY}%`;
-      
-      mobBg.style.backgroundImage = `url('${bgSrc}')`;
-      mobBg.style.backgroundPosition = `${imgPosX}% ${imgPosY}%`;
-
-      // PC Draggable Text Update
-      const pcDrag = document.getElementById('pc-draggable-text');
-      const pcTitle = document.getElementById('pc-title-preview');
-      const pcSub = document.getElementById('pc-sub-preview');
-
-      pcTitle.innerText = title;
-      pcSub.innerText = subtitle;
-      pcTitle.style.fontFamily = `'${font}', serif`;
-      pcTitle.style.fontSize = `${sizePc}px`;
-      pcTitle.style.color = textColor;
-      pcSub.style.color = textColor;
-      
-      pcDrag.style.left = `${textLeft}%`;
-      pcDrag.style.top = `${textTop}%`;
-      pcDrag.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
-      pcDrag.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
-      if (textBgOpacity > 0) {
-        pcDrag.style.padding = '1rem 2rem';
-        pcDrag.style.borderRadius = '1rem';
-        pcDrag.style.backdropFilter = 'blur(4px)';
+    window.selectBox = function(type) {
+      selectedBoxType = type;
+      document.querySelectorAll('.text-box').forEach(b => b.classList.remove('selected'));
+      if (activePreviewMode === 'pc') {
+        document.getElementById(type === 'title' ? 'pc-title-box' : 'pc-sub-box').classList.add('selected');
       } else {
-        pcDrag.style.padding = '0';
-        pcDrag.style.borderRadius = '0';
-        pcDrag.style.backdropFilter = 'none';
-      }
-
-      // Mobile Draggable Text Update
-      const mobDrag = document.getElementById('mobile-draggable-text');
-      const mobTitle = document.getElementById('mobile-title-preview');
-      const mobSub = document.getElementById('mobile-sub-preview');
-
-      mobTitle.innerText = title;
-      mobSub.innerText = subtitle;
-      mobTitle.style.fontFamily = `'${font}', serif`;
-      mobTitle.style.fontSize = `${sizeMobile}px`;
-      mobTitle.style.color = textColor;
-      mobSub.style.color = textColor;
-
-      mobDrag.style.left = `${textLeft}%`;
-      mobDrag.style.top = `${textTop}%`;
-      mobDrag.style.transform = `translate(-${textLeft}%, -${textTop}%)`;
-      mobDrag.style.backgroundColor = hexToRgba(textBgColor, textBgOpacity);
-      if (textBgOpacity > 0) {
-        mobDrag.style.padding = '0.5rem 1rem';
-        mobDrag.style.borderRadius = '0.5rem';
-        mobDrag.style.backdropFilter = 'blur(4px)';
-      } else {
-        mobDrag.style.padding = '0';
-        mobDrag.style.borderRadius = '0';
-        mobDrag.style.backdropFilter = 'none';
+        document.getElementById(type === 'title' ? 'mob-title-box' : 'mob-sub-box').classList.add('selected');
       }
     };
 
-    // WYSIWYG Drag-and-Resize engine
-    function makeDraggableAndResizable(el, isMobileView) {
-      let isDragging = false;
-      let isResizingFont = false;
+    window.updateLivePreview = function() {
+      const bgSrc = document.getElementById('edit-slide-preview').src || '';
+      const title = document.getElementById('edit-slide-title').value || '';
+      const subtitle = document.getElementById('edit-slide-subtitle').value || '';
+      const font = document.getElementById('edit-slide-font').value;
+      const szPc = document.getElementById('edit-slide-size-pc').value || 72;
+      const szMob = document.getElementById('edit-slide-size-mobile').value || 36;
+      const tL = document.getElementById('edit-title-left').value, tT = document.getElementById('edit-title-top').value;
+      const sL = document.getElementById('edit-sub-left').value, sT = document.getElementById('edit-sub-top').value;
+      const tColor = document.getElementById('edit-slide-text-color').value;
+      const bgColor = document.getElementById('edit-slide-bg-color').value;
+      const bgOp = parseFloat(document.getElementById('edit-slide-bg-opacity').value) / 100;
+      const imgX = document.getElementById('edit-slide-img-x').value, imgY = document.getElementById('edit-slide-img-y').value;
+
+      // Backgrounds
+      ['pc-bg','mobile-bg'].forEach(id => { const el = document.getElementById(id); el.style.backgroundImage = `url('${bgSrc}')`; el.style.backgroundPosition = `${imgX}% ${imgY}%`; });
+
+      // PC Title
+      const pcT = document.getElementById('pc-title-box'), pcTp = document.getElementById('pc-title-preview');
+      pcTp.innerText = title; pcTp.style.fontFamily = `'${font}',serif`; pcTp.style.fontSize = `${szPc}px`; pcTp.style.color = tColor;
+      pcT.style.left = `${tL}%`; pcT.style.top = `${tT}%`; pcT.style.transform = `translate(-${tL}%,-${tT}%)`;
+      pcT.style.backgroundColor = hexToRgba(bgColor, bgOp); pcT.style.padding = bgOp > 0 ? '0.5rem 1.5rem' : '4px 8px'; pcT.style.borderRadius = bgOp > 0 ? '0.75rem' : '0';
+
+      // PC Sub
+      const pcS = document.getElementById('pc-sub-box'), pcSp = document.getElementById('pc-sub-preview');
+      pcSp.innerText = subtitle; pcSp.style.color = tColor;
+      pcS.style.left = `${sL}%`; pcS.style.top = `${sT}%`; pcS.style.transform = `translate(-${sL}%,-${sT}%)`;
+
+      // Mobile Title
+      const mT = document.getElementById('mob-title-box'), mTp = document.getElementById('mobile-title-preview');
+      mTp.innerText = title; mTp.style.fontFamily = `'${font}',serif`; mTp.style.fontSize = `${szMob}px`; mTp.style.color = tColor;
+      mT.style.left = `${tL}%`; mT.style.top = `${tT}%`; mT.style.transform = `translate(-${tL}%,-${tT}%)`;
+      mT.style.backgroundColor = hexToRgba(bgColor, bgOp); mT.style.padding = bgOp > 0 ? '0.3rem 0.8rem' : '2px 4px'; mT.style.borderRadius = bgOp > 0 ? '0.5rem' : '0';
+
+      // Mobile Sub
+      const mS = document.getElementById('mob-sub-box'), mSp = document.getElementById('mobile-sub-preview');
+      mSp.innerText = subtitle; mSp.style.color = tColor;
+      mS.style.left = `${sL}%`; mS.style.top = `${sT}%`; mS.style.transform = `translate(-${sL}%,-${sT}%)`;
+    };
+
+    // WYSIWYG: Right-click drag + 8-handle resize
+    function initWYSIWYG(el, isMob, boxType) {
+      let isDragging = false, isResizing = false, resizeDir = '';
       let startX, startY, startLeft, startTop, startFontSize;
 
-      el.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('resize-handle-br')) {
-          isResizingFont = true;
-          startX = e.clientX;
-          startY = e.clientY;
-          startFontSize = isMobileView 
-            ? parseInt(document.getElementById('edit-slide-size-mobile').value) || 36
-            : parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
+      // Prevent context menu on the preview
+      el.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); });
+
+      // RIGHT-CLICK drag to move
+      el.addEventListener('mousedown', e => {
+        if (e.button === 2) { // right click
+          selectBox(boxType);
+          if (e.target.classList.contains('handle')) return;
+          isDragging = true;
+          startX = e.clientX; startY = e.clientY;
+          const parent = el.parentElement, pr = parent.getBoundingClientRect();
+          const elRect = el.getBoundingClientRect();
+          startLeft = ((elRect.left - pr.left + elRect.width / 2) / pr.width) * 100;
+          startTop = ((elRect.top - pr.top + elRect.height / 2) / pr.height) * 100;
           e.preventDefault();
-          e.stopPropagation();
-          return;
         }
-
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        
-        const parent = el.parentElement;
-        const parentRect = parent.getBoundingClientRect();
-        
-        startLeft = ((el.offsetLeft + el.offsetWidth / 2) / parentRect.width) * 100;
-        startTop = ((el.offsetTop + el.offsetHeight / 2) / parentRect.height) * 100;
-        
-        e.preventDefault();
       });
 
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging && !isResizingFont) return;
-        
+      // LEFT-CLICK on handles to resize
+      el.addEventListener('mousedown', e => {
+        if (e.button === 0 && e.target.classList.contains('handle')) {
+          selectBox(boxType);
+          isResizing = true;
+          resizeDir = e.target.dataset.dir;
+          startX = e.clientX; startY = e.clientY;
+          startFontSize = isMob ? parseInt(document.getElementById('edit-slide-size-mobile').value) || 36 : parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
+          e.preventDefault(); e.stopPropagation();
+        } else if (e.button === 0) {
+          selectBox(boxType);
+        }
+      });
+
+      document.addEventListener('mousemove', e => {
         const parent = el.parentElement;
-        const parentRect = parent.getBoundingClientRect();
+        if (!parent) return;
+        const pr = parent.getBoundingClientRect();
 
         if (isDragging) {
-          const deltaX = e.clientX - startX;
-          const deltaY = e.clientY - startY;
-
-          const percentX = (deltaX / parentRect.width) * 100;
-          const percentY = (deltaY / parentRect.height) * 100;
-
-          let newLeft = Math.max(0, Math.min(100, Math.round(startLeft + percentX)));
-          let newTop = Math.max(0, Math.min(100, Math.round(startTop + percentY)));
-
-          document.getElementById('edit-slide-text-left').value = newLeft;
-          document.getElementById('edit-slide-text-top').value = newTop;
-
+          const dx = e.clientX - startX, dy = e.clientY - startY;
+          let newL = Math.max(5, Math.min(95, Math.round(startLeft + (dx / pr.width) * 100)));
+          let newT = Math.max(5, Math.min(95, Math.round(startTop + (dy / pr.height) * 100)));
+          const leftId = boxType === 'title' ? 'edit-title-left' : 'edit-sub-left';
+          const topId = boxType === 'title' ? 'edit-title-top' : 'edit-sub-top';
+          document.getElementById(leftId).value = newL;
+          document.getElementById(topId).value = newT;
           updateLivePreview();
         }
 
-        if (isResizingFont) {
-          const deltaX = e.clientX - startX;
-          const scaleFactor = 0.35;
-          const newFontSize = Math.max(8, Math.round(startFontSize + deltaX * scaleFactor));
-
-          if (isMobileView) {
-            document.getElementById('edit-slide-size-mobile').value = newFontSize;
-          } else {
-            document.getElementById('edit-slide-size-pc').value = newFontSize;
-          }
+        if (isResizing) {
+          const dx = e.clientX - startX, dy = e.clientY - startY;
+          let delta = 0;
+          // Determine scale direction based on handle
+          if (resizeDir.includes('r')) delta += dx;
+          if (resizeDir.includes('l')) delta -= dx;
+          if (resizeDir.includes('b')) delta += dy;
+          if (resizeDir.includes('t')) delta -= dy;
+          // Average for corner handles, single axis for edge handles
+          if (resizeDir.length === 2) delta /= 2;
+          const factor = 0.3;
+          const newSize = Math.max(8, Math.min(200, Math.round(startFontSize + delta * factor)));
+          document.getElementById(isMob ? 'edit-slide-size-mobile' : 'edit-slide-size-pc').value = newSize;
           updateLivePreview();
         }
       });
 
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        isResizingFont = false;
-      });
-
-      // Touch handlers for mobile dashboard compatibility
-      el.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        if (e.target.classList.contains('resize-handle-br')) {
-          isResizingFont = true;
-          startX = touch.clientX;
-          startY = touch.clientY;
-          startFontSize = isMobileView 
-            ? parseInt(document.getElementById('edit-slide-size-mobile').value) || 36
-            : parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
-          return;
-        }
-
-        isDragging = true;
-        startX = touch.clientX;
-        startY = touch.clientY;
-        
-        const parent = el.parentElement;
-        const parentRect = parent.getBoundingClientRect();
-        
-        startLeft = ((el.offsetLeft + el.offsetWidth / 2) / parentRect.width) * 100;
-        startTop = ((el.offsetTop + el.offsetHeight / 2) / parentRect.height) * 100;
-      }, { passive: true });
-
-      el.addEventListener('touchmove', (e) => {
-        if (!isDragging && !isResizingFont) return;
-        const touch = e.touches[0];
-        const parent = el.parentElement;
-        const parentRect = parent.getBoundingClientRect();
-
-        if (isDragging) {
-          const deltaX = touch.clientX - startX;
-          const deltaY = touch.clientY - startY;
-          const percentX = (deltaX / parentRect.width) * 100;
-          const percentY = (deltaY / parentRect.height) * 100;
-
-          let newLeft = Math.max(0, Math.min(100, Math.round(startLeft + percentX)));
-          let newTop = Math.max(0, Math.min(100, Math.round(startTop + percentY)));
-
-          document.getElementById('edit-slide-text-left').value = newLeft;
-          document.getElementById('edit-slide-text-top').value = newTop;
-
-          updateLivePreview();
-        }
-
-        if (isResizingFont) {
-          const deltaX = touch.clientX - startX;
-          const scaleFactor = 0.35;
-          const newFontSize = Math.max(8, Math.round(startFontSize + deltaX * scaleFactor));
-
-          if (isMobileView) {
-            document.getElementById('edit-slide-size-mobile').value = newFontSize;
-          } else {
-            document.getElementById('edit-slide-size-pc').value = newFontSize;
-          }
-          updateLivePreview();
-        }
-      }, { passive: true });
-
-      el.addEventListener('touchend', () => {
-        isDragging = false;
-        isResizingFont = false;
-      });
+      document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
     }
 
     window.saveSlide = function(e) {
       e.preventDefault();
       const id = parseInt(document.getElementById('edit-slide-id').value);
-      const slide = slidesData.find(s => s.id === id);
-      if (!slide) return;
-
-      slide.title = document.getElementById('edit-slide-title').value.trim();
-      slide.subtitle = document.getElementById('edit-slide-subtitle').value.trim();
-      slide.fontStyle = document.getElementById('edit-slide-font').value;
-      slide.fontSizePc = parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
-      slide.fontSizeMobile = parseInt(document.getElementById('edit-slide-size-mobile').value) || 36;
-      
-      slide.textLeft = parseInt(document.getElementById('edit-slide-text-left').value);
-      slide.textTop = parseInt(document.getElementById('edit-slide-text-top').value);
-      slide.textColor = document.getElementById('edit-slide-text-color').value;
-      slide.textBgColor = document.getElementById('edit-slide-bg-color').value;
-      slide.textBgOpacity = parseInt(document.getElementById('edit-slide-bg-opacity').value);
-      
-      slide.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
-      slide.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
-      slide.src = document.getElementById('edit-slide-preview').src;
-      slide.template = 0; // templates are completely removed
-
-      saveToDatabase();
-      renderSlidesList();
-      alert('Diapositiva guardada con éxito.');
+      const s = slidesData.find(x => x.id === id); if (!s) return;
+      s.title = document.getElementById('edit-slide-title').value.trim();
+      s.subtitle = document.getElementById('edit-slide-subtitle').value.trim();
+      s.fontStyle = document.getElementById('edit-slide-font').value;
+      s.fontSizePc = parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
+      s.fontSizeMobile = parseInt(document.getElementById('edit-slide-size-mobile').value) || 36;
+      s.titleLeft = parseInt(document.getElementById('edit-title-left').value);
+      s.titleTop = parseInt(document.getElementById('edit-title-top').value);
+      s.subLeft = parseInt(document.getElementById('edit-sub-left').value);
+      s.subTop = parseInt(document.getElementById('edit-sub-top').value);
+      s.textColor = document.getElementById('edit-slide-text-color').value;
+      s.textBgColor = document.getElementById('edit-slide-bg-color').value;
+      s.textBgOpacity = parseInt(document.getElementById('edit-slide-bg-opacity').value);
+      s.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
+      s.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
+      s.src = document.getElementById('edit-slide-preview').src;
+      s.template = 0;
+      saveToDatabase(); renderSlidesList();
+      alert('✅ Diapositiva guardada con éxito.');
     };
 
     window.deleteCurrentSlide = function() {
       const id = parseInt(document.getElementById('edit-slide-id').value);
-      if (!confirm('¿Estás seguro de que deseas eliminar esta diapositiva del banner principal?')) return;
-
-      slidesData = slidesData.filter(s => s.id !== id);
-      saveToDatabase();
-      renderSlidesList();
-
-      if (slidesData.length > 0) {
-        editSlide(slidesData[0].id);
-      } else {
-        document.getElementById('slide-editor-card').classList.add('hidden');
-      }
-      alert('Diapositiva eliminada.');
+      if (!confirm('¿Eliminar esta diapositiva?')) return;
+      slidesData = slidesData.filter(x => x.id !== id);
+      saveToDatabase(); renderSlidesList();
+      if (slidesData.length > 0) editSlide(slidesData[0].id);
+      else document.getElementById('slide-editor-card').classList.add('hidden');
     };
 
-    function saveToDatabase() {
-      if (!window.db) return;
-      const data = window.db.getData();
-      data.hero = slidesData;
-      window.db.saveData(data);
-    }
+    function saveToDatabase() { if (!window.db) return; const d = window.db.getData(); d.hero = slidesData; window.db.saveData(d); }
 
     window.switchPreviewMode = function(mode) {
       activePreviewMode = mode;
-      const btnPc = document.getElementById('btn-view-pc');
-      const btnMob = document.getElementById('btn-view-mobile');
-      const framePc = document.getElementById('frame-pc');
-      const frameMob = document.getElementById('frame-mobile');
-
-      if (mode === 'pc') {
-        btnPc.className = "px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold transition-all";
-        btnMob.className = "px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs transition-all";
-        framePc.classList.remove('hidden');
-        frameMob.classList.add('hidden');
-      } else {
-        btnMob.className = "px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold transition-all";
-        btnPc.className = "px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs transition-all";
-        frameMob.classList.remove('hidden');
-        framePc.classList.add('hidden');
-      }
+      const btnPc = document.getElementById('btn-view-pc'), btnMob = document.getElementById('btn-view-mobile');
+      const fPc = document.getElementById('frame-pc'), fMob = document.getElementById('frame-mobile');
+      if (mode === 'pc') { btnPc.className = "px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold"; btnMob.className = "px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs"; fPc.classList.remove('hidden'); fMob.classList.add('hidden'); }
+      else { btnMob.className = "px-3 py-1.5 rounded bg-surface-bright shadow-sm text-primary flex items-center gap-1.5 text-xs font-bold"; btnPc.className = "px-3 py-1.5 rounded text-secondary flex items-center gap-1.5 text-xs"; fMob.classList.remove('hidden'); fPc.classList.add('hidden'); }
       updateLivePreview();
     };
 
-    window.logout = function() {
-      sessionStorage.removeItem('is_admin_logged_in');
-      window.location.href = '/admin/login.html';
-    };
-
-    if (sessionStorage.getItem('is_admin_logged_in') !== 'true') {
-      window.location.href = '/admin/login.html';
-    }
+    window.logout = function() { sessionStorage.removeItem('is_admin_logged_in'); window.location.href = '/admin/login.html'; };
+    if (sessionStorage.getItem('is_admin_logged_in') !== 'true') window.location.href = '/admin/login.html';
   </script>
 </body>
 </html>
