@@ -40,6 +40,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         timestamp,
         signature,
+        folder: 'hostelandino',
         cloudname: process.env.CLOUDINARY_CLOUD_NAME,
         apikey: process.env.CLOUDINARY_API_KEY
       });
