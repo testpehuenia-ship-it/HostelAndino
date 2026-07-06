@@ -430,10 +430,13 @@
     const defaultTitle = file.name.substring(0, file.name.lastIndexOf('.')) || 'Imagen de Galería';
     
     // Cambiar texto del botón para dar feedback
-    const uploadBtn = document.querySelector('.bg-primary-container');
-    const originalUploadBtnHtml = uploadBtn.innerHTML;
-    uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Subiendo...';
-    uploadBtn.style.pointerEvents = 'none';
+    const uploadBtn = document.getElementById('btn-upload-photo');
+    let originalUploadBtnHtml = '';
+    if (uploadBtn) {
+      originalUploadBtnHtml = uploadBtn.innerHTML;
+      uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Subiendo...';
+      uploadBtn.style.pointerEvents = 'none';
+    }
 
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -502,8 +505,10 @@
           console.error('Error al subir a Cloudinary:', error);
           alert('Hubo un error al subir la imagen. Revisá la conexión.');
         } finally {
-          uploadBtn.innerHTML = originalUploadBtnHtml;
-          uploadBtn.style.pointerEvents = 'auto';
+          if (uploadBtn) {
+            uploadBtn.innerHTML = originalUploadBtnHtml;
+            uploadBtn.style.pointerEvents = 'auto';
+          }
         }
         
         // Reset file input value so same file can be uploaded again
