@@ -189,7 +189,16 @@
   </main>
 
   <script type="module">
-    document.addEventListener('DOMContentLoaded', () => setTimeout(initHeroDashboard, 150));
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkDb = () => {
+        if (window.db && window.db._initialized) {
+          initHeroDashboard();
+        } else {
+          setTimeout(checkDb, 50);
+        }
+      };
+      checkDb();
+    });
 
     let slidesData = [], activePreviewMode = 'pc', selectedBoxType = 'title';
 
@@ -440,15 +449,24 @@
       document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
     }
 
-    window.saveSlide = function(e) {
-      e.preventDefault();
+    window.saveSlide = async function(e) {
+      if (e) e.preventDefault();
       const id = parseInt(document.getElementById('edit-slide-id').value);
-      const s = slidesData.find(x => x.id === id); if (!s) return;
-      s.title = document.getElementById('edit-slide-title').value.trim();
-      s.subtitle = document.getElementById('edit-slide-subtitle').value.trim();
+      let s = slidesData.find(x => x.id === id);
+      if (!s) { s = { id }; slidesData.push(s); }
+      
+      const saveBtn = document.querySelector('#slide-form button[type="submit"]');
+      const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
+      if (saveBtn) {
+        saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Guardando...';
+        saveBtn.disabled = true;
+      }
+
+      s.title = document.getElementById('edit-slide-title').value;
+      s.subtitle = document.getElementById('edit-slide-subtitle').value;
       s.fontStyle = document.getElementById('edit-slide-font').value;
-      s.fontSizePc = parseInt(document.getElementById('edit-slide-size-pc').value) || 72;
-      s.fontSizeMobile = parseInt(document.getElementById('edit-slide-size-mobile').value) || 36;
+      s.fontSizePc = parseInt(document.getElementById('edit-slide-size-pc').value);
+      s.fontSizeMobile = parseInt(document.getElementById('edit-slide-size-mobile').value);
       s.titleLeft = parseInt(document.getElementById('edit-title-left').value);
       s.titleTop = parseInt(document.getElementById('edit-title-top').value);
       s.titleW = parseInt(document.getElementById('edit-title-w').value) || 0;
@@ -462,10 +480,49 @@
       s.textBgOpacity = parseInt(document.getElementById('edit-slide-bg-opacity').value);
       s.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
       s.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
-      s.src = document.getElementById('edit-slide-preview').src;
+      
+      let imgSrc = document.getElementById('edit-slide-preview').src;
+      
+      if (imgSrc.startsWith('data:image')) {
+        try {
+          const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
+          const sigData = await sigRes.json();
+          if (sigData.error) throw new Error(sigData.error);
+          
+          const formData = new FormData();
+          formData.append('file', imgSrc);
+          formData.append('api_key', sigData.apikey);
+          formData.append('timestamp', sigData.timestamp);
+          formData.append('signature', sigData.signature);
+          if (sigData.folder) formData.append('folder', sigData.folder);
+
+          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          const cloudData = await cloudRes.json();
+          if (cloudData.error) throw new Error(cloudData.error.message);
+          
+          imgSrc = cloudData.secure_url;
+        } catch (error) {
+          console.error('Error uploading to Cloudinary:', error);
+          alert('Hubo un error subiendo la imagen a Cloudinary. Se guardará sin actualizar la foto.');
+        }
+      }
+      
+      s.src = imgSrc;
       s.template = 0;
-      saveToDatabase(); renderSlidesList();
-      alert('✅ Diapositiva guardada con éxito.');
+      
+      const d = window.db.getData(); 
+      d.hero = slidesData; 
+      await window.db.saveData(d);
+      
+      renderSlidesList();
+      if (saveBtn) {
+        saveBtn.innerHTML = originalBtnText;
+        saveBtn.disabled = false;
+      }
+      alert('✅ Diapositiva guardada con éxito en la nube.');
     };
 
     window.deleteCurrentSlide = function() {

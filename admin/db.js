@@ -99,16 +99,31 @@ const defaultHostelData = {
 
 // Database helper functions
 window.db = {
-  getData: () => {
-    let data = localStorage.getItem('hostel_data');
-    if (!data) {
-      data = JSON.stringify(defaultHostelData);
-      localStorage.setItem('hostel_data', data);
+  _initialized: false,
+  _data: null,
+  
+  init: async () => {
+    try {
+      const res = await fetch('/api/data');
+      if (res.ok) {
+        const data = await res.json();
+        if (Object.keys(data).length > 0) {
+          window.db._data = data;
+        } else {
+          window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
+        }
+      } else {
+        window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
+      }
+    } catch (err) {
+      console.error('Error loading db:', err);
+      window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
     }
-    const parsed = JSON.parse(data);
+    
+    let parsed = window.db._data;
+    let changed = false;
     
     // Auto-repair step: if any video is using the old static Google Photos URL, replace it with a demo YouTube video
-    let changed = false;
     if (parsed.videos) {
       parsed.videos.forEach(v => {
         if (v.src && v.src.includes('lh3.googleusercontent.com/aida-public')) {
@@ -130,7 +145,6 @@ window.db = {
       changed = true;
     } else {
       parsed.hero.forEach(h => {
-        // Migrate old textLeft/textTop to titleLeft/titleTop
         if (h.titleLeft === undefined) { h.titleLeft = h.textLeft !== undefined ? h.textLeft : 50; changed = true; }
         if (h.titleTop === undefined) { h.titleTop = h.textTop !== undefined ? h.textTop : 45; changed = true; }
         if (h.subLeft === undefined) { h.subLeft = h.textLeft !== undefined ? h.textLeft : 50; changed = true; }
@@ -148,12 +162,39 @@ window.db = {
     }
     
     if (changed) {
-      localStorage.setItem('hostel_data', JSON.stringify(parsed));
+      // Fire and forget save if we migrated
+      fetch('/api/data', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(parsed)
+      }).catch(err => console.error(err));
     }
     
-    return parsed;
+    window.db._initialized = true;
   },
-  saveData: (data) => {
-    localStorage.setItem('hostel_data', JSON.stringify(data));
+
+  getData: () => {
+    if (!window.db._initialized) {
+      console.warn('getData called before db is fully initialized. Returning defaults or stale data.');
+      return window.db._data || defaultHostelData;
+    }
+    return window.db._data;
+  },
+  
+  saveData: async (data) => {
+    window.db._data = data;
+    try {
+      await fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.error('Error saving data:', err);
+      // Optional: show a toast or alert that saving failed
+    }
   }
 };
+
+// Start initialization immediately
+window.db.init();

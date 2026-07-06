@@ -63,8 +63,14 @@
 
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      // Wait a tiny bit to make sure db.js initialized
-      setTimeout(initCircularGallery, 100);
+      const checkDb = () => {
+        if (window.db && window.db._initialized) {
+          initCircularGallery();
+        } else {
+          setTimeout(checkDb, 100);
+        }
+      };
+      checkDb();
     });
 
     function initCircularGallery() {

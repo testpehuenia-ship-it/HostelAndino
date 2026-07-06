@@ -1135,7 +1135,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const checkDbAndRender = () => {
-                if (window.db) {
+                if (window.db && window.db._initialized) {
                     renderHomeDynamicContent();
                 } else {
                     setTimeout(checkDbAndRender, 50);

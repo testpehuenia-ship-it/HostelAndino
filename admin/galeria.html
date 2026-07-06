@@ -429,15 +429,21 @@
     // Show a loading feedback or alert since processing canvas resize is fast but async
     const defaultTitle = file.name.substring(0, file.name.lastIndexOf('.')) || 'Imagen de Galería';
     
+    // Cambiar texto del botón para dar feedback
+    const uploadBtn = document.querySelector('.bg-primary-container');
+    const originalUploadBtnHtml = uploadBtn.innerHTML;
+    uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Subiendo...';
+    uploadBtn.style.pointerEvents = 'none';
+
     const reader = new FileReader();
     reader.onload = function(event) {
       const img = new Image();
-      img.onload = function() {
+      img.onload = async function() {
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
         
-        // Resize image to max 1000px width/height for localstorage quota efficiency
+        // Resize image to max 1000px width/height to save bandwidth
         const maxDimension = 1000;
         if (width > maxDimension || height > maxDimension) {
           if (width > height) {
@@ -454,23 +460,51 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         
-        // Compress image to JPEG at 70% quality (ideal size 40-70kb)
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        // Compress image to JPEG at 80% quality
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
         
-        const alt = prompt('Introduce el título/descripción de la imagen:', defaultTitle) || defaultTitle;
-        const data = window.db.getData();
-        const newId = data.galeria.length > 0 ? Math.max(...data.galeria.map(p => p.id)) + 1 : 1;
-        
-        data.galeria.push({
-          id: newId,
-          src: compressedBase64,
-          alt: alt,
-          visible: true,
-          size: 'small'
-        });
-        
-        window.db.saveData(data);
-        renderGallery();
+        try {
+          // 1. Obtener firma de Cloudinary
+          const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
+          const sigData = await sigRes.json();
+          if (sigData.error) throw new Error(sigData.error);
+          
+          // 2. Subir a Cloudinary
+          const formData = new FormData();
+          formData.append('file', compressedBase64);
+          formData.append('api_key', sigData.apikey);
+          formData.append('timestamp', sigData.timestamp);
+          formData.append('signature', sigData.signature);
+          if (sigData.folder) formData.append('folder', sigData.folder);
+
+          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          const cloudData = await cloudRes.json();
+          if (cloudData.error) throw new Error(cloudData.error.message);
+
+          const alt = prompt('Introduce el título/descripción de la imagen:', defaultTitle) || defaultTitle;
+          const data = window.db.getData();
+          const newId = data.galeria.length > 0 ? Math.max(...data.galeria.map(p => p.id)) + 1 : 1;
+          
+          data.galeria.push({
+            id: newId,
+            src: cloudData.secure_url,
+            alt: alt,
+            visible: true,
+            size: 'small'
+          });
+          
+          window.db.saveData(data);
+          renderGallery();
+        } catch (error) {
+          console.error('Error al subir a Cloudinary:', error);
+          alert('Hubo un error al subir la imagen. Revisá la conexión.');
+        } finally {
+          uploadBtn.innerHTML = originalUploadBtnHtml;
+          uploadBtn.style.pointerEvents = 'auto';
+        }
         
         // Reset file input value so same file can be uploaded again
         e.target.value = '';
@@ -540,7 +574,15 @@
   }
 
   // Initial load
-  document.addEventListener('DOMContentLoaded', renderGallery);
-  renderGallery();
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkDb = () => {
+      if (window.db && window.db._initialized) {
+        renderGallery();
+      } else {
+        setTimeout(checkDb, 50);
+      }
+    };
+    checkDb();
+  });
 </script>
 </body></html>

@@ -527,8 +527,16 @@
   });
 
   // Initial load
-  document.addEventListener('DOMContentLoaded', renderRates);
-  renderRates();
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkDb = () => {
+      if (window.db && window.db._initialized) {
+        renderRates();
+      } else {
+        setTimeout(checkDb, 50);
+      }
+    };
+    checkDb();
+  });
 </script>
 </body>
 </html>
