@@ -88,6 +88,12 @@ const defaultHostelData = {
   videos: [
     { id: 1, src: "https://www.youtube.com/watch?v=FqV18l8L2jY", title: "Moquehue Aéreo", visible: true },
     { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
+  ],
+  hero: [
+    { id: 1, src: "/hero01.webp", template: 1, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
+    { id: 2, src: "/hero02.webp", template: 1, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
+    { id: 3, src: "/hero03.webp", template: 1, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" },
+    { id: 4, src: "/hero04.webp", template: 1, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display" }
   ]
 };
 
@@ -111,12 +117,17 @@ window.db = {
           } else if (v.id === 2) {
             v.src = "https://www.youtube.com/watch?v=eE726q08jNs";
           } else {
-            // It's a new video the user added before our fix. Let's turn it into a working youtube link as a fallback
             v.src = "https://www.youtube.com/watch?v=FqV18l8L2jY";
           }
           changed = true;
         }
       });
+    }
+
+    // Auto-repair/Migration: Ensure hero exists in database
+    if (!parsed.hero) {
+      parsed.hero = JSON.parse(JSON.stringify(defaultHostelData.hero));
+      changed = true;
     }
     
     if (changed) {

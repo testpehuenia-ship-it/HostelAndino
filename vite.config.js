@@ -12,7 +12,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'admin/login.html'),
         galeria: resolve(__dirname, 'admin/galeria.html'),
-        servicios: resolve(__dirname, 'admin/servicios.html'),
+        hero: resolve(__dirname, 'admin/hero.html'),
         tarifas: resolve(__dirname, 'admin/tarifas.html'),
         circular_gallery_test: resolve(__dirname, 'circular_gallery_test.html')
       }
