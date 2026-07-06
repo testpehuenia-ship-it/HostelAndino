@@ -778,11 +778,23 @@
                     
                     const titleLeft = slide.titleLeft !== undefined ? slide.titleLeft : (slide.textLeft !== undefined ? slide.textLeft : 50);
                     const titleTop = slide.titleTop !== undefined ? slide.titleTop : (slide.textTop !== undefined ? slide.textTop : 45);
+                    const titleW = slide.titleW || 0;
+                    const titleH = slide.titleH || 0;
                     const subLeft = slide.subLeft !== undefined ? slide.subLeft : (slide.textLeft !== undefined ? slide.textLeft : 50);
                     const subTop = slide.subTop !== undefined ? slide.subTop : (slide.textTop !== undefined ? slide.textTop - 10 : 35);
+                    const subW = slide.subW || 0;
+                    const subH = slide.subH || 0;
                     const textBgColor = slide.textBgColor || '#000000';
                     const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
                     
+                    const getBoxSizing = (w, h) => {
+                        let style = '';
+                        if (w > 0) style += `width: ${w}%; white-space: normal; word-break: break-word;`;
+                        else style += `width: auto; white-space: nowrap;`;
+                        if (h > 0) style += `height: ${h}px;`;
+                        return style;
+                    };
+
                     // Title box styling
                     let titleBoxStyle = `
                         position: absolute; z-index: 10;
@@ -790,6 +802,8 @@
                         transform: translate(-${titleLeft}%, -${titleTop}%);
                         background-color: ${hexToRgba(textBgColor, textBgOpacity)};
                         text-align: center;
+                        display: flex; align-items: center; justify-content: center; overflow: hidden;
+                        ${getBoxSizing(titleW, titleH)}
                     `;
                     if (textBgOpacity > 0) {
                         titleBoxStyle += `
@@ -799,11 +813,20 @@
                         `;
                     }
                     
+                    const subBoxStyle = `
+                        position: absolute; z-index: 10;
+                        left: ${subLeft}%; top: ${subTop}%;
+                        transform: translate(-${subLeft}%, -${subTop}%);
+                        text-align: center;
+                        display: flex; align-items: center; justify-content: center; overflow: hidden;
+                        ${getBoxSizing(subW, subH)}
+                    `;
+                    
                     const centerTextHtml = `
                         <div class="pointer-events-none" style="${titleBoxStyle}">
                           <h1 class="font-display-lg leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
                         </div>
-                        <div class="absolute z-10 pointer-events-none" style="left: ${subLeft}%; top: ${subTop}%; transform: translate(-${subLeft}%, -${subTop}%); text-align: center;">
+                        <div class="pointer-events-none" style="${subBoxStyle}">
                           <span class="font-label-sm uppercase tracking-[0.2em] text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}">${slide.subtitle}</span>
                         </div>
                         <div class="absolute z-10 bottom-12 left-1/2 -translate-x-1/2 flex flex-col md:flex-row gap-4 pointer-events-auto">
@@ -1115,7 +1138,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderHomeDynamicContent();
+            const checkDbAndRender = () => {
+                if (window.db) {
+                    renderHomeDynamicContent();
+                } else {
+                    setTimeout(checkDbAndRender, 50);
+                }
+            };
+            checkDbAndRender();
         });
     </script>
 </body></html>

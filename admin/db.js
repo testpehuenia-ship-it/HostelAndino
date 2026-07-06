@@ -90,10 +90,10 @@ const defaultHostelData = {
     { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
   ],
   hero: [
-    { id: 1, src: "/hero01.webp", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, subLeft: 50, subTop: 35, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 2, src: "/hero02.webp", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, subLeft: 50, subTop: 35, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 3, src: "/hero03.webp", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, subLeft: 50, subTop: 35, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 4, src: "/hero04.webp", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, subLeft: 50, subTop: 35, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
+    { id: 1, src: "/hero01.webp", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 2, src: "/hero02.webp", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 3, src: "/hero03.webp", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 4, src: "/hero04.webp", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
   ]
 };
 
@@ -135,6 +135,10 @@ window.db = {
         if (h.titleTop === undefined) { h.titleTop = h.textTop !== undefined ? h.textTop : 45; changed = true; }
         if (h.subLeft === undefined) { h.subLeft = h.textLeft !== undefined ? h.textLeft : 50; changed = true; }
         if (h.subTop === undefined) { h.subTop = h.textTop !== undefined ? h.textTop - 10 : 35; changed = true; }
+        if (h.titleW === undefined) { h.titleW = 0; changed = true; }
+        if (h.titleH === undefined) { h.titleH = 0; changed = true; }
+        if (h.subW === undefined) { h.subW = 0; changed = true; }
+        if (h.subH === undefined) { h.subH = 0; changed = true; }
         if (h.textColor === undefined) { h.textColor = "#ffffff"; changed = true; }
         if (h.textBgColor === undefined) { h.textBgColor = "#000000"; changed = true; }
         if (h.textBgOpacity === undefined) { h.textBgOpacity = 0; changed = true; }
