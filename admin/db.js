@@ -160,6 +160,14 @@ window.db = {
         if (h.imgPosY === undefined) { h.imgPosY = 50; changed = true; }
       });
     }
+
+    if (!parsed.bannerOpcionales) {
+      parsed.bannerOpcionales = {
+        src: "/desayunoclasico.png",
+        visible: true
+      };
+      changed = true;
+    }
     
     if (changed) {
       // Fire and forget save if we migrated

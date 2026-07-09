@@ -1125,6 +1125,26 @@
                 }
             }
 
+            // 4.c Banner Opcionales
+            const opcionalesList = document.getElementById('servicios-opcionales-list');
+            if (opcionalesList && data.bannerOpcionales) {
+                const bannerDiv = document.getElementById('banner-opcionales-container');
+                if (data.bannerOpcionales.visible) {
+                    if (bannerDiv) {
+                        bannerDiv.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" />`;
+                        bannerDiv.style.display = 'block';
+                    } else {
+                        const newBanner = document.createElement('div');
+                        newBanner.id = 'banner-opcionales-container';
+                        newBanner.className = 'w-full mb-24 mt-8';
+                        newBanner.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" />`;
+                        opcionalesList.parentNode.insertBefore(newBanner, opcionalesList.nextSibling);
+                    }
+                } else if (bannerDiv) {
+                    bannerDiv.style.display = 'none';
+                }
+            }
+
             // 5. Rates and Promotion
             const ratesContainer = document.getElementById('rates-public-container');
             if (ratesContainer) {

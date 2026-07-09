@@ -203,6 +203,27 @@
 </section>
 <!-- Divider -->
 <hr class="border-outline-variant/30 mb-16"/>
+
+<!-- Banner Section -->
+<section class="mb-16">
+  <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-8">
+    <div>
+      <h3 class="font-headline-md text-headline-md text-primary mb-1">Banner Servicios Opcionales (Desayuno)</h3>
+      <p class="text-label-sm text-secondary tracking-wide uppercase">Tamaño recomendado: 1200x800px (Desktop) y 800x600px (Móvil).<br>Formatos: JPG, PNG, WEBP (Max 5MB)</p>
+    </div>
+    <input type="file" id="banner-file-input" accept="image/*" class="hidden" />
+    <button id="btn-upload-banner" class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 self-start md:self-auto">
+      <span class="material-symbols-outlined text-[18px]">upload</span>
+      Subir Banner
+    </button>
+  </div>
+  <div id="banner-preview-container" class="relative group overflow-hidden rounded-xl bg-surface-container custom-shadow w-full">
+    <!-- Se cargará dinámicamente -->
+  </div>
+</section>
+
+<!-- Divider -->
+<hr class="border-outline-variant/30 mb-16"/>
 <!-- YouTube Videos Section -->
 <section class="mb-16">
 <h3 class="font-headline-md text-headline-md text-primary mb-2">Videos de YouTube</h3>
@@ -380,7 +401,47 @@
       `;
       videosGrid.insertAdjacentHTML('beforeend', videoHtml);
     });
+    
+    renderBanner();
   }
+
+  function renderBanner() {
+    const data = window.db.getData();
+    const container = document.getElementById('banner-preview-container');
+    if (!container || !data.bannerOpcionales) return;
+    
+    const banner = data.bannerOpcionales;
+    const isChecked = banner.visible ? 'checked' : '';
+    const toggleText = banner.visible ? 'Visible' : 'Oculto';
+    const visibleClass = banner.visible ? '' : 'opacity-60 grayscale';
+    
+    container.innerHTML = `
+      <div class="relative w-full h-full min-h-[200px] ${visibleClass}">
+        <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="${banner.src}" alt="Banner Servicios Opcionales" />
+        <div class="absolute inset-0 bg-primary/20 flex flex-col justify-end p-4">
+          <div class="flex justify-end">
+            <div class="flex flex-col items-end bg-background/90 p-2 rounded shadow-md">
+              <label class="inline-flex items-center cursor-pointer">
+                <input ${isChecked} onchange="toggleBannerVisibility(this)" class="hidden" type="checkbox"/>
+                <div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
+                  <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
+                </div>
+              </label>
+              <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  window.toggleBannerVisibility = function(cb) {
+    const data = window.db.getData();
+    if (!data.bannerOpcionales) return;
+    data.bannerOpcionales.visible = cb.checked;
+    window.db.saveData(data);
+    renderBanner();
+  };
 
   // Preview Video Player Modal helper
   window.playVideoPreview = function(url) {
@@ -513,6 +574,93 @@
         }
         
         // Reset file input value so same file can be uploaded again
+        e.target.value = '';
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Banner Handlers
+  document.getElementById('btn-upload-banner').addEventListener('click', () => {
+    document.getElementById('banner-file-input').click();
+  });
+
+  document.getElementById('banner-file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const uploadBtn = document.getElementById('btn-upload-banner');
+    let originalUploadBtnHtml = '';
+    if (uploadBtn) {
+      originalUploadBtnHtml = uploadBtn.innerHTML;
+      uploadBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Subiendo...';
+      uploadBtn.style.pointerEvents = 'none';
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const img = new Image();
+      img.onload = async function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        
+        // Resize for banner max 1200x800
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 800;
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+        try {
+          const sigRes = await fetch('/api/upload');
+          const sigData = await sigRes.json();
+
+          const formData = new FormData();
+          formData.append('file', dataUrl);
+          formData.append('api_key', sigData.apikey);
+          formData.append('timestamp', sigData.timestamp);
+          formData.append('signature', sigData.signature);
+          if (sigData.folder) formData.append('folder', sigData.folder);
+
+          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          const cloudData = await cloudRes.json();
+          if (cloudData.error) throw new Error(cloudData.error.message);
+
+          const data = window.db.getData();
+          if (!data.bannerOpcionales) data.bannerOpcionales = { visible: true };
+          data.bannerOpcionales.src = cloudData.secure_url;
+          
+          window.db.saveData(data);
+          renderBanner();
+        } catch (error) {
+          console.error('Error al subir banner a Cloudinary:', error);
+          alert('Hubo un error al subir el banner. Revisá la conexión.');
+        } finally {
+          if (uploadBtn) {
+            uploadBtn.innerHTML = originalUploadBtnHtml;
+            uploadBtn.style.pointerEvents = 'auto';
+          }
+        }
+        
         e.target.value = '';
       };
       img.src = event.target.result;
