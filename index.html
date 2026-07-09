@@ -909,40 +909,6 @@
                 window.currentSlide = 0;
             }
 
-            // 1. Nuestros Servicios List
-            const nuestrosContainer = document.getElementById('nuestros-servicios-list');
-            if (nuestrosContainer) {
-                nuestrosContainer.innerHTML = data.servicios.nuestros.map((srv, idx) => `
-                    <span class="inline-flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0" style="font-variation-settings: 'wght' 700;">${srv.icon}</span>
-                        <span>${srv.text}</span>
-                    </span>
-                    ${idx < data.servicios.nuestros.length - 1 ? '<span class="text-outline-variant/40">|</span>' : ''}
-                `).join('');
-            }
-
-            // 2. Confort Categories
-            const categories = ['cocina', 'estar', 'habitaciones', 'sanitarios', 'blanqueria', 'estacionamiento'];
-            categories.forEach(cat => {
-                const listEl = document.getElementById(`confort-${cat}`);
-                if (listEl && data.servicios.confort[cat]) {
-                    listEl.innerHTML = data.servicios.confort[cat].map(item => `
-                        <li>${item}</li>
-                    `).join('');
-                }
-            });
-
-            // 3. Servicios Opcionales
-            const opcionalesContainer = document.getElementById('servicios-opcionales-list');
-            if (opcionalesContainer) {
-                opcionalesContainer.innerHTML = data.servicios.opcionales.map(opc => `
-                    <div class="bg-background p-5 rounded border-2 border-[#cfb290] flex items-center gap-3 shadow-sm hover:bg-[#cfb290]/5 transition-colors justify-center">
-                        <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0" style="font-variation-settings: 'wght' 700;">${opc.icon}</span>
-                        <span class="text-sm text-tertiary font-body-md">${opc.name}</span>
-                    </div>
-                `).join('');
-            }
-
             // 4. Galería de Fotos (Slider Infinito)
             const sliderTrack = document.getElementById('galeria-slider-track');
             if (sliderTrack) {

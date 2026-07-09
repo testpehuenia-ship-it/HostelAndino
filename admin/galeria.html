@@ -526,7 +526,7 @@
         ctx.drawImage(img, 0, 0, width, height);
         
         // Compress image to JPEG at 80% quality
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        const compressedBase64 = canvas.toDataURL('image/webp', 0.8);
         
         try {
           // 1. Obtener firma de Cloudinary
@@ -625,7 +625,7 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        const dataUrl = canvas.toDataURL('image/webp', 0.8);
 
         try {
           const sigRes = await fetch('/api/upload');
