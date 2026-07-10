@@ -701,22 +701,23 @@
 <!-- Contact Form -->
 <div>
 <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8">Estamos cerca.</h2>
-<form class="space-y-8">
+<form action="https://formsubmit.co/hostelandinovillapehuenia@gmail.com" method="POST" class="space-y-8">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 <div class="border-b border-outline focus-within:border-primary transition-colors">
 <label class="font-label-sm uppercase text-secondary block mb-2">Nombre</label>
-<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Tu nombre" type="text"/>
+<input name="nombre" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Tu nombre" type="text" required/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
 <label class="font-label-sm uppercase text-secondary block mb-2">Email</label>
-<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="email@ejemplo.com" type="email"/>
+<input name="email" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="email@ejemplo.com" type="email" required/>
 </div>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
 <label class="font-label-sm uppercase text-secondary block mb-2">Mensaje</label>
-<textarea class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="¿En qué podemos ayudarte?" rows="4"></textarea>
+<textarea name="mensaje" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="¿En qué podemos ayudarte?" rows="4" required></textarea>
 </div>
-<button class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest w-full md:w-auto">Enviar Mensaje</button>
+<input type="hidden" name="_subject" value="Nuevo mensaje web - Hostel Andino">
+<button type="submit" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest w-full md:w-auto hover:bg-tertiary transition-colors">Enviar Mensaje</button>
 </form>
 </div>
 <!-- Map & Info -->
