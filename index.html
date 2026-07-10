@@ -19,39 +19,58 @@
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://hostel-andino.vercel.app/"/>
   <meta property="og:title" content="Hostel Andino | Refugio Premium en Villa Pehuenia"/>
-  <meta property="og:description" content="Desconectate en la cima de la montaña. Vistas al lago, chimenea, wifi, pool y todo el confort rústico de la Patagonia."/>
+  <meta property="og:description" content="Desconectate en la cima de la montaña. Vistas al lago, wifi, cocina equipada, pool y todo el confort rústico de la Patagonia."/>
   <meta property="og:image" content="/portada.webp"/>
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image"/>
   <meta property="twitter:title" content="Hostel Andino | Refugio Premium en Villa Pehuenia"/>
-  <meta property="twitter:description" content="Desconectate en la cima de la montaña. Vistas al lago, chimenea, wifi, pool y todo el confort rústico de la Patagonia."/>
+  <meta property="twitter:description" content="Desconectate en la cima de la montaña. Vistas al lago, wifi, cocina equipada, pool y todo el confort rústico de la Patagonia."/>
   <meta property="twitter:image" content="/portada.webp"/>
 
-  <!-- LocalBusiness Schema (JSON-LD) -->
+  <!-- LodgingBusiness Schema (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Hostel",
+    "@type": "LodgingBusiness",
     "name": "Hostel Andino",
     "image": "https://hostel-andino.vercel.app/portada.webp",
     "@id": "https://hostel-andino.vercel.app/#hostel",
     "url": "https://hostel-andino.vercel.app/",
     "telephone": "+5492983658176",
     "email": "hostelandinovillapehuenia@gmail.com",
+    "priceRange": "$$",
+    "description": "Refugio de montaña premium en Villa Pehuenia con habitaciones compartidas y familiares, vistas al lago, cocina equipada y áreas comunes de descanso.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Villa Pehuenia",
-      "addressLocality": "Aluminé",
+      "streetAddress": "Calle Principal s/n",
+      "addressLocality": "Villa Pehuenia",
       "addressRegion": "Neuquén",
       "postalCode": "8345",
       "addressCountry": "AR"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": -38.8833,
-      "longitude": -71.1833
+      "latitude": -38.88991871309278,
+      "longitude": -71.13562257301393
     },
+    "amenityFeature": [
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "WiFi Gratuito",
+        "value": true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "Cocina Compartida",
+        "value": true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "Estacionamiento",
+        "value": true
+      }
+    ],
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -67,7 +86,43 @@
       "closes": "23:59"
     },
     "sameAs": [
+      "https://www.facebook.com/andinopehuenia",
+      "https://instagram.com/hostelandino_",
       "https://wa.me/5492983658176"
+    ]
+  }
+  </script>
+
+  <!-- FAQ Schema (JSON-LD) para IAs (GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué servicios ofrece Hostel Andino en Villa Pehuenia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hostel Andino ofrece WiFi, cocina industrial completamente equipada, amplio estar con mesa de pool y TV Smart, y habitaciones con baño privado completo."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿El Hostel Andino tiene habitaciones privadas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, contamos con una habitación familiar matrimonial privada con capacidad para 5 personas, además de nuestras habitaciones compartidas para 6 personas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Dónde está ubicado el Hostel Andino?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El hostel está ubicado en Villa Pehuenia, Neuquén, rodeado de araucarias milenarias y con vistas imponentes a los lagos patagónicos."
+        }
+      }
     ]
   }
   </script>
