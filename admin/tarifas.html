@@ -170,15 +170,6 @@
 <h2 class="font-display-lg text-headline-lg text-primary mb-2">Gestión de Tarifas y Promociones</h2>
 <p class="text-secondary max-w-2xl">Ajusta los valores estacionales y crea ofertas exclusivas para mantener el flujo de huéspedes durante todo el año.</p>
 </div>
-<div class="flex items-center gap-4 bg-surface-container p-4 rounded-xl ambient-shadow">
-<div class="text-right">
-<p class="font-label-sm text-label-sm uppercase text-secondary">Estado Web</p>
-<p class="font-bold text-primary">Promoción Off-Season</p>
-</div>
-<button class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none bg-primary" id="promoToggle" onclick="togglePromo(this)">
-<span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
-</button>
-</div>
 </header>
 <!-- Bento Grid Layout for Management -->
 <div class="grid grid-cols-12 gap-gutter">
@@ -222,30 +213,23 @@
 <h3 id="promo-form-title" class="font-headline-md text-primary">Nueva Promoción</h3>
 </div>
 <form id="promo-form" class="flex-1 flex flex-col gap-6">
+<input type="hidden" id="promo-id" value="" />
 <div class="group">
 <label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2 group-focus-within:text-primary transition-colors">Título de la Oferta</label>
 <input id="promo-title" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary placeholder:text-outline-variant transition-all" placeholder="Ej: Invierno Mágico" type="text" required />
 </div>
-<div class="grid grid-cols-2 gap-4 items-center">
-<div class="group">
-<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Descuento (%)</label>
-<div class="relative">
-<input id="promo-discount" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" type="number" value="15" required />
-<span class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary">%</span>
+<div class="group flex-1 flex flex-col">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2 group-focus-within:text-primary transition-colors">Texto Promoción</label>
+<textarea id="promo-desc" class="w-full flex-1 bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all resize-none" placeholder="Ej: Mayo y Junio en estadías mayores a 3 noches con 30% OFF" required></textarea>
 </div>
+<div class="flex gap-4 mt-auto">
+<button type="button" id="promo-cancel-btn" class="hidden flex-1 bg-surface-bright border border-outline-variant text-secondary font-label-sm uppercase tracking-widest py-5 rounded-lg hover:bg-surface-container transition-colors flex justify-center items-center gap-2" onclick="cancelEditPromo()">
+<span class="material-symbols-outlined text-lg">close</span> Cancelar
+</button>
+<button id="promo-submit-btn" class="flex-[2] bg-primary text-on-primary font-label-sm uppercase tracking-widest py-5 rounded-lg hover:opacity-90 transition-opacity flex justify-center items-center gap-2" type="submit">
+<span class="material-symbols-outlined text-lg">check_circle</span> Publicar
+</button>
 </div>
-<div class="flex gap-2 text-secondary text-[11px] leading-tight bg-primary/5 p-3 rounded-lg border border-primary/10">
-<span class="material-symbols-outlined text-primary text-xs flex-shrink-0 mt-0.5">info</span>
-<p>Esta promoción se aplicará automáticamente y será visible en el banner del inicio.</p>
-</div>
-</div>
-<div class="group">
-<label class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Texto Promoción</label>
-<input id="promo-duration" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-4 text-primary transition-all" placeholder="Ej: Mayo y Junio en estadías mayores a 3 noches" type="text" required />
-</div>
-<button class="mt-auto w-full bg-primary text-on-primary font-label-sm uppercase tracking-widest py-5 rounded-lg hover:opacity-90 transition-opacity flex justify-center items-center gap-2" type="submit">
-<span class="material-symbols-outlined text-lg">check_circle</span> Publicar Promoción
-                    </button>
 </form>
 </section>
 <!-- Active Promotions Dashboard (Small Cards) -->
@@ -345,42 +329,50 @@
     // Render Active Promos list
     const activePromosGrid = document.getElementById('active-promos-grid');
     activePromosGrid.innerHTML = '';
-    if (data.promociones && data.promociones.title) {
-      const statusText = data.promociones.active ? 'Activa' : 'Suspendida';
-      const statusBadgeClass = data.promociones.active 
-        ? 'bg-primary/10 text-primary border border-primary/20' 
-        : 'bg-[#cfb290]/15 text-[#402e15] border border-[#cfb290]/30';
-      const toggleIcon = data.promociones.active ? 'pause_circle' : 'play_circle';
-      const toggleTitle = data.promociones.active ? 'Suspender (Pausar)' : 'Activar (Publicar)';
-      const leftBarClass = data.promociones.active ? 'bg-primary' : 'bg-[#cfb290]';
-      
-      const activeHtml = `
-        <div class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 ambient-shadow group relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-1 h-full ${leftBarClass}"></div>
-          <div class="flex justify-between items-center mb-4">
-            <span class="${statusBadgeClass} px-3 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full">${statusText}</span>
-            <div class="flex items-center gap-2">
-              <button onclick="togglePromoState()" class="text-secondary hover:text-primary transition-colors flex items-center" title="${toggleTitle}">
-                <span class="material-symbols-outlined text-lg">${toggleIcon}</span>
-              </button>
-              <button onclick="editPromo()" class="text-secondary hover:text-primary transition-colors flex items-center" title="Modificar">
-                <span class="material-symbols-outlined text-lg">edit</span>
-              </button>
-              <button onclick="deletePromoData()" class="text-secondary hover:text-error transition-colors flex items-center" title="Eliminar por completo">
-                <span class="material-symbols-outlined text-lg">delete</span>
-              </button>
+    
+    // Auto-repair on render if needed
+    if (!Array.isArray(data.promociones)) {
+      data.promociones = [];
+    }
+
+    if (data.promociones.length > 0) {
+      data.promociones.forEach(promo => {
+        const statusText = promo.active ? 'Activa' : 'Suspendida';
+        const statusBadgeClass = promo.active 
+          ? 'bg-primary/10 text-primary border border-primary/20' 
+          : 'bg-[#cfb290]/15 text-[#402e15] border border-[#cfb290]/30';
+        const toggleIcon = promo.active ? 'pause_circle' : 'play_circle';
+        const toggleTitle = promo.active ? 'Suspender (Pausar)' : 'Activar (Publicar)';
+        const leftBarClass = promo.active ? 'bg-primary' : 'bg-[#cfb290]';
+        
+        const activeHtml = `
+          <div class="bg-surface-bright p-6 rounded-xl border border-outline-variant/20 ambient-shadow group relative overflow-hidden flex flex-col">
+            <div class="absolute top-0 left-0 w-1 h-full ${leftBarClass}"></div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="${statusBadgeClass} px-3 py-1 text-[10px] font-bold uppercase tracking-tighter rounded-full">${statusText}</span>
+              <div class="flex items-center gap-2">
+                <button onclick="togglePromoState(${promo.id})" class="text-secondary hover:text-primary transition-colors flex items-center" title="${toggleTitle}">
+                  <span class="material-symbols-outlined text-lg">${toggleIcon}</span>
+                </button>
+                <button onclick="editPromo(${promo.id})" class="text-secondary hover:text-primary transition-colors flex items-center" title="Modificar">
+                  <span class="material-symbols-outlined text-lg">edit</span>
+                </button>
+                <button onclick="deletePromoData(${promo.id})" class="text-secondary hover:text-error transition-colors flex items-center" title="Eliminar por completo">
+                  <span class="material-symbols-outlined text-lg">delete</span>
+                </button>
+              </div>
             </div>
+            <h5 class="font-bold text-primary text-lg mb-1">${promo.title}</h5>
+            <p class="text-sm text-secondary mb-4 flex-1 break-words">${promo.desc}</p>
           </div>
-          <h5 class="font-bold text-primary text-lg mb-1">${data.promociones.title}</h5>
-          <p class="text-sm text-secondary mb-4">${data.promociones.desc}</p>
-        </div>
-      `;
-      activePromosGrid.insertAdjacentHTML('beforeend', activeHtml);
+        `;
+        activePromosGrid.insertAdjacentHTML('beforeend', activeHtml);
+      });
     } else {
       const emptyHtml = `
         <div class="col-span-3 border-2 border-dashed border-outline-variant/30 p-6 rounded-xl flex flex-col items-center justify-center text-center opacity-60">
           <span class="material-symbols-outlined text-3xl text-outline-variant mb-2">loyalty</span>
-          <p class="text-sm text-secondary">No hay promociones configuradas</p>
+          <p class="text-sm text-secondary">No hay promociones en el historial</p>
         </div>
       `;
       activePromosGrid.insertAdjacentHTML('beforeend', emptyHtml);
@@ -432,99 +424,113 @@
     renderRates();
   }
 
-  // Toggle Promo
-  document.getElementById('promoToggle').addEventListener('click', function() {
-    togglePromoState();
-  });
-
-  // Toggle state
-  function togglePromoState() {
-    const data = window.db.getData();
-    if (!data.promociones || !data.promociones.title) {
-      alert('Primero debés publicar una promoción.');
-      return;
-    }
-    data.promociones.active = !data.promociones.active;
-    window.db.saveData(data);
-    renderRates();
-  }
-
-  // Edit Promo
-  window.editPromo = function() {
+  // Toggle state of a promo
+  window.togglePromoState = function(id) {
     const data = window.db.getData();
     if (!data.promociones) return;
     
-    document.getElementById('promo-title').value = data.promociones.title;
+    const promo = data.promociones.find(p => p.id === id);
+    if (!promo) return;
     
-    let discount = '15';
-    let duration = '';
+    const newStatus = !promo.active;
     
-    const discountMatch = data.promociones.desc.match(/(\d+)%/);
-    if (discountMatch && discountMatch[1]) {
-      discount = discountMatch[1];
+    // If activating, turn off all others
+    if (newStatus) {
+      data.promociones.forEach(p => p.active = false);
     }
     
-    const durationMatch = data.promociones.desc.match(/durante\s+(.+)\./i);
-    if (durationMatch && durationMatch[1]) {
-      duration = durationMatch[1];
-    } else {
-      const altMatch = data.promociones.desc.match(/en estadías\s+(.+)\./i);
-      if (altMatch && altMatch[1]) {
-        duration = altMatch[1];
-      }
-    }
+    promo.active = newStatus;
+    window.db.saveData(data);
+    renderRates();
+  };
+
+  window.cancelEditPromo = function() {
+    document.getElementById('promo-id').value = '';
+    document.getElementById('promo-title').value = '';
+    document.getElementById('promo-desc').value = '';
     
-    document.getElementById('promo-discount').value = discount;
-    document.getElementById('promo-duration').value = duration || '';
+    document.querySelector('#promo-submit-btn').innerHTML = `<span class="material-symbols-outlined text-lg">check_circle</span> Publicar`;
+    document.getElementById('promo-form-title').innerText = 'Nueva Promoción';
+    document.getElementById('promo-cancel-btn').classList.add('hidden');
+  };
+
+  // Edit Promo
+  window.editPromo = function(id) {
+    const data = window.db.getData();
+    if (!data.promociones) return;
     
-    document.querySelector('#promo-form button[type="submit"]').innerHTML = `<span class="material-symbols-outlined text-lg">save</span> Actualizar Promoción`;
+    const promo = data.promociones.find(p => p.id === id);
+    if (!promo) return;
+    
+    document.getElementById('promo-id').value = promo.id;
+    document.getElementById('promo-title').value = promo.title;
+    document.getElementById('promo-desc').value = promo.desc;
+    
+    document.querySelector('#promo-submit-btn').innerHTML = `<span class="material-symbols-outlined text-lg">save</span> Actualizar`;
     document.getElementById('promo-form-title').innerText = 'Modificar Promoción';
+    document.getElementById('promo-cancel-btn').classList.remove('hidden');
+    document.getElementById('promo-cancel-btn').classList.add('flex');
     
     document.getElementById('promo-form').scrollIntoView({ behavior: 'smooth' });
   };
 
   // Delete Promo
-  window.deletePromoData = function() {
-    if (!confirm('¿Estás seguro de que deseas eliminar por completo esta promoción de la base de datos?')) return;
+  window.deletePromoData = function(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar por completo esta promoción del historial?')) return;
     const data = window.db.getData();
-    data.promociones = {
-      active: false,
-      title: "",
-      desc: "",
-      cta_text: ""
-    };
+    data.promociones = data.promociones.filter(p => p.id !== id);
     window.db.saveData(data);
+    
+    // Reset form if deleting currently edited
+    if (document.getElementById('promo-id').value == id) {
+      cancelEditPromo();
+    }
+    
     renderRates();
   };
 
   // Create / Update Promo Submit
   document.getElementById('promo-form').addEventListener('submit', function(e) {
     e.preventDefault();
+    const id = document.getElementById('promo-id').value;
     const title = document.getElementById('promo-title').value.trim();
-    const discount = document.getElementById('promo-discount').value.trim();
-    const duration = document.getElementById('promo-duration').value.trim() || 'tiempo limitado';
+    const desc = document.getElementById('promo-desc').value.trim();
 
-    if (!title || !discount) {
-      alert('Por favor introduce título y descuento.');
+    if (!title || !desc) {
+      alert('Por favor introduce título y descripción.');
       return;
     }
 
     const data = window.db.getData();
-    data.promociones.active = true;
-    data.promociones.title = title;
-    data.promociones.desc = `Aprovechá un ${discount}% de descuento en estadías durante ${duration}.`;
+    if (!Array.isArray(data.promociones)) data.promociones = [];
+    
+    if (id) {
+      // Update existing
+      const promo = data.promociones.find(p => p.id == id);
+      if (promo) {
+        promo.title = title;
+        promo.desc = desc;
+      }
+    } else {
+      // Create new
+      const newId = data.promociones.length > 0 ? Math.max(...data.promociones.map(p => p.id)) + 1 : 1;
+      // Turn off others since we will make this active
+      data.promociones.forEach(p => p.active = false);
+      data.promociones.push({
+        id: newId,
+        active: true, // auto active when created
+        title: title,
+        desc: desc,
+        cta_text: "Solicitar Promo",
+        createdAt: new Date().toISOString()
+      });
+    }
     
     window.db.saveData(data);
     
-    document.getElementById('promo-title').value = '';
-    document.getElementById('promo-discount').value = '15';
-    document.getElementById('promo-duration').value = '';
-    
-    document.querySelector('#promo-form button[type="submit"]').innerHTML = `<span class="material-symbols-outlined text-lg">check_circle</span> Publicar Promoción`;
-    document.getElementById('promo-form-title').innerText = 'Nueva Promoción';
-    
+    cancelEditPromo();
     renderRates();
-    alert('Promoción guardada y publicada con éxito en la web!');
+    alert(id ? 'Promoción actualizada con éxito.' : 'Nueva promoción guardada y activada con éxito.');
   });
 
   // Initial load

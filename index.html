@@ -1248,15 +1248,17 @@
 
                     ratesHtml += `</div>`;
 
-                    if (data.promociones.active) {
+                    const activePromo = Array.isArray(data.promociones) ? data.promociones.find(p => p.active) : (data.promociones && data.promociones.active ? data.promociones : null);
+                    
+                    if (activePromo) {
                         ratesHtml += `
                             <!-- Highlighted Promo -->
                             <div class="mt-12 bg-tertiary-container text-on-tertiary-container p-12 relative overflow-hidden rounded-xl">
                                 <div class="relative z-10">
                                     <span class="font-label-sm uppercase tracking-widest opacity-80 mb-2 block">Oportunidad Especial</span>
-                                    <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${data.promociones.title}</h3>
-                                    <p class="text-on-tertiary-container/80 max-w-lg mb-8">${data.promociones.desc}</p>
-                                    <a href="https://wa.me/5492983658176" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${data.promociones.cta_text || 'Solicitar Promo'}</a>
+                                    <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${activePromo.title}</h3>
+                                    <p class="text-on-tertiary-container/80 max-w-lg mb-8 whitespace-pre-line">${activePromo.desc}</p>
+                                    <a href="https://wa.me/5492983658176" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${activePromo.cta_text || 'Solicitar Promo'}</a>
                                 </div>
                                 <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 pointer-events-none">sell</span>
                             </div>

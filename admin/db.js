@@ -71,12 +71,16 @@ const defaultHostelData = {
     { id: 2, name: "Habitación Privada Doble", desc: "Vista a la montaña, baño privado", low: "35000", mid: "45000", high: "60000" },
     { id: 3, name: "Suite Andina", desc: "Jacuzzi, estufa a leña", low: "55000", mid: "75000", high: "95000" }
   ],
-  promociones: {
-    active: true,
-    title: "Promoción fuera de temporada",
-    desc: "Disfrutá del silencio de Villa Pehuenia entre Mayo y Junio con un 30% de descuento en estadías mayores a 3 noches.",
-    cta_text: "Solicitar Promo"
-  },
+  promociones: [
+    {
+      id: 1,
+      active: true,
+      title: "Promoción fuera de temporada",
+      desc: "Disfrutá del silencio de Villa Pehuenia entre Mayo y Junio con un 30% de descuento en estadías mayores a 3 noches.",
+      cta_text: "Solicitar Promo",
+      createdAt: new Date().toISOString()
+    }
+  ],
   galeria: [
     { id: 1, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAxJqbSPErKYMD9k53OUXMyXHCfgdIhk3U84do-jlPmL8_zEp-0v2KFYoNMHIWFFywJQgEShsHyR42wDb4k83R2Rn5G0dwA7ZQB7VAm0nsE3AYjYjg934rNgrcgCRqrt9KH6-W2D3gHrm8vogzBBfL-SKHJidmBpPbJYvMLkns2TS-BdQOF6YI1x4eM_vsoE2LFAp7ZQ-yW30psqe6Glfk6lADiNFZ2Gv1dYbKtwelfla2UuRQ4eBKGsbIj4z2IGgR18LfMheydoeg", alt: "Portada Principal", visible: true, size: "large" },
     { id: 2, src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCQskT4g9rSMDe7YBMN4EelqixTm3lfmxQ0fMm16hr5b9c7GlzEmGh2K-Qhy4oCxRQbW2P_P_4HluJLs4PKDZrXEg0aWvergXgMY_RmMupexXRaU7C8D5Ssod2Lx8M_E_bzdnckVI93YWXUb2rvLeDUUuROte4yBbriEoHEeN4RfQE8rYP2O4s_6bnLJ6kGaJiYTD5uAgkpsXpaT2nCrF2V4QLQKOYTUb8bziJe2oRRB8d50iKxePn5lyscl1pTK51CZ9m2BuJbwlk", alt: "Habitación", visible: true, size: "small" },
@@ -166,6 +170,21 @@ window.db = {
         src: "/desayunoclasico.png",
         visible: true
       };
+      changed = true;
+    }
+    
+    // Auto-repair/Migration: Convert old promociones object to array
+    if (parsed.promociones && !Array.isArray(parsed.promociones)) {
+      parsed.promociones = [
+        {
+          id: 1,
+          active: parsed.promociones.active || false,
+          title: parsed.promociones.title || '',
+          desc: parsed.promociones.desc || '',
+          cta_text: parsed.promociones.cta_text || 'Solicitar Promo',
+          createdAt: new Date().toISOString()
+        }
+      ];
       changed = true;
     }
     
