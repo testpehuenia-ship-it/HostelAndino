@@ -1258,7 +1258,7 @@
                                     <span class="font-label-sm uppercase tracking-widest opacity-80 mb-2 block">Oportunidad Especial</span>
                                     <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${activePromo.title}</h3>
                                     <p class="text-on-tertiary-container/80 max-w-lg mb-8 whitespace-pre-line">${activePromo.desc}</p>
-                                    <a href="https://wa.me/5492983658176" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${activePromo.cta_text || 'Solicitar Promo'}</a>
+                                    <a href="https://wa.me/5492983658176?text=${encodeURIComponent('Hola! Me comunico para pedir información sobre la promoción: ' + activePromo.title)}" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${activePromo.cta_text || 'Solicitar Promo'}</a>
                                 </div>
                                 <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 pointer-events-none">sell</span>
                             </div>

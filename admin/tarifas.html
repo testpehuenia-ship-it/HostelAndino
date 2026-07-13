@@ -311,20 +311,6 @@
       ratesTbody.insertAdjacentHTML('beforeend', rowHtml);
     });
 
-    // Toggle Promo Switch state
-    const promoToggleBtn = document.getElementById('promoToggle');
-    const circle = promoToggleBtn.querySelector('span');
-    if (data.promociones.active) {
-      promoToggleBtn.classList.remove('bg-outline-variant');
-      promoToggleBtn.classList.add('bg-primary');
-      circle.classList.remove('translate-x-1');
-      circle.classList.add('translate-x-6');
-    } else {
-      promoToggleBtn.classList.remove('bg-primary');
-      promoToggleBtn.classList.add('bg-outline-variant');
-      circle.classList.remove('translate-x-6');
-      circle.classList.add('translate-x-1');
-    }
 
     // Render Active Promos list
     const activePromosGrid = document.getElementById('active-promos-grid');
