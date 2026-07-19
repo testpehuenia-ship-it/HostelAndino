@@ -230,7 +230,7 @@ window.db = {
 
     if (!parsed.bannerOpcionales) {
       parsed.bannerOpcionales = {
-        src: "/desayunoclasico.png",
+        src: "/desayunoclasico.webp",
         visible: true
       };
       changed = true;

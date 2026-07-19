@@ -3,7 +3,8 @@
 <html class="scroll-smooth" lang="es"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="icon" type="image/png" href="/LogoNVO.png"/>
+<link rel="preload" href="/LogoNVO.webp" as="image">
+<link rel="icon" type="image/webp" href="/LogoNVO.webp"/>
 <title>Hostel Andino | Refugio Premium en Villa Pehuenia</title>
   <meta name="description" content="Hostel Andino en Villa Pehuenia. Refugio de montaña premium rodeado de araucarias y lagos. Habitaciones compartidas y privadas con el mejor confort patagónico."/>
   <meta name="keywords" content="hostel villa pehuenia, alojamiento villa pehuenia, hostel andino, patagonia argentina, turismo neuquen, refugio de montaña"/>
@@ -253,7 +254,7 @@
 <!-- Top Navigation Bar -->
 <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 bg-[#fcf9f8]/20 backdrop-blur-md transition-all duration-300 ease-in-out">
 <div class="flex items-center">
-  <img src="/LogoNVO.png" alt="Hostel Andino Logo" class="h-14 w-auto object-contain" />
+  <img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-14 w-auto object-contain" />
 </div>
 <!-- Desktop Nav -->
 <div class="hidden md:flex gap-8 items-center">
@@ -348,7 +349,7 @@
 </div>
 <div class="md:col-span-6 md:col-start-7 relative">
 <div class="relative aspect-[4/5] bg-surface-container-low shadow-sm overflow-hidden rounded-lg">
-<img class="w-full h-full object-cover" src="/portada.webp" alt="Nuestra Esencia - Hostel Andino"/>
+<img class="w-full h-full object-cover" src="/portada.webp" alt="Nuestra Esencia - Hostel Andino" loading="lazy" />
 <!-- Wavy Bottom Banner -->
 <div class="absolute bottom-0 left-0 right-0 z-10">
 <!-- Wave SVG -->
@@ -839,7 +840,7 @@
             </a>
             <!-- TripAdvisor -->
             <a href="https://www.tripadvisor.com/Hotel_Review-g316036-d8832293-Reviews-Hostel_Andino-Villa_Pehuenia_Province_of_Neuquen_Patagonia.html" target="_blank" rel="noopener noreferrer" class="opacity-80 hover:opacity-100 transition-all hover:-translate-y-1 transform duration-300 flex items-center gap-2">
-                <img src="https://cdn.simpleicons.org/tripadvisor/34E0A1" alt="TripAdvisor" class="h-8 md:h-10 w-auto object-contain drop-shadow-sm" />
+                <img src="https://cdn.simpleicons.org/tripadvisor/34E0A1" alt="TripAdvisor" class="h-8 md:h-10 w-auto object-contain drop-shadow-sm" loading="lazy" />
                 <span class="font-bold text-2xl tracking-tight text-black" style="font-family: Arial, sans-serif;">Tripadvisor</span>
             </a>
         </div>
@@ -849,7 +850,7 @@
 <!-- Footer -->
 <footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-[#e6d5c1] to-tertiary-container text-primary grid grid-cols-1 md:grid-cols-3 gap-gutter items-center border-t border-white/10">
 <div class="flex justify-center md:justify-start">
-  <img src="/LogoNVO.png" alt="Hostel Andino Logo" class="h-16 w-auto object-contain opacity-90" />
+  <img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-16 w-auto object-contain opacity-90" loading="lazy" />
 </div>
 <div class="text-center font-body-md font-medium opacity-90">
             © 2026 Hostel Andino. <a href="https://adnqn.ar" target="_blank" class="hover:opacity-80 transition-opacity">by design <span class="font-bold tracking-tight" style="font-family: 'Playfair Display', serif;"><span class="text-[#00966C]">ADN</span><span class="text-[#D4AF37]">QN</span></span>.ar</a>
@@ -858,10 +859,10 @@
         </div>
 <div class="flex justify-center md:justify-end gap-6 items-center">
 <a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://instagram.com/hostelandino_" target="_blank" rel="noopener noreferrer" title="Instagram">
-    <img src="https://cdn.simpleicons.org/instagram/E4405F" class="w-6 h-6 md:w-7 md:h-7" alt="Instagram"/>
+    <img src="https://cdn.simpleicons.org/instagram/E4405F" class="w-6 h-6 md:w-7 md:h-7" alt="Instagram" loading="lazy" />
 </a>
 <a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://www.facebook.com/andinopehuenia" target="_blank" rel="noopener noreferrer" title="Facebook">
-    <img src="https://cdn.simpleicons.org/facebook/1877F2" class="w-6 h-6 md:w-7 md:h-7" alt="Facebook"/>
+    <img src="https://cdn.simpleicons.org/facebook/1877F2" class="w-6 h-6 md:w-7 md:h-7" alt="Facebook" loading="lazy" />
 </a>
 </div>
 </footer>
@@ -1046,7 +1047,7 @@
                     sliderTrack.innerHTML = renderPhotos.map((photo, index) => {
                         return `
                             <div class="galeria-slide-card w-[280px] md:w-[360px] aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden shadow-lg border border-[#cfb290]/20 bg-white/70 flex-shrink-0 transition-all duration-500 ease-out transform cursor-pointer relative group scale-95 brightness-75 opacity-70 hover:scale-[1.08] hover:brightness-100 hover:opacity-100 hover:z-20">
-                                <img alt="${photo.alt}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${photo.src}"/>
+                                <img alt="${photo.alt}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${photo.src}" loading="lazy" />
                                 <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
                                     <h4 class="text-base font-bold">${photo.alt}</h4>
                                     <p class="text-[10px] opacity-60">Hostel Andino</p>
@@ -1205,7 +1206,7 @@
                         const videoInfo = parseVideoUrl(video.src);
                         return `
                             <div onclick="playVideoPreview('${video.src}')" class="min-w-[320px] md:min-w-[480px] aspect-video bg-black rounded-xl overflow-hidden relative group cursor-pointer">
-                                <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${videoInfo.thumbnail}" alt="${video.title}"/>
+                                <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="${videoInfo.thumbnail}" alt="${video.title}" loading="lazy" />
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-white text-6xl opacity-70 group-hover:scale-110 transition-transform">play_circle</span>
                                 </div>
@@ -1224,13 +1225,13 @@
                 const bannerDiv = document.getElementById('banner-opcionales-container');
                 if (data.bannerOpcionales.visible) {
                     if (bannerDiv) {
-                        bannerDiv.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" />`;
+                        bannerDiv.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`;
                         bannerDiv.style.display = 'block';
                     } else {
                         const newBanner = document.createElement('div');
                         newBanner.id = 'banner-opcionales-container';
                         newBanner.className = 'w-full mb-24 mt-8';
-                        newBanner.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" />`;
+                        newBanner.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`;
                         opcionalesList.parentNode.insertBefore(newBanner, opcionalesList.nextSibling);
                     }
                 } else if (bannerDiv) {
