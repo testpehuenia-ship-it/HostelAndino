@@ -719,7 +719,7 @@
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="text-center mb-16">
 <span class="font-label-sm text-primary uppercase tracking-widest mb-4 block">Planificá tu Estadía</span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Tarifas &amp; Promociones</h2>
+<h2 id="rates-title" class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Tarifas &amp; Promociones</h2>
 </div>
 <div id="rates-public-container" class="max-w-4xl mx-auto space-y-4">
 <div class="flex justify-between items-center py-8 border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors px-4">
@@ -1208,33 +1208,21 @@
 
             // 5. Rates and Promotion
             const ratesContainer = document.getElementById('rates-public-container');
+            const ratesTitle = document.getElementById('rates-title');
+            
             if (ratesContainer) {
-                let selectedSeason = localStorage.getItem('selected_season') || 'low';
-                const setSeason = (season) => {
-                    localStorage.setItem('selected_season', season);
-                    renderRatesUI();
-                };
-                window.setSeason = setSeason;
-
                 function renderRatesUI() {
-                    const activeSeason = localStorage.getItem('selected_season') || 'low';
-                    const activeClass = 'bg-primary text-white';
-                    const inactiveClass = 'bg-surface-container-low text-primary hover:bg-surface-container';
+                    if (ratesTitle && data.mesTarifas) {
+                        ratesTitle.innerHTML = `Tarifas &amp; Promociones<br/><span class="text-3xl md:text-4xl opacity-80 mt-4 block">Mes de ${data.mesTarifas}</span>`;
+                    }
 
                     let ratesHtml = `
-                        <!-- Season Selector Tabs -->
-                        <div class="flex justify-center gap-4 mb-8">
-                            <button onclick="setSeason('low')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'low' ? activeClass : inactiveClass}">Temp. Baja</button>
-                            <button onclick="setSeason('mid')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'mid' ? activeClass : inactiveClass}">Temp. Media</button>
-                            <button onclick="setSeason('high')" class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeSeason === 'high' ? activeClass : inactiveClass}">Temp. Alta</button>
-                        </div>
-                        
                         <!-- Rates rows -->
                         <div class="space-y-4">
                     `;
 
                     data.tarifas.forEach(room => {
-                        const price = room[activeSeason] ? `$${parseInt(room[activeSeason]).toLocaleString('es-AR')}` : '$0';
+                        const price = room.price ? `$${parseInt(room.price).toLocaleString('es-AR')}` : '$0';
                         ratesHtml += `
                             <div class="flex justify-between items-center py-6 border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors px-4">
                                 <div class="flex flex-col">

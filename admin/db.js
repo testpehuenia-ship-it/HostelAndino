@@ -66,10 +66,11 @@ const defaultHostelData = {
       { id: 3, title: "Cocina Industrial", desc: "Cocina y vajilla completas a disposición para 20 huéspedes, equipada con horno pizzero.", icon: "restaurant", badge: "A disposición", category: "Cocina" }
     ]
   },
+  mesTarifas: "Mes actual",
   tarifas: [
-    { id: 1, name: "Dormitorio Compartido", desc: "6 camas, baño compartido", low: "18500", mid: "25000", high: "35000" },
-    { id: 2, name: "Habitación Privada Doble", desc: "Vista a la montaña, baño privado", low: "35000", mid: "45000", high: "60000" },
-    { id: 3, name: "Suite Andina", desc: "Jacuzzi, estufa a leña", low: "55000", mid: "75000", high: "95000" }
+    { id: 1, name: "Dormitorio Compartido", desc: "6 camas, baño compartido", price: "18500" },
+    { id: 2, name: "Habitación Privada Doble", desc: "Vista a la montaña, baño privado", price: "35000" },
+    { id: 3, name: "Suite Andina", desc: "Jacuzzi, estufa a leña", price: "55000" }
   ],
   promociones: [
     {
@@ -138,6 +139,23 @@ window.db = {
           } else {
             v.src = "https://www.youtube.com/watch?v=FqV18l8L2jY";
           }
+          changed = true;
+        }
+      });
+    }
+
+    // Auto-repair/Migration: Ensure mesTarifas exists and migrate old low/mid/high to single price
+    if (!parsed.mesTarifas) {
+      parsed.mesTarifas = "Mes actual";
+      changed = true;
+    }
+    if (parsed.tarifas) {
+      parsed.tarifas.forEach(t => {
+        if (t.low !== undefined && t.price === undefined) {
+          t.price = t.low; // migrate old low season to base price
+          delete t.low;
+          delete t.mid;
+          delete t.high;
           changed = true;
         }
       });

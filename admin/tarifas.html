@@ -178,14 +178,15 @@
 <div class="flex justify-between items-center mb-8">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-primary">calendar_month</span>
-<h3 class="font-headline-md text-primary">Tarifas por Temporada</h3>
+<h3 class="font-headline-md text-primary">Tarifas del Mes</h3>
 </div>
-<div class="flex items-center gap-2">
-  <button onclick="addRoomType()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white hover:opacity-90 transition-opacity text-label-sm uppercase tracking-widest font-bold">
+<div class="flex items-center gap-4">
+  <div class="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-lg">
+    <span class="text-secondary font-label-sm uppercase tracking-widest text-[10px]">Mes(es):</span>
+    <input id="mes-tarifas-input" type="text" class="bg-transparent border-none p-0 text-primary font-bold focus:ring-0 w-32 md:w-48" onchange="saveMesTarifas(this.value)" placeholder="Ej: Agosto y Septiembre">
+  </div>
+  <button onclick="addRoomType()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white hover:opacity-90 transition-opacity text-label-sm uppercase tracking-widest font-bold rounded-lg">
     <span class="material-symbols-outlined text-sm">add</span> Nueva Habitación
-  </button>
-  <button class="flex items-center gap-2 px-4 py-2 border border-outline-variant hover:bg-surface-container transition-colors text-label-sm uppercase tracking-widest font-bold">
-    <span class="material-symbols-outlined text-sm">history</span> Historial
   </button>
 </div>
 </div>
@@ -194,9 +195,7 @@
 <thead>
 <tr class="border-b border-outline-variant/30">
 <th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Tipo de Habitación</th>
-<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Baja (May-Sep)</th>
-<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Media (Oct-Nov)</th>
-<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Alta (Dic-Abr)</th>
+<th class="py-4 font-label-sm uppercase tracking-wider text-secondary">Tarifa por Noche</th>
 <th class="py-4 font-label-sm uppercase tracking-wider text-secondary text-right">Acción</th>
 </tr>
 </thead>
@@ -269,6 +268,9 @@
   function renderRates() {
     const data = window.db.getData();
     const ratesTbody = document.getElementById('rates-tbody');
+    const mesInput = document.getElementById('mes-tarifas-input');
+    
+    if (mesInput) mesInput.value = data.mesTarifas || '';
 
     ratesTbody.innerHTML = '';
     data.tarifas.forEach((room) => {
@@ -281,19 +283,7 @@
           <td class="py-6">
             <div class="flex items-center gap-1 group/input">
               <span class="text-secondary">$</span>
-              <input id="rate-${room.id}-low" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.low}"/>
-            </div>
-          </td>
-          <td class="py-6">
-            <div class="flex items-center gap-1">
-              <span class="text-secondary">$</span>
-              <input id="rate-${room.id}-mid" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.mid}"/>
-            </div>
-          </td>
-          <td class="py-6">
-            <div class="flex items-center gap-1">
-              <span class="text-secondary">$</span>
-              <input id="rate-${room.id}-high" class="w-20 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.high}"/>
+              <input id="rate-${room.id}-price" class="w-32 bg-transparent border-b border-transparent focus:border-primary focus:ring-0 p-0 text-primary transition-all font-semibold" type="text" value="${room.price || ''}"/>
             </div>
           </td>
           <td class="py-6 text-right">
@@ -365,6 +355,13 @@
     }
   }
 
+  // Save global month
+  window.saveMesTarifas = function(val) {
+    const data = window.db.getData();
+    data.mesTarifas = val.trim();
+    window.db.saveData(data);
+  };
+
   // Save Room Rate
   function saveRoomRate(id) {
     const data = window.db.getData();
@@ -373,9 +370,7 @@
 
     room.name = document.getElementById(`rate-${id}-name`).value.trim();
     room.desc = document.getElementById(`rate-${id}-desc`).value.trim();
-    room.low = document.getElementById(`rate-${id}-low`).value.trim();
-    room.mid = document.getElementById(`rate-${id}-mid`).value.trim();
-    room.high = document.getElementById(`rate-${id}-high`).value.trim();
+    room.price = document.getElementById(`rate-${id}-price`).value.trim();
 
     window.db.saveData(data);
     alert(`Habitación "${room.name}" y tarifas guardadas con éxito!`);
@@ -401,9 +396,7 @@
       id: newId,
       name: "Nueva Habitación",
       desc: "Características de la habitación",
-      low: "0",
-      mid: "0",
-      high: "0"
+      price: "0"
     });
     
     window.db.saveData(data);
