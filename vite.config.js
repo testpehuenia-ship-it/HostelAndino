@@ -15,7 +15,7 @@ export default defineConfig({
         galeria: resolve(__dirname, 'admin/galeria.html'),
         hero: resolve(__dirname, 'admin/hero.html'),
         tarifas: resolve(__dirname, 'admin/tarifas.html'),
-        circular_gallery_test: resolve(__dirname, 'circular_gallery_test.html')
+
       }
     }
   }
