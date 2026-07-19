@@ -283,7 +283,7 @@
       const nextId = slidesData.length > 0 ? Math.max(...slidesData.map(s => s.id)) + 1 : 1;
       
       const newSlide = {
-        id: nextId, src: "/hero01.webp", template: 0, title: "Nueva Diapositiva", subtitle: "Hostel Andino", 
+        id: nextId, src: "", template: 0, title: "Nueva Diapositiva", subtitle: "Hostel Andino", 
         fontSize: activeTab === 'pc' ? 72 : 36, fontStyle: "Playfair Display", 
         titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0,
         subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0,
@@ -293,6 +293,9 @@
       setActiveSlides(slidesData);
       renderSlidesList(); 
       editSlide(nextId);
+      
+      // Auto-trigger file upload for the new slide
+      setTimeout(() => document.getElementById('slide-file-input').click(), 100);
     };
 
     window.editSlide = function(id) {
@@ -364,6 +367,9 @@
         document.getElementById('edit-slide-no-img').classList.add('hidden');
         updateLivePreview();
       });
+      
+      // Reset input so the same file can be selected again
+      e.target.value = '';
     };
 
     function hexToRgba(hex, a) { hex = (hex||'#000').replace('#',''); return `rgba(${parseInt(hex.substring(0,2),16)},${parseInt(hex.substring(2,4),16)},${parseInt(hex.substring(4,6),16)},${a})`; }
