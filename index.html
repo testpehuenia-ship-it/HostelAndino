@@ -867,32 +867,62 @@
 </footer>
 <script>
         // Simple Hero Slider logic
-        let currentSlide = 0;
+        // Simple Hero Slider logic
+        let currentSlidePc = 0;
+        let currentSlideMobile = 0;
 
-        window.changeSlide = function(index) {
-            const slides = document.querySelectorAll('#hero-slider > .fade-slide');
-            const dots = document.querySelectorAll('.hero-dot');
-            if (slides.length === 0 || !slides[currentSlide] || !slides[index]) return;
+        window.changeSlide = function(index, type) {
+            const isMobile = type === 'mobile' || (type === undefined && window.innerWidth < 768);
+            const sliderId = isMobile ? 'hero-slider-mobile' : 'hero-slider-pc';
             
-            slides[currentSlide].classList.remove('opacity-100', 'active-slide');
-            slides[currentSlide].classList.add('opacity-0');
-            dots[currentSlide].classList.remove('opacity-100');
-            dots[currentSlide].classList.add('opacity-40');
+            const container = document.getElementById(sliderId);
+            if (!container) return;
             
-            currentSlide = index;
+            const slides = container.querySelectorAll('.fade-slide');
+            const dotsContainer = document.getElementById(sliderId + '-dots');
+            const dots = dotsContainer ? dotsContainer.querySelectorAll('.hero-dot') : [];
             
-            slides[currentSlide].classList.remove('opacity-0');
-            slides[currentSlide].classList.add('opacity-100', 'active-slide');
-            dots[currentSlide].classList.remove('opacity-40');
-            dots[currentSlide].classList.add('opacity-100');
+            const current = isMobile ? currentSlideMobile : currentSlidePc;
+            
+            if (slides.length === 0 || !slides[current] || !slides[index]) return;
+            
+            slides[current].classList.remove('opacity-100', 'active-slide');
+            slides[current].classList.add('opacity-0');
+            if (dots[current]) {
+                dots[current].classList.remove('opacity-100');
+                dots[current].classList.add('opacity-40');
+            }
+            
+            if (isMobile) currentSlideMobile = index;
+            else currentSlidePc = index;
+            
+            slides[index].classList.remove('opacity-0');
+            slides[index].classList.add('opacity-100', 'active-slide');
+            if (dots[index]) {
+                dots[index].classList.remove('opacity-40');
+                dots[index].classList.add('opacity-100');
+            }
         }
 
         // Auto-advance
         setInterval(() => {
-            const slides = document.querySelectorAll('#hero-slider > .fade-slide');
-            if (slides.length === 0) return;
-            let next = (currentSlide + 1) % slides.length;
-            window.changeSlide(next);
+            const pcContainer = document.getElementById('hero-slider-pc');
+            if (pcContainer) {
+                const pcSlides = pcContainer.querySelectorAll('.fade-slide');
+                if (pcSlides.length > 0) {
+                    let nextPc = (currentSlidePc + 1) % pcSlides.length;
+                    window.changeSlide(nextPc, 'pc');
+                }
+            }
+            
+            const mobileContainer = document.getElementById('hero-slider-mobile');
+            if (mobileContainer) {
+                const mobileSlides = mobileContainer.querySelectorAll('.fade-slide');
+                if (mobileSlides.length > 0) {
+                    let nextMobile = (currentSlideMobile + 1) % mobileSlides.length;
+                    window.changeSlide(nextMobile, 'mobile');
+                }
+            }
         }, 6000);
 
         // Header scroll effect
@@ -913,107 +943,96 @@
 
             // 0. Hero Slider Dinámico
             const inicioSection = document.getElementById('inicio');
-            if (inicioSection && data.hero && data.hero.length > 0) {
-                let slidesHtml = '<div class="absolute inset-0" id="hero-slider">';
-                let dotsHtml = '<div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">';
-                
-                data.hero.forEach((slide, idx) => {
-                    const isActive = idx === 0;
-                    const opacityClass = isActive ? 'opacity-100 active-slide' : 'opacity-0';
-                    
-                    // Helper conversion inside loop scope
-                    const hexToRgba = (hex, alpha) => {
-                        hex = (hex || '#000000').replace('#', '');
-                        const r = parseInt(hex.substring(0, 2), 16);
-                        const g = parseInt(hex.substring(2, 4), 16);
-                        const b = parseInt(hex.substring(4, 6), 16);
-                        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-                    };
+            if (inicioSection) {
+                // Helper conversion inside loop scope
+                const hexToRgba = (hex, alpha) => {
+                    hex = (hex || '#000000').replace('#', '');
+                    const r = parseInt(hex.substring(0, 2), 16);
+                    const g = parseInt(hex.substring(2, 4), 16);
+                    const b = parseInt(hex.substring(4, 6), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                };
 
-                    const font = slide.fontStyle || 'Playfair Display';
-                    const titleStyle = `font-family: '${font}', serif; font-size: clamp(${slide.fontSizeMobile || 36}px, 6vw, ${slide.fontSizePc || 72}px); color: ${slide.textColor || '#ffffff'};`;
-                    
-                    const titleLeft = slide.titleLeft !== undefined ? slide.titleLeft : (slide.textLeft !== undefined ? slide.textLeft : 50);
-                    const titleTop = slide.titleTop !== undefined ? slide.titleTop : (slide.textTop !== undefined ? slide.textTop : 45);
-                    const titleW = slide.titleW || 0;
-                    const titleH = slide.titleH || 0;
-                    const subLeft = slide.subLeft !== undefined ? slide.subLeft : (slide.textLeft !== undefined ? slide.textLeft : 50);
-                    const subTop = slide.subTop !== undefined ? slide.subTop : (slide.textTop !== undefined ? slide.textTop - 10 : 35);
-                    const subW = slide.subW || 0;
-                    const subH = slide.subH || 0;
-                    const textBgColor = slide.textBgColor || '#000000';
-                    const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
-                    
-                    const getBoxSizing = (w, h) => {
-                        let style = '';
-                        if (w > 0) style += `width: ${w}%; white-space: normal; word-break: break-word;`;
-                        else style += `width: auto; white-space: normal; word-wrap: break-word; max-width: 90vw;`;
-                        if (h > 0) style += `height: ${h}px;`;
-                        return style;
-                    };
+                const getBoxSizing = (w, h) => {
+                    let style = '';
+                    if (w > 0) style += `width: ${w}%; white-space: normal; word-break: break-word;`;
+                    else style += `width: auto; white-space: normal; word-wrap: break-word; max-width: 90vw;`;
+                    if (h > 0) style += `height: ${h}px;`;
+                    return style;
+                };
 
-                    // Title box styling
-                    let titleBoxStyle = `
-                        position: absolute; z-index: 10;
-                        left: ${titleLeft}%; top: ${titleTop}%;
-                        transform: translate(-${titleLeft}%, -${titleTop}%);
-                        background-color: ${hexToRgba(textBgColor, textBgOpacity)};
-                        text-align: center;
-                        display: flex; align-items: center; justify-content: center; overflow: hidden;
-                        ${getBoxSizing(titleW, titleH)}
-                    `;
-                    if (textBgOpacity > 0) {
-                        titleBoxStyle += `
-                            padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem);
-                            border-radius: 1.5rem;
-                            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+                const buildSliderHtml = (slides, isMobile) => {
+                    if (!slides || slides.length === 0) return '';
+                    const sliderId = isMobile ? 'hero-slider-mobile' : 'hero-slider-pc';
+                    let slidesHtml = `<div id="${sliderId}" class="absolute inset-0 hero-slider-inner ${isMobile ? 'md:hidden block' : 'hidden md:block'}">`;
+                    let dotsHtml = `<div id="${sliderId}-dots" class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20 ${isMobile ? 'md:hidden flex' : 'hidden md:flex'}">`;
+                    
+                    slides.forEach((slide, idx) => {
+                        const isActive = idx === 0;
+                        const opacityClass = isActive ? 'opacity-100 active-slide' : 'opacity-0';
+                        
+                        const font = slide.fontStyle || 'Playfair Display';
+                        const fontSize = slide.fontSize || (isMobile ? 36 : 72);
+                        const titleStyle = `font-family: '${font}', serif; font-size: ${fontSize}px; color: ${slide.textColor || '#ffffff'};`;
+                        
+                        const titleLeft = slide.titleLeft !== undefined ? slide.titleLeft : 50;
+                        const titleTop = slide.titleTop !== undefined ? slide.titleTop : 45;
+                        const titleW = slide.titleW || 0;
+                        const titleH = slide.titleH || 0;
+                        const titleRot = slide.titleRotation || 0;
+                        
+                        const subLeft = slide.subLeft !== undefined ? slide.subLeft : 50;
+                        const subTop = slide.subTop !== undefined ? slide.subTop : 35;
+                        const subW = slide.subW || 0;
+                        const subH = slide.subH || 0;
+                        const subRot = slide.subRotation || 0;
+                        
+                        const textBgColor = slide.textBgColor || '#000000';
+                        const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
+                        
+                        // Outer box handles position
+                        let titleBoxStyle = `position: absolute; z-index: 10; left: ${titleLeft}%; top: ${titleTop}%; transform: translate(-${titleLeft}%, -${titleTop}%); background-color: ${hexToRgba(textBgColor, textBgOpacity)}; text-align: center; display: flex; align-items: center; justify-content: center; overflow: hidden; ${getBoxSizing(titleW, titleH)}`;
+                        if (textBgOpacity > 0) {
+                            titleBoxStyle += ` padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem); border-radius: 1.5rem; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);`;
+                        }
+                        
+                        const subBoxStyle = `position: absolute; z-index: 10; left: ${subLeft}%; top: ${subTop}%; transform: translate(-${subLeft}%, -${subTop}%); text-align: center; display: flex; align-items: center; justify-content: center; overflow: hidden; ${getBoxSizing(subW, subH)}`;
+                        
+                        // Inner container handles rotation
+                        const centerTextHtml = `
+                            <div class="pointer-events-none" style="${titleBoxStyle}">
+                              <div style="transform: rotate(${titleRot}deg);">
+                                <h1 class="font-display-lg leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
+                              </div>
+                            </div>
+                            <div class="pointer-events-none" style="${subBoxStyle}">
+                              <div style="transform: rotate(${subRot}deg);">
+                                <span class="font-label-sm uppercase tracking-[0.2em] text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}; ${isMobile ? 'font-size:8px;' : ''}">${slide.subtitle}</span>
+                              </div>
+                            </div>
                         `;
-                    }
+                        
+                        const imgPosX = slide.imgPosX !== undefined ? slide.imgPosX : 50;
+                        const imgPosY = slide.imgPosY !== undefined ? slide.imgPosY : 50;
+                        
+                        slidesHtml += `
+                            <div class="absolute inset-0 transition-opacity duration-1000 fade-slide ${opacityClass}">
+                                <div class="absolute inset-0" style="background-image: url('${slide.src}'); background-size: cover; background-position: ${imgPosX}% ${imgPosY}%;"></div>
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                ${centerTextHtml}
+                            </div>
+                        `;
+                        
+                        dotsHtml += `<button class="hero-dot w-1.5 h-10 bg-white ${isActive ? 'opacity-100' : 'opacity-40'} transition-opacity rounded" onclick="window.changeSlide(${idx}, '${isMobile ? 'mobile' : 'pc'}')"></button>`;
+                    });
                     
-                    const subBoxStyle = `
-                        position: absolute; z-index: 10;
-                        left: ${subLeft}%; top: ${subTop}%;
-                        transform: translate(-${subLeft}%, -${subTop}%);
-                        text-align: center;
-                        display: flex; align-items: center; justify-content: center; overflow: hidden;
-                        ${getBoxSizing(subW, subH)}
-                    `;
-                    
-                    const centerTextHtml = `
-                        <div class="pointer-events-none" style="${titleBoxStyle}">
-                          <h1 class="font-display-lg leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
-                        </div>
-                        <div class="pointer-events-none" style="${subBoxStyle}">
-                          <span class="font-label-sm uppercase tracking-[0.2em] text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}">${slide.subtitle}</span>
-                        </div>
-                    `;
-                    
-                    const imgPosX = slide.imgPosX !== undefined ? slide.imgPosX : 50;
-                    const imgPosY = slide.imgPosY !== undefined ? slide.imgPosY : 50;
-                    
-                    // Use srcMobile if available, fallback to src for mobile
-                    const mobileSrc = slide.srcMobile || slide.src;
-                    
-                    slidesHtml += `
-                        <div class="absolute inset-0 transition-opacity duration-1000 fade-slide ${opacityClass}">
-                            <!-- PC background image (hidden on mobile via CSS) -->
-                            <div class="hero-bg-pc absolute inset-0" style="background-image: url('${slide.src}'); background-size: cover; background-position: ${imgPosX}% ${imgPosY}%;"></div>
-                            <!-- Mobile background image (hidden on PC via CSS) -->
-                            <div class="hero-bg-mobile absolute inset-0" style="background-image: url('${mobileSrc}'); background-size: cover; background-position: center center;"></div>
-                            <div class="absolute inset-0 bg-black/10"></div>
-                            ${centerTextHtml}
-                        </div>
-                    `;
-                    
-                    dotsHtml += `
-                        <button class="hero-dot w-1.5 h-10 bg-white ${isActive ? 'opacity-100' : 'opacity-40'} transition-opacity rounded" onclick="window.changeSlide(${idx})"></button>
-                    `;
-                });
+                    return slidesHtml + '</div>' + dotsHtml + '</div>';
+                };
+
+                const pcHtml = buildSliderHtml(data.heroPc, false);
+                const mobHtml = buildSliderHtml(data.heroMobile, true);
                 
-                slidesHtml += '</div>';
-                dotsHtml += '</div>';
-                
-                inicioSection.innerHTML = slidesHtml + dotsHtml;
+                inicioSection.innerHTML = pcHtml + mobHtml;
                 window.currentSlide = 0;
             }
 

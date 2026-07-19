@@ -94,11 +94,17 @@ const defaultHostelData = {
     { id: 1, src: "https://www.youtube.com/watch?v=FqV18l8L2jY", title: "Moquehue Aéreo", visible: true },
     { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
   ],
-  hero: [
-    { id: 1, src: "/hero01.webp", srcMobile: "", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 2, src: "/hero02.webp", srcMobile: "", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 3, src: "/hero03.webp", srcMobile: "", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 4, src: "/hero04.webp", srcMobile: "", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
+  heroPc: [
+    { id: 1, src: "/hero01.webp", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSize: 72, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 2, src: "/hero02.webp", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSize: 72, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 3, src: "/hero03.webp", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSize: 72, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 4, src: "/hero04.webp", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSize: 72, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
+  ],
+  heroMobile: [
+    { id: 1, src: "/hero01.webp", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSize: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 2, src: "/hero02.webp", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSize: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 3, src: "/hero03.webp", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSize: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 4, src: "/hero04.webp", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSize: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
   ]
 };
 
@@ -170,34 +176,57 @@ window.db = {
       }
     }
 
-    // Migration: Add srcMobile to hero slides that don't have it
+    // Migration: Separation of PC and Mobile hero slides
     if (parsed.hero) {
+      parsed.heroPc = [];
+      parsed.heroMobile = [];
       parsed.hero.forEach(h => {
-        if (h.srcMobile === undefined) { h.srcMobile = ""; changed = true; }
+        parsed.heroPc.push({
+          id: h.id, src: h.src, template: h.template || 0, title: h.title, subtitle: h.subtitle,
+          fontSize: h.fontSizePc || 72, fontStyle: h.fontStyle,
+          titleLeft: h.titleLeft ?? 50, titleTop: h.titleTop ?? 45, titleW: h.titleW || 0, titleH: h.titleH || 0, titleRotation: 0,
+          subLeft: h.subLeft ?? 50, subTop: h.subTop ?? 35, subW: h.subW || 0, subH: h.subH || 0, subRotation: 0,
+          textColor: h.textColor || "#ffffff", textBgColor: h.textBgColor || "#000000", textBgOpacity: h.textBgOpacity || 0,
+          imgPosX: h.imgPosX ?? 50, imgPosY: h.imgPosY ?? 50
+        });
+        parsed.heroMobile.push({
+          id: h.id, src: h.srcMobile || h.src, template: h.template || 0, title: h.title, subtitle: h.subtitle,
+          fontSize: h.fontSizeMobile || 36, fontStyle: h.fontStyle,
+          titleLeft: h.titleLeft ?? 50, titleTop: h.titleTop ?? 45, titleW: h.titleW || 0, titleH: h.titleH || 0, titleRotation: 0,
+          subLeft: h.subLeft ?? 50, subTop: h.subTop ?? 35, subW: h.subW || 0, subH: h.subH || 0, subRotation: 0,
+          textColor: h.textColor || "#ffffff", textBgColor: h.textBgColor || "#000000", textBgOpacity: h.textBgOpacity || 0,
+          imgPosX: h.imgPosX ?? 50, imgPosY: h.imgPosY ?? 50
+        });
       });
+      delete parsed.hero;
+      changed = true;
     }
 
-    // Auto-repair/Migration: Ensure hero exists in database and has all properties
-    if (!parsed.hero) {
-      parsed.hero = JSON.parse(JSON.stringify(defaultHostelData.hero));
-      changed = true;
-    } else {
-      parsed.hero.forEach(h => {
-        if (h.titleLeft === undefined) { h.titleLeft = h.textLeft !== undefined ? h.textLeft : 50; changed = true; }
-        if (h.titleTop === undefined) { h.titleTop = h.textTop !== undefined ? h.textTop : 45; changed = true; }
-        if (h.subLeft === undefined) { h.subLeft = h.textLeft !== undefined ? h.textLeft : 50; changed = true; }
-        if (h.subTop === undefined) { h.subTop = h.textTop !== undefined ? h.textTop - 10 : 35; changed = true; }
-        if (h.titleW === undefined) { h.titleW = 0; changed = true; }
-        if (h.titleH === undefined) { h.titleH = 0; changed = true; }
-        if (h.subW === undefined) { h.subW = 0; changed = true; }
-        if (h.subH === undefined) { h.subH = 0; changed = true; }
-        if (h.textColor === undefined) { h.textColor = "#ffffff"; changed = true; }
-        if (h.textBgColor === undefined) { h.textBgColor = "#000000"; changed = true; }
-        if (h.textBgOpacity === undefined) { h.textBgOpacity = 0; changed = true; }
-        if (h.imgPosX === undefined) { h.imgPosX = 50; changed = true; }
-        if (h.imgPosY === undefined) { h.imgPosY = 50; changed = true; }
-      });
-    }
+    // Auto-repair: Ensure hero arrays exist and have all properties
+    ['heroPc', 'heroMobile'].forEach(heroKey => {
+      if (!parsed[heroKey]) {
+        parsed[heroKey] = JSON.parse(JSON.stringify(defaultHostelData[heroKey]));
+        changed = true;
+      } else {
+        parsed[heroKey].forEach(h => {
+          if (h.titleLeft === undefined) { h.titleLeft = 50; changed = true; }
+          if (h.titleTop === undefined) { h.titleTop = 45; changed = true; }
+          if (h.subLeft === undefined) { h.subLeft = 50; changed = true; }
+          if (h.subTop === undefined) { h.subTop = 35; changed = true; }
+          if (h.titleW === undefined) { h.titleW = 0; changed = true; }
+          if (h.titleH === undefined) { h.titleH = 0; changed = true; }
+          if (h.titleRotation === undefined) { h.titleRotation = 0; changed = true; }
+          if (h.subW === undefined) { h.subW = 0; changed = true; }
+          if (h.subH === undefined) { h.subH = 0; changed = true; }
+          if (h.subRotation === undefined) { h.subRotation = 0; changed = true; }
+          if (h.textColor === undefined) { h.textColor = "#ffffff"; changed = true; }
+          if (h.textBgColor === undefined) { h.textBgColor = "#000000"; changed = true; }
+          if (h.textBgOpacity === undefined) { h.textBgOpacity = 0; changed = true; }
+          if (h.imgPosX === undefined) { h.imgPosX = 50; changed = true; }
+          if (h.imgPosY === undefined) { h.imgPosY = 50; changed = true; }
+        });
+      }
+    });
 
     if (!parsed.bannerOpcionales) {
       parsed.bannerOpcionales = {
