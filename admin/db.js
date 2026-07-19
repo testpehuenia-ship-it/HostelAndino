@@ -95,10 +95,10 @@ const defaultHostelData = {
     { id: 2, src: "https://www.youtube.com/watch?v=eE726q08jNs", title: "Tour por el Hostel", visible: true }
   ],
   hero: [
-    { id: 1, src: "/hero01.webp", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 2, src: "/hero02.webp", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 3, src: "/hero03.webp", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
-    { id: 4, src: "/hero04.webp", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
+    { id: 1, src: "/hero01.webp", srcMobile: "", template: 0, title: "Desconectá en Villa Pehuenia", subtitle: "Villa Pehuenia, Patagonia", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 2, src: "/hero02.webp", srcMobile: "", template: 0, title: "Experiencia Única en la Montaña", subtitle: "Calidez y Naturaleza", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 3, src: "/hero03.webp", srcMobile: "", template: 0, title: "El Refugio Perfecto para Vos", subtitle: "Confort entre Araucarias", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 },
+    { id: 4, src: "/hero04.webp", srcMobile: "", template: 0, title: "15 Años de Calidez", subtitle: "Hostel Andino", fontSizePc: 72, fontSizeMobile: 36, fontStyle: "Playfair Display", titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, subLeft: 50, subTop: 35, subW: 0, subH: 0, textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 }
   ]
 };
 
@@ -168,6 +168,13 @@ window.db = {
         parsed.servicios.confort.estar[index] = "TV Smart con servicio de DirecTV.";
         changed = true;
       }
+    }
+
+    // Migration: Add srcMobile to hero slides that don't have it
+    if (parsed.hero) {
+      parsed.hero.forEach(h => {
+        if (h.srcMobile === undefined) { h.srcMobile = ""; changed = true; }
+      });
     }
 
     // Auto-repair/Migration: Ensure hero exists in database and has all properties

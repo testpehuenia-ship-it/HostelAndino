@@ -80,12 +80,35 @@
           <form id="slide-form" class="flex flex-col gap-5" onsubmit="saveSlide(event)">
             <input type="hidden" id="edit-slide-id">
             <input type="file" id="slide-file-input" accept="image/*" class="hidden" onchange="handleSlideImageUpload(event)">
-            <!-- Image -->
-            <div>
-              <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Imagen de Fondo</label>
+            <!-- Image PC -->
+            <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-1">Imagen para PC</h4>
+              <p class="text-[10px] text-secondary mb-2">ℹ️ Recomendado: <strong>1920 × 1080 px</strong> (horizontal, 16:9)</p>
               <div class="flex items-center gap-3">
-                <div class="w-20 h-14 rounded overflow-hidden bg-surface-container-low border border-outline-variant/30 flex items-center justify-center"><img id="edit-slide-preview" class="w-full h-full object-cover hidden"><span id="edit-slide-no-img" class="material-symbols-outlined text-outline-variant">image</span></div>
-                <button type="button" onclick="document.getElementById('slide-file-input').click()" class="border border-secondary hover:bg-secondary/10 text-primary px-3 py-1.5 rounded text-xs uppercase tracking-wider">Seleccionar</button>
+                <div class="w-20 h-14 rounded overflow-hidden bg-surface-container border border-outline-variant/30 flex items-center justify-center flex-shrink-0">
+                  <img id="edit-slide-preview" class="w-full h-full object-cover hidden" alt="PC preview">
+                  <span id="edit-slide-no-img" class="material-symbols-outlined text-outline-variant text-2xl">desktop_windows</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <input type="file" id="slide-file-input" accept="image/*" class="hidden" onchange="handlePcImageUpload(event)">
+                  <button type="button" onclick="document.getElementById('slide-file-input').click()" class="border border-secondary hover:bg-secondary/10 text-primary px-3 py-1.5 rounded text-xs uppercase tracking-wider">Seleccionar Foto PC</button>
+                </div>
+              </div>
+            </div>
+            <!-- Image Mobile -->
+            <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+              <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-1">Imagen para Celular <span class="text-outline-variant font-normal">(opcional)</span></h4>
+              <p class="text-[10px] text-secondary mb-2">ℹ️ Recomendado: <strong>1080 × 1920 px</strong> (vertical, 9:16). Si no se carga, se usa la de PC.</p>
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-14 rounded overflow-hidden bg-surface-container border border-outline-variant/30 flex items-center justify-center flex-shrink-0">
+                  <img id="edit-slide-preview-mobile" class="w-full h-full object-cover hidden" alt="Mobile preview">
+                  <span id="edit-slide-no-img-mobile" class="material-symbols-outlined text-outline-variant text-xl">phone_iphone</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <input type="file" id="slide-file-input-mobile" accept="image/*" class="hidden" onchange="handleMobileImageUpload(event)">
+                  <button type="button" onclick="document.getElementById('slide-file-input-mobile').click()" class="border border-secondary hover:bg-secondary/10 text-primary px-3 py-1.5 rounded text-xs uppercase tracking-wider">Seleccionar Foto Cel.</button>
+                  <button type="button" id="btn-clear-mobile-img" onclick="clearMobileImage()" class="border border-error/40 hover:bg-error/10 text-error px-3 py-1 rounded text-[10px] uppercase tracking-wider hidden">Quitar foto celular</button>
+                </div>
               </div>
             </div>
             <!-- Title & Subtitle -->
@@ -262,26 +285,65 @@
       document.getElementById('val-img-x').innerText = s.imgPosX ?? 50;
       document.getElementById('edit-slide-img-y').value = s.imgPosY ?? 50;
       document.getElementById('val-img-y').innerText = s.imgPosY ?? 50;
+
+      // Mobile image
+      const mImg = document.getElementById('edit-slide-preview-mobile');
+      const mNoImg = document.getElementById('edit-slide-no-img-mobile');
+      const btnClear = document.getElementById('btn-clear-mobile-img');
+      if (s.srcMobile) {
+        mImg.src = s.srcMobile; mImg.classList.remove('hidden'); mNoImg.classList.add('hidden');
+        btnClear.classList.remove('hidden');
+      } else {
+        mImg.classList.add('hidden'); mNoImg.classList.remove('hidden');
+        btnClear.classList.add('hidden');
+      }
+
       updateLivePreview();
     };
 
-    window.handleSlideImageUpload = function(e) {
-      const file = e.target.files[0]; if (!file) return;
+    // Helper: compress image to webp
+    function compressImage(file, maxW, maxH, callback) {
       const reader = new FileReader();
       reader.onload = ev => {
         const img = new Image();
         img.onload = () => {
           const c = document.createElement('canvas'); let w = img.width, h = img.height;
-          if (w > 1440 || h > 1440) { if (w > h) { h = Math.round(h * 1440 / w); w = 1440; } else { w = Math.round(w * 1440 / h); h = 1440; } }
+          if (w > maxW || h > maxH) { if (w / maxW > h / maxH) { h = Math.round(h * maxW / w); w = maxW; } else { w = Math.round(w * maxH / h); h = maxH; } }
           c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
-          document.getElementById('edit-slide-preview').src = c.toDataURL('image/webp', 0.80);
-          document.getElementById('edit-slide-preview').classList.remove('hidden');
-          document.getElementById('edit-slide-no-img').classList.add('hidden');
-          updateLivePreview();
+          callback(c.toDataURL('image/webp', 0.80));
         };
         img.src = ev.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    window.handlePcImageUpload = function(e) {
+      const file = e.target.files[0]; if (!file) return;
+      compressImage(file, 1920, 1080, dataUrl => {
+        const el = document.getElementById('edit-slide-preview');
+        el.src = dataUrl; el.classList.remove('hidden');
+        document.getElementById('edit-slide-no-img').classList.add('hidden');
+        updateLivePreview();
+      });
+    };
+
+    window.handleMobileImageUpload = function(e) {
+      const file = e.target.files[0]; if (!file) return;
+      compressImage(file, 1080, 1920, dataUrl => {
+        const el = document.getElementById('edit-slide-preview-mobile');
+        el.src = dataUrl; el.classList.remove('hidden');
+        document.getElementById('edit-slide-no-img-mobile').classList.add('hidden');
+        document.getElementById('btn-clear-mobile-img').classList.remove('hidden');
+        updateLivePreview();
+      });
+    };
+
+    window.clearMobileImage = function() {
+      const el = document.getElementById('edit-slide-preview-mobile');
+      el.src = ''; el.classList.add('hidden');
+      document.getElementById('edit-slide-no-img-mobile').classList.remove('hidden');
+      document.getElementById('btn-clear-mobile-img').classList.add('hidden');
+      updateLivePreview();
     };
 
     function hexToRgba(hex, a) { hex = (hex||'#000').replace('#',''); return `rgba(${parseInt(hex.substring(0,2),16)},${parseInt(hex.substring(2,4),16)},${parseInt(hex.substring(4,6),16)},${a})`; }
@@ -326,8 +388,14 @@
       const bgOp = parseFloat(document.getElementById('edit-slide-bg-opacity').value) / 100;
       const imgX = document.getElementById('edit-slide-img-x').value, imgY = document.getElementById('edit-slide-img-y').value;
 
-      // Backgrounds
-      ['pc-bg','mobile-bg'].forEach(id => { const el = document.getElementById(id); el.style.backgroundImage = `url('${bgSrc}')`; el.style.backgroundPosition = `${imgX}% ${imgY}%`; });
+      // Backgrounds — use mobile-specific image for mobile preview if available
+      const pcBgSrc = bgSrc;
+      const mobilePreviewEl = document.getElementById('edit-slide-preview-mobile');
+      const mobileBgSrc = (mobilePreviewEl && mobilePreviewEl.src && !mobilePreviewEl.classList.contains('hidden')) ? mobilePreviewEl.src : bgSrc;
+      document.getElementById('pc-bg').style.backgroundImage = `url('${pcBgSrc}')`;
+      document.getElementById('pc-bg').style.backgroundPosition = `${imgX}% ${imgY}%`;
+      document.getElementById('mobile-bg').style.backgroundImage = `url('${mobileBgSrc}')`;
+      document.getElementById('mobile-bg').style.backgroundPosition = `${imgX}% ${imgY}%`;
 
       // PC Title
       const pcT = document.getElementById('pc-title-box'), pcTp = document.getElementById('pc-title-preview');
@@ -483,35 +551,56 @@
       s.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
       
       let imgSrc = document.getElementById('edit-slide-preview').src;
+      let imgSrcMobile = document.getElementById('edit-slide-preview-mobile').src || '';
+      const mobileVisible = !document.getElementById('edit-slide-preview-mobile').classList.contains('hidden');
+      if (!mobileVisible) imgSrcMobile = '';
       
+      // Upload PC image if new
       if (imgSrc.startsWith('data:image')) {
         try {
           const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
           const sigData = await sigRes.json();
           if (sigData.error) throw new Error(sigData.error);
-          
           const formData = new FormData();
           formData.append('file', imgSrc);
           formData.append('api_key', sigData.apikey);
           formData.append('timestamp', sigData.timestamp);
           formData.append('signature', sigData.signature);
           if (sigData.folder) formData.append('folder', sigData.folder);
-
-          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, {
-            method: 'POST',
-            body: formData
-          });
+          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, { method: 'POST', body: formData });
           const cloudData = await cloudRes.json();
           if (cloudData.error) throw new Error(cloudData.error.message);
-          
           imgSrc = cloudData.secure_url;
         } catch (error) {
-          console.error('Error uploading to Cloudinary:', error);
-          alert('Hubo un error subiendo la imagen a Cloudinary. Se guardará sin actualizar la foto.');
+          console.error('Error uploading PC image:', error);
+          alert('Error subiendo imagen de PC a Cloudinary.');
+        }
+      }
+
+      // Upload Mobile image if new
+      if (imgSrcMobile.startsWith('data:image')) {
+        try {
+          const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
+          const sigData = await sigRes.json();
+          if (sigData.error) throw new Error(sigData.error);
+          const formData = new FormData();
+          formData.append('file', imgSrcMobile);
+          formData.append('api_key', sigData.apikey);
+          formData.append('timestamp', sigData.timestamp);
+          formData.append('signature', sigData.signature);
+          if (sigData.folder) formData.append('folder', sigData.folder);
+          const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudname}/image/upload`, { method: 'POST', body: formData });
+          const cloudData = await cloudRes.json();
+          if (cloudData.error) throw new Error(cloudData.error.message);
+          imgSrcMobile = cloudData.secure_url;
+        } catch (error) {
+          console.error('Error uploading Mobile image:', error);
+          alert('Error subiendo imagen de celular a Cloudinary.');
         }
       }
       
       s.src = imgSrc;
+      s.srcMobile = imgSrcMobile;
       s.template = 0;
       
       const d = window.db.getData(); 

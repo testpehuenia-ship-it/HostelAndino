@@ -141,6 +141,12 @@
         .fade-slide {
             transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        /* Device-specific hero backgrounds */
+        .hero-bg-mobile { display: none; }
+        @media (max-width: 768px) {
+            .hero-bg-pc { display: none; }
+            .hero-bg-mobile { display: block; }
+        }
         .infinite-scroll {
             animation: scroll 40s linear infinite;
         }
@@ -985,8 +991,15 @@
                     const imgPosX = slide.imgPosX !== undefined ? slide.imgPosX : 50;
                     const imgPosY = slide.imgPosY !== undefined ? slide.imgPosY : 50;
                     
+                    // Use srcMobile if available, fallback to src for mobile
+                    const mobileSrc = slide.srcMobile || slide.src;
+                    
                     slidesHtml += `
-                        <div class="absolute inset-0 transition-opacity duration-1000 fade-slide ${opacityClass}" style="background-image: url('${slide.src}'); background-size: cover; background-position: ${imgPosX}% ${imgPosY}%;">
+                        <div class="absolute inset-0 transition-opacity duration-1000 fade-slide ${opacityClass}">
+                            <!-- PC background image (hidden on mobile via CSS) -->
+                            <div class="hero-bg-pc absolute inset-0" style="background-image: url('${slide.src}'); background-size: cover; background-position: ${imgPosX}% ${imgPosY}%;"></div>
+                            <!-- Mobile background image (hidden on PC via CSS) -->
+                            <div class="hero-bg-mobile absolute inset-0" style="background-image: url('${mobileSrc}'); background-size: cover; background-position: center center;"></div>
                             <div class="absolute inset-0 bg-black/10"></div>
                             ${centerTextHtml}
                         </div>
