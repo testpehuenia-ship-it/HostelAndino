@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://hostel-andino.vercel.app/sitemap.xml
+Sitemap: https://www.hostelandino.com.ar/sitemap.xml
