@@ -312,20 +312,32 @@
 
     // 1. Render Photos
     photosGrid.innerHTML = '';
-    data.galeria.forEach((photo) => {
+    data.galeria.forEach((photo, index) => {
       const isLarge = photo.size === 'large';
       const colSpan = isLarge ? 'col-span-8 row-span-2' : 'col-span-4 row-span-1';
       const visibleClass = photo.visible ? '' : 'opacity-60 grayscale';
       const toggleText = photo.visible ? 'Visible' : 'Oculto';
       const isChecked = photo.visible ? 'checked' : '';
+      
+      const isFirst = index === 0;
+      const isLast = index === data.galeria.length - 1;
 
       const photoHtml = `
         <div class="${colSpan} relative group overflow-hidden rounded-xl bg-surface-container custom-shadow ${visibleClass}">
           <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="${photo.alt}" src="${photo.src}"/>
-          <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-            <button onclick="deletePhoto(${photo.id})" class="w-10 h-10 rounded-full bg-error text-white flex items-center justify-center hover:scale-110 transition-transform">
+          <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap items-center justify-center gap-4 p-4">
+            
+            <!-- Move Backwards -->
+            ${!isFirst ? `<button onclick="movePhoto(${index}, -1)" class="w-10 h-10 rounded-full bg-surface-bright text-primary flex items-center justify-center hover:scale-110 transition-transform" title="Mover antes">
+              <span class="material-symbols-outlined text-xl">arrow_back</span>
+            </button>` : ''}
+            
+            <!-- Delete -->
+            <button onclick="deletePhoto(${photo.id})" class="w-10 h-10 rounded-full bg-error text-white flex items-center justify-center hover:scale-110 transition-transform" title="Eliminar">
               <span class="material-symbols-outlined text-xl">delete</span>
             </button>
+            
+            <!-- Toggle Visibility -->
             <div class="flex flex-col items-end bg-background/90 p-2 rounded">
               <label class="inline-flex items-center cursor-pointer">
                 <input ${isChecked} onchange="togglePhotoVisibility(${photo.id}, this)" class="hidden" type="checkbox"/>
@@ -335,6 +347,12 @@
               </label>
               <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
             </div>
+
+            <!-- Move Forwards -->
+            ${!isLast ? `<button onclick="movePhoto(${index}, 1)" class="w-10 h-10 rounded-full bg-surface-bright text-primary flex items-center justify-center hover:scale-110 transition-transform" title="Mover después">
+              <span class="material-symbols-outlined text-xl">arrow_forward</span>
+            </button>` : ''}
+            
           </div>
           ${isLarge ? '<div class="absolute bottom-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded text-label-sm text-primary">Portada Principal</div>' : ''}
         </div>
@@ -668,15 +686,44 @@
     reader.readAsDataURL(file);
   });
 
-  function deletePhoto(id) {
+  window.movePhoto = function(index, direction) {
+    const data = window.db.getData();
+    if (index + direction < 0 || index + direction >= data.galeria.length) return;
+
+    // Swap elements
+    const temp = data.galeria[index];
+    data.galeria[index] = data.galeria[index + direction];
+    data.galeria[index + direction] = temp;
+
+    // If swapping with the large "Portada Principal" (which is usually the first one)
+    // we should swap their size properties so the first one is always large
+    if (index === 0 || index + direction === 0) {
+        data.galeria[0].size = 'large';
+        if (data.galeria.length > 1) {
+            data.galeria[1].size = 'small';
+        }
+    }
+
+    window.db.saveData(data);
+    renderGallery();
+  };
+
+  window.deletePhoto = function(id) {
     if (!confirm('¿Estás seguro de que deseas eliminar esta foto?')) return;
     const data = window.db.getData();
     data.galeria = data.galeria.filter(p => p.id !== id);
+    
+    // Ensure the first photo is always 'large' if there are photos left
+    if (data.galeria.length > 0) {
+        data.galeria[0].size = 'large';
+        for (let i = 1; i < data.galeria.length; i++) {
+            data.galeria[i].size = 'small';
+        }
+    }
+    
     window.db.saveData(data);
     renderGallery();
-  }
-
-  function togglePhotoVisibility(id, cb) {
+  };  function togglePhotoVisibility(id, cb) {
     const data = window.db.getData();
     const photo = data.galeria.find(p => p.id === id);
     if (photo) {
