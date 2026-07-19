@@ -25,7 +25,7 @@ const defaultHostelData = {
       estar: [
         "Dos cómodos divanes cama.",
         "Un sillón confortable de dos cuerpos.",
-        "TV Smart con servicio de Netflix.",
+        "TV Smart con servicio de DirecTV.",
         "Calefacción.",
         "Mesa de pool."
       ],
@@ -159,6 +159,15 @@ window.db = {
           changed = true;
         }
       });
+    }
+
+    // Auto-repair/Migration: Replace Netflix with DirecTV
+    if (parsed.servicios && parsed.servicios.confort && parsed.servicios.confort.estar) {
+      const index = parsed.servicios.confort.estar.indexOf("TV Smart con servicio de Netflix.");
+      if (index !== -1) {
+        parsed.servicios.confort.estar[index] = "TV Smart con servicio de DirecTV.";
+        changed = true;
+      }
     }
 
     // Auto-repair/Migration: Ensure hero exists in database and has all properties
