@@ -22,6 +22,9 @@ module.exports = async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
       const result = await client.execute("SELECT data FROM hostel_config WHERE id = 1");
       if (result.rows.length === 0) {
         // Return default empty object if table is somehow empty

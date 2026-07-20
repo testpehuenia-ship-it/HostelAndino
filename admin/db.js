@@ -115,7 +115,7 @@ window.db = {
   
   init: async () => {
     try {
-      const res = await fetch('/api/data');
+      const res = await fetch('/api/data?t=' + new Date().getTime());
       if (res.ok) {
         const data = await res.json();
         if (Object.keys(data).length > 0) {
