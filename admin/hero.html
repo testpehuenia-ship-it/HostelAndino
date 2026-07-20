@@ -425,8 +425,11 @@
       document.getElementById('preview-bg').style.backgroundPosition = `${imgX}% ${imgY}%`;
 
       // Title
+      const pr = document.getElementById('preview-frame').getBoundingClientRect();
+      const scale = pr.width / (activeTab === 'pc' ? 1920 : 1080);
+      
       const pT = document.getElementById('preview-title-box'), pTp = document.getElementById('preview-title-text'), pTr = document.getElementById('preview-title-rotator');
-      pTp.innerText = title; pTp.style.fontFamily = `'${font}',serif`; pTp.style.fontSize = `${sz}px`; pTp.style.color = tColor;
+      pTp.innerText = title; pTp.style.fontFamily = `'${font}',serif`; pTp.style.fontSize = `${sz * scale}px`; pTp.style.color = tColor;
       applyBoxStyle(pT, pTr, tL, tT, tW, tH, tRot);
       pT.style.backgroundColor = hexToRgba(bgColor, bgOp);
       pT.style.padding = bgOp > 0 ? (activeTab === 'pc' ? '0.5rem 1.5rem' : '0.3rem 0.8rem') : '4px 8px';
@@ -436,7 +439,7 @@
       const pS = document.getElementById('preview-sub-box'), pSp = document.getElementById('preview-sub-text'), pSr = document.getElementById('preview-sub-rotator');
       pSp.innerText = subtitle; pSp.style.color = tColor;
       // Note: Subtitle uses a fixed smaller font factor based on main font size or could be static. We'll use static proportional size.
-      pSp.style.fontSize = activeTab === 'pc' ? '12px' : '8px'; 
+      pSp.style.fontSize = `${(activeTab === 'pc' ? 12 : 8) * scale}px`; 
       applyBoxStyle(pS, pSr, sL, sT, sW, sH, sRot);
     };
 
