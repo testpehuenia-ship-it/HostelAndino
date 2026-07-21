@@ -200,7 +200,7 @@
 </section>
 
 <!-- Booking Search Bar (WhatsApp) -->
-<section id="buscador-reserva" class="relative z-20 -mt-20 md:-mt-28 mb-16 px-4 md:px-margin-desktop w-full max-w-6xl mx-auto">
+<section id="buscador-reserva" class="relative z-20 mt-4 md:mt-8 mb-16 px-4 md:px-margin-desktop w-full max-w-6xl mx-auto">
   <div class="bg-[#e6d5c1] p-6 md:p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white/60 backdrop-blur-md relative overflow-hidden">
     <!-- Decorative highlight -->
     <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
@@ -1154,7 +1154,7 @@
             const opcionalesList = document.getElementById('servicios-opcionales-list');
             if (opcionalesList && data.bannerOpcionales) {
                 const bannerDiv = document.getElementById('banner-opcionales-container');
-                if (data.bannerOpcionales.visible) {
+                if (data.bannerOpcionales.visible && data.bannerOpcionales.src && data.bannerOpcionales.src.trim() !== '') {
                     if (bannerDiv) {
                         bannerDiv.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`;
                         bannerDiv.style.display = 'block';
