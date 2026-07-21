@@ -302,6 +302,7 @@
 
       selectedLayerId = currentSlide.texts.length > 0 ? currentSlide.texts[0].id : null;
       renderLayersList();
+      loadSelectedLayerIntoForm();
       updateLivePreview();
     };
     
@@ -321,12 +322,12 @@
       `).join('');
       
       document.getElementById('layer-editor').classList.remove('hidden');
-      loadSelectedLayerIntoForm();
     }
     
     window.selectLayer = function(id) {
       selectedLayerId = id;
       renderLayersList();
+      loadSelectedLayerIntoForm();
       updateLivePreview();
     };
     
@@ -340,6 +341,7 @@
       });
       selectedLayerId = nextId;
       renderLayersList();
+      loadSelectedLayerIntoForm();
       updateLivePreview();
     };
     
@@ -348,6 +350,7 @@
       currentSlide.texts = currentSlide.texts.filter(t => t.id !== selectedLayerId);
       selectedLayerId = currentSlide.texts.length > 0 ? currentSlide.texts[0].id : null;
       renderLayersList();
+      loadSelectedLayerIntoForm();
       updateLivePreview();
     };
     
