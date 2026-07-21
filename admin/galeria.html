@@ -118,16 +118,16 @@
 <section class="mb-16">
   <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-8">
     <div>
-      <h3 class="font-headline-md text-headline-md text-primary mb-1">Banner Servicios Opcionales (Desayuno)</h3>
+      <h3 class="font-headline-md text-headline-md text-primary mb-1">Banners Servicios Opcionales</h3>
       <p class="text-label-sm text-secondary tracking-wide uppercase">Tamaño recomendado: 1200x800px (Desktop) y 800x600px (Móvil).<br>Formatos: JPG, PNG, WEBP (Max 5MB)</p>
     </div>
     <input type="file" id="banner-file-input" accept="image/*" class="hidden" />
     <button id="btn-upload-banner" class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 self-start md:self-auto">
-      <span class="material-symbols-outlined text-[18px]">upload</span>
-      Subir Banner
+      <span class="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+      Añadir Banner
     </button>
   </div>
-  <div id="banner-preview-container" class="relative group overflow-hidden rounded-xl bg-surface-container custom-shadow w-full">
+  <div id="banner-preview-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
     <!-- Se cargará dinámicamente -->
   </div>
 </section>
@@ -338,35 +338,51 @@
     const container = document.getElementById('banner-preview-container');
     if (!container || !data.bannerOpcionales) return;
     
-    const banner = data.bannerOpcionales;
-    const isChecked = banner.visible ? 'checked' : '';
-    const toggleText = banner.visible ? 'Visible' : 'Oculto';
-    const visibleClass = banner.visible ? '' : 'opacity-60 grayscale';
+    const data = window.db.getData();
+    if (!data.bannerOpcionales || !Array.isArray(data.bannerOpcionales)) return;
     
-    container.innerHTML = `
-      <div class="relative w-full h-full min-h-[200px] ${visibleClass}">
-        <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="${banner.src}" alt="Banner Servicios Opcionales" />
-        <div class="absolute inset-0 bg-primary/20 flex flex-col justify-end p-4">
-          <div class="flex justify-end">
-            <div class="flex flex-col items-end bg-background/90 p-2 rounded shadow-md">
-              <label class="inline-flex items-center cursor-pointer">
-                <input ${isChecked} onchange="toggleBannerVisibility(this)" class="hidden" type="checkbox"/>
-                <div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
-                  <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
-                </div>
-              </label>
-              <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
+    container.innerHTML = data.bannerOpcionales.map(banner => {
+      const isChecked = banner.visible !== false ? 'checked' : '';
+      const toggleText = banner.visible !== false ? 'Visible' : 'Oculto';
+      const visibleClass = banner.visible !== false ? '' : 'opacity-60 grayscale';
+      
+      return `
+        <div class="relative w-full aspect-[16/9] ${visibleClass} rounded-xl overflow-hidden custom-shadow">
+          <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" src="${banner.src}" alt="Banner Servicios Opcionales" />
+          <div class="absolute inset-0 bg-primary/20 flex flex-col justify-end p-4">
+            <div class="flex justify-between items-end">
+              <button type="button" onclick="deleteBanner(${banner.id})" class="bg-error/90 text-on-error p-2 rounded shadow-md hover:bg-error transition-colors flex items-center justify-center" title="Eliminar Banner">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+              </button>
+              <div class="flex flex-col items-end bg-background/90 p-2 rounded shadow-md">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input ${isChecked} onchange="toggleBannerVisibility(${banner.id}, this)" class="hidden" type="checkbox"/>
+                  <div class="w-10 h-5 bg-outline-variant rounded-full relative transition-colors switch-label">
+                    <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform switch-dot"></div>
+                  </div>
+                </label>
+                <span class="text-[10px] text-secondary mt-1 uppercase tracking-tighter">${toggleText}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
+    }).join('') || '<p class="text-secondary text-sm italic col-span-full">No hay banners subidos.</p>';
   }
   
-  window.toggleBannerVisibility = function(cb) {
+  window.toggleBannerVisibility = function(id, cb) {
     const data = window.db.getData();
     if (!data.bannerOpcionales) return;
-    data.bannerOpcionales.visible = cb.checked;
+    const banner = data.bannerOpcionales.find(b => b.id === id);
+    if (banner) banner.visible = cb.checked;
+    window.db.saveData(data);
+    renderBanner();
+  };
+
+  window.deleteBanner = function(id) {
+    if(!confirm('¿Eliminar este banner?')) return;
+    const data = window.db.getData();
+    data.bannerOpcionales = data.bannerOpcionales.filter(b => b.id !== id);
     window.db.saveData(data);
     renderBanner();
   };
@@ -556,7 +572,7 @@
         const dataUrl = canvas.toDataURL('image/webp', 0.8);
 
         try {
-          const sigRes = await fetch('/api/upload');
+          const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
           const sigData = await sigRes.json();
 
           const formData = new FormData();
@@ -574,8 +590,14 @@
           if (cloudData.error) throw new Error(cloudData.error.message);
 
           const data = window.db.getData();
-          if (!data.bannerOpcionales) data.bannerOpcionales = { visible: true };
-          data.bannerOpcionales.src = cloudData.secure_url;
+          if (!data.bannerOpcionales || !Array.isArray(data.bannerOpcionales)) data.bannerOpcionales = [];
+          const nextId = data.bannerOpcionales.length > 0 ? Math.max(...data.bannerOpcionales.map(b => b.id)) + 1 : 1;
+          
+          data.bannerOpcionales.push({
+            id: nextId,
+            src: cloudData.secure_url,
+            visible: true
+          });
           
           window.db.saveData(data);
           renderBanner();

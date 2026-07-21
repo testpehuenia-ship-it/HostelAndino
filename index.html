@@ -256,8 +256,9 @@
   </div>
 </section>
 
+
 <!-- 2. El Hostel Section -->
-<section class="pt-8 pb-32 md:pt-16 bg-background" id="hostel">
+<section class="pt-8 pb-16 md:pt-16 bg-background" id="hostel">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
 <div class="md:col-span-5 mb-12 md:mb-0">
@@ -288,7 +289,7 @@
 </div>
 </section>
 <!-- 3. Servicios Premium Section -->
-<section class="py-32 bg-[#e6d5c1]" id="servicios">
+<section class="py-16 bg-[#e6d5c1]" id="servicios">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
   
   <!-- 1. NUESTROS SERVICIOS -->
@@ -608,7 +609,7 @@
 </div>
 </section>
 <!-- 4. Galería Section: Bento/Mosaic Grid -->
-<section class="py-32 bg-background" id="galeria">
+<section class="py-16 bg-background" id="galeria">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
 <div>
@@ -632,9 +633,9 @@
   </button>
 </div>
 <!-- 5. Videos: Carousel -->
-<section class="py-24 bg-surface-container-highest overflow-hidden">
-<div class="px-margin-mobile md:px-margin-desktop mb-12">
-<h2 class="font-headline-md text-primary text-center">Historias en Movimiento</h2>
+<section class="py-12 bg-surface-container-highest overflow-hidden">
+<div class="px-margin-mobile md:px-margin-desktop mb-8">
+<h2 class="font-headline-lg text-4xl md:text-5xl text-primary text-center mb-2 font-bold">Historias en Movimiento</h2>
 </div>
 <div class="relative w-full overflow-hidden flex">
 <div id="videos-public-scroll" class="flex infinite-scroll gap-6">
@@ -643,7 +644,7 @@
 </div>
 </section>
 <!-- 6. Tarifas Section -->
-<section class="py-32 bg-[#e6d5c1]" id="tarifas">
+<section class="py-16 bg-[#e6d5c1]" id="tarifas">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="text-center mb-16">
 <span class="font-label-sm text-primary uppercase tracking-widest mb-4 block">Planificá tu Estadía</span>
@@ -678,7 +679,7 @@
 </div>
 </section>
 <!-- 7. Contacto & Footer Section -->
-<section class="py-32 bg-surface-container" id="contacto">
+<section class="py-16 bg-surface-container" id="contacto">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
 <!-- Contact Form -->
@@ -1152,21 +1153,24 @@
 
             // 4.c Banner Opcionales
             const opcionalesList = document.getElementById('servicios-opcionales-list');
-            if (opcionalesList && data.bannerOpcionales) {
-                const bannerDiv = document.getElementById('banner-opcionales-container');
-                if (data.bannerOpcionales.visible && data.bannerOpcionales.src && data.bannerOpcionales.src.trim() !== '') {
-                    if (bannerDiv) {
-                        bannerDiv.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`;
-                        bannerDiv.style.display = 'block';
+            if (opcionalesList && data.bannerOpcionales && Array.isArray(data.bannerOpcionales)) {
+                let bannerDiv = document.getElementById('banner-opcionales-container');
+                const visibleBanners = data.bannerOpcionales.filter(b => b.visible && b.src && b.src.trim() !== '');
+                
+                if (visibleBanners.length > 0) {
+                    if (!bannerDiv) {
+                        bannerDiv = document.createElement('div');
+                        bannerDiv.id = 'banner-opcionales-container';
+                        bannerDiv.className = 'w-full mb-24 mt-8 flex flex-col gap-6';
+                        opcionalesList.parentNode.insertBefore(bannerDiv, opcionalesList.nextSibling);
                     } else {
-                        const newBanner = document.createElement('div');
-                        newBanner.id = 'banner-opcionales-container';
-                        newBanner.className = 'w-full mb-24 mt-8';
-                        newBanner.innerHTML = `<img src="${data.bannerOpcionales.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`;
-                        opcionalesList.parentNode.insertBefore(newBanner, opcionalesList.nextSibling);
+                        bannerDiv.className = 'w-full mb-24 mt-8 flex flex-col gap-6';
+                        bannerDiv.style.display = 'flex';
                     }
+                    bannerDiv.innerHTML = visibleBanners.map(banner => `<img src="${banner.src}" alt="Banner Servicios Opcionales" class="w-full rounded-xl shadow-lg border border-outline-variant/30 transition-transform duration-500 hover:scale-[1.005]" loading="lazy" />`).join('');
                 } else if (bannerDiv) {
                     bannerDiv.style.display = 'none';
+                    bannerDiv.innerHTML = '';
                 }
             }
 

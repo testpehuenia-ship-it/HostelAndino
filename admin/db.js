@@ -237,10 +237,14 @@ window.db = {
     });
 
     if (!parsed.bannerOpcionales) {
-      parsed.bannerOpcionales = {
-        src: "/desayunoclasico.webp",
-        visible: true
-      };
+      parsed.bannerOpcionales = [];
+      changed = true;
+    } else if (!Array.isArray(parsed.bannerOpcionales)) {
+      parsed.bannerOpcionales = [{
+        id: 1,
+        src: parsed.bannerOpcionales.src || '',
+        visible: parsed.bannerOpcionales.visible !== undefined ? parsed.bannerOpcionales.visible : true
+      }];
       changed = true;
     }
     
