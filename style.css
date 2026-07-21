@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Set base color scheme for native inputs */
+  color-scheme: light;
+}
+
+/* Customize native date pickers for WebKit/Blink (Chrome/Android) */
+input[type="date"] {
+  /* Use the primary brand color (#28351c) for the calendar UI */
+  accent-color: #28351c;
+}
+
+/* Colorize the calendar icon itself */
+::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.8;
+}
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
