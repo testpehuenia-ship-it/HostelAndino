@@ -104,49 +104,43 @@
               </div>
             </div>
 
-            <!-- Title & Subtitle Text -->
-            <div class="grid grid-cols-2 gap-3">
-              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Título</label><input id="edit-slide-title" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="text" oninput="updateLivePreview()" /></div>
-              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Subtítulo</label><input id="edit-slide-subtitle" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="text" oninput="updateLivePreview()" /></div>
-            </div>
-
-            <!-- Font / Size -->
-            <div class="grid grid-cols-2 gap-3">
-              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tipografía</label>
-                <select id="edit-slide-font" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" onchange="updateLivePreview()">
-                  <option value="Playfair Display">Playfair Display</option><option value="Manrope">Manrope</option><option value="Lora">Lora</option><option value="Outfit">Outfit</option>
-                </select></div>
-              <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tamaño de Letra</label><input id="edit-slide-size" class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="number" min="8" max="150" oninput="updateLivePreview()" /></div>
-            </div>
-
-            <!-- Text Rotation -->
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Rotación Título: <span id="val-rot-title">0</span>°</label>
-                <input id="edit-title-rotation" class="w-full accent-primary" type="range" min="0" max="360" value="0" oninput="document.getElementById('val-rot-title').innerText=this.value; updateLivePreview();" />
-              </div>
-              <div>
-                <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Rotación Sub: <span id="val-rot-sub">0</span>°</label>
-                <input id="edit-sub-rotation" class="w-full accent-primary" type="range" min="0" max="360" value="0" oninput="document.getElementById('val-rot-sub').innerText=this.value; updateLivePreview();" />
-              </div>
-            </div>
-
-            <!-- Hidden position/size data -->
-            <input type="hidden" id="edit-title-left" value="50"><input type="hidden" id="edit-title-top" value="45">
-            <input type="hidden" id="edit-title-w" value="0"><input type="hidden" id="edit-title-h" value="0">
-            <input type="hidden" id="edit-sub-left" value="50"><input type="hidden" id="edit-sub-top" value="35">
-            <input type="hidden" id="edit-sub-w" value="0"><input type="hidden" id="edit-sub-h" value="0">
-
-            <!-- Colors -->
+            
+            <!-- Text Layers Manager -->
             <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
-              <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-2">Colores</h4>
-              <div class="grid grid-cols-3 gap-3">
-                <div><label class="block text-[10px] uppercase text-secondary mb-1">Texto</label><input id="edit-slide-text-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateLivePreview()" /></div>
-                <div><label class="block text-[10px] uppercase text-secondary mb-1">Fondo</label><input id="edit-slide-bg-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateLivePreview()" /></div>
-                <div><label class="block text-[10px] uppercase text-secondary mb-1">Opacidad: <span id="val-bg-opacity">0</span></label><input id="edit-slide-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateLivePreview();" /></div>
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider">Capas de Texto</h4>
+                <div class="flex gap-1">
+                  <button type="button" onclick="addTextLayer()" class="bg-primary/10 text-primary px-2 py-1 rounded text-[10px] uppercase font-bold hover:bg-primary/20">+ Añadir</button>
+                  <button type="button" onclick="deleteTextLayer()" class="bg-error/10 text-error px-2 py-1 rounded text-[10px] uppercase font-bold hover:bg-error/20">- Eliminar</button>
+                </div>
+              </div>
+              <div id="layers-list" class="flex flex-col gap-1 max-h-32 overflow-y-auto mb-3"></div>
+              
+              <!-- Editor for selected layer -->
+              <div id="layer-editor" class="hidden flex-col gap-3 border-t border-outline-variant/30 pt-3">
+                <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Contenido del Texto</label><input id="edit-layer-text" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="text" oninput="updateSelectedLayer()" /></div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                  <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tipografía</label>
+                    <select id="edit-layer-font" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" onchange="updateSelectedLayer()">
+                      <option value="Playfair Display">Playfair Display</option><option value="Manrope">Manrope</option><option value="Lora">Lora</option><option value="Outfit">Outfit</option>
+                    </select></div>
+                  <div><label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Tamaño</label><input id="edit-layer-size" class="w-full bg-surface-bright border-none focus:ring-2 focus:ring-primary/20 rounded-lg p-2.5 text-sm text-primary" type="number" min="8" max="150" oninput="updateSelectedLayer()" /></div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] uppercase tracking-wider text-secondary mb-1">Rotación: <span id="val-rot">0</span>°</label>
+                  <input id="edit-layer-rotation" class="w-full accent-primary" type="range" min="0" max="360" value="0" oninput="document.getElementById('val-rot').innerText=this.value; updateSelectedLayer();" />
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                  <div><label class="block text-[10px] uppercase text-secondary mb-1">Texto</label><input id="edit-layer-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#ffffff" oninput="updateSelectedLayer()" /></div>
+                  <div><label class="block text-[10px] uppercase text-secondary mb-1">Fondo</label><input id="edit-layer-bg-color" class="w-full h-9 bg-transparent border border-outline-variant/30 rounded cursor-pointer" type="color" value="#000000" oninput="updateSelectedLayer()" /></div>
+                  <div><label class="block text-[10px] uppercase text-secondary mb-1">Opacidad: <span id="val-bg-opacity">0</span></label><input id="edit-layer-bg-opacity" class="w-full accent-primary" type="range" min="0" max="100" value="0" oninput="document.getElementById('val-bg-opacity').innerText=(this.value/100).toFixed(2); updateSelectedLayer();" /></div>
+                </div>
               </div>
             </div>
-            <!-- Image position -->
+<!-- Image position -->
             <div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
               <h4 class="font-bold text-primary text-[11px] uppercase tracking-wider mb-2">Encuadre Foto</h4>
               <div class="grid grid-cols-2 gap-3">
@@ -180,23 +174,7 @@
             <div id="preview-bg" class="absolute inset-0 bg-cover bg-center"></div>
             <div class="absolute inset-0 bg-black/10"></div>
             
-            <div id="preview-title-box" class="text-box z-20" onclick="selectBox('title')">
-              <div id="preview-title-rotator">
-                <h1 id="preview-title-text" class="font-bold leading-tight text-white pointer-events-none">Título</h1>
-              </div>
-              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
-              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
-              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
-            </div>
-            
-            <div id="preview-sub-box" class="text-box z-20" onclick="selectBox('sub')">
-              <div id="preview-sub-rotator">
-                <span id="preview-sub-text" class="uppercase tracking-[0.2em] text-xs text-white opacity-90 pointer-events-none">Subtítulo</span>
-              </div>
-              <div class="handle handle-tl" data-dir="tl"></div><div class="handle handle-tc" data-dir="tc"></div><div class="handle handle-tr" data-dir="tr"></div>
-              <div class="handle handle-ml" data-dir="ml"></div><div class="handle handle-mr" data-dir="mr"></div>
-              <div class="handle handle-bl" data-dir="bl"></div><div class="handle handle-bc" data-dir="bc"></div><div class="handle handle-br" data-dir="br"></div>
-            </div>
+            <div id="preview-layers-container" class="absolute inset-0"></div>
           </div>
           
         </div>
@@ -236,6 +214,10 @@
       window.db.saveData(d);
     }
 
+    
+    let currentSlide = null;
+    let selectedLayerId = null;
+
     window.switchTab = function(tab) {
       activeTab = tab;
       
@@ -268,7 +250,7 @@
       document.getElementById('slides-list').innerHTML = slidesData.map((s, i) => `
         <div onclick="editSlide(${s.id})" class="cursor-pointer bg-surface-container-low hover:bg-surface-container-high rounded-xl p-3 border border-outline-variant/20 transition-all text-center flex flex-col items-center gap-1.5 relative group">
           <div class="w-full ${activeTab === 'pc' ? 'aspect-video' : 'aspect-[9/16]'} bg-cover bg-center rounded-lg border border-outline-variant/30" style="background-image: url('${s.src}')"></div>
-          <span class="text-[10px] font-bold text-primary truncate w-full">${s.title || 'Slide ' + (i+1)}</span>
+          <span class="text-[10px] font-bold text-primary truncate w-full">${s.texts && s.texts.length > 0 ? s.texts[0].content : 'Slide ' + (i+1)}</span>
         </div>
       `).join('');
       
@@ -283,61 +265,122 @@
       const nextId = slidesData.length > 0 ? Math.max(...slidesData.map(s => s.id)) + 1 : 1;
       
       const newSlide = {
-        id: nextId, src: "", template: 0, title: "Nueva Diapositiva", subtitle: "Hostel Andino", 
-        fontSize: activeTab === 'pc' ? 72 : 36, fontStyle: "Playfair Display", 
-        titleLeft: 50, titleTop: 45, titleW: 0, titleH: 0, titleRotation: 0,
-        subLeft: 50, subTop: 35, subW: 0, subH: 0, subRotation: 0,
-        textColor: "#ffffff", textBgColor: "#000000", textBgOpacity: 0, imgPosX: 50, imgPosY: 50 
+        id: nextId, src: "", template: 0, 
+        texts: [{
+          id: 1, type: 'custom', content: "Nueva Diapositiva", font: "Playfair Display", 
+          size: activeTab === 'pc' ? 72 : 36, color: "#ffffff", bgColor: "#000000", bgOpacity: 0,
+          left: 50, top: 45, w: 0, h: 0, rot: 0
+        }],
+        imgPosX: 50, imgPosY: 50 
       };
       slidesData.push(newSlide);
       setActiveSlides(slidesData);
       renderSlidesList(); 
       editSlide(nextId);
       
-      // Auto-trigger file upload for the new slide
       setTimeout(() => document.getElementById('slide-file-input').click(), 100);
     };
 
     window.editSlide = function(id) {
       const slidesData = getActiveSlides();
-      const s = slidesData.find(x => x.id === id);
-      if (!s) return;
+      currentSlide = slidesData.find(x => x.id === id);
+      if (!currentSlide) return;
+      
+      if (!currentSlide.texts) currentSlide.texts = [];
+      
       document.getElementById('slide-editor-card').classList.remove('hidden');
-      document.getElementById('edit-slide-id').value = s.id;
+      document.getElementById('edit-slide-id').value = currentSlide.id;
       
       const img = document.getElementById('edit-slide-preview'), noImg = document.getElementById('edit-slide-no-img');
-      if (s.src) { img.src = s.src; img.classList.remove('hidden'); noImg.classList.add('hidden'); }
+      if (currentSlide.src) { img.src = currentSlide.src; img.classList.remove('hidden'); noImg.classList.add('hidden'); }
       else { img.classList.add('hidden'); noImg.classList.remove('hidden'); }
       
-      document.getElementById('edit-slide-title').value = s.title || '';
-      document.getElementById('edit-slide-subtitle').value = s.subtitle || '';
-      document.getElementById('edit-slide-font').value = s.fontStyle || 'Playfair Display';
-      document.getElementById('edit-slide-size').value = s.fontSize || (activeTab === 'pc' ? 72 : 36);
-      
-      document.getElementById('edit-title-left').value = s.titleLeft ?? 50;
-      document.getElementById('edit-title-top').value = s.titleTop ?? 45;
-      document.getElementById('edit-title-w').value = s.titleW ?? 0;
-      document.getElementById('edit-title-h').value = s.titleH ?? 0;
-      document.getElementById('edit-title-rotation').value = s.titleRotation || 0;
-      document.getElementById('val-rot-title').innerText = s.titleRotation || 0;
-      
-      document.getElementById('edit-sub-left').value = s.subLeft ?? 50;
-      document.getElementById('edit-sub-top').value = s.subTop ?? 35;
-      document.getElementById('edit-sub-w').value = s.subW ?? 0;
-      document.getElementById('edit-sub-h').value = s.subH ?? 0;
-      document.getElementById('edit-sub-rotation').value = s.subRotation || 0;
-      document.getElementById('val-rot-sub').innerText = s.subRotation || 0;
-      
-      document.getElementById('edit-slide-text-color').value = s.textColor || '#ffffff';
-      document.getElementById('edit-slide-bg-color').value = s.textBgColor || '#000000';
-      document.getElementById('edit-slide-bg-opacity').value = s.textBgOpacity ?? 0;
-      document.getElementById('val-bg-opacity').innerText = ((s.textBgOpacity ?? 0) / 100).toFixed(2);
-      
-      document.getElementById('edit-slide-img-x').value = s.imgPosX ?? 50;
-      document.getElementById('val-img-x').innerText = s.imgPosX ?? 50;
-      document.getElementById('edit-slide-img-y').value = s.imgPosY ?? 50;
-      document.getElementById('val-img-y').innerText = s.imgPosY ?? 50;
+      document.getElementById('edit-slide-img-x').value = currentSlide.imgPosX ?? 50;
+      document.getElementById('val-img-x').innerText = currentSlide.imgPosX ?? 50;
+      document.getElementById('edit-slide-img-y').value = currentSlide.imgPosY ?? 50;
+      document.getElementById('val-img-y').innerText = currentSlide.imgPosY ?? 50;
 
+      selectedLayerId = currentSlide.texts.length > 0 ? currentSlide.texts[0].id : null;
+      renderLayersList();
+      updateLivePreview();
+    };
+    
+    function renderLayersList() {
+      if (!currentSlide) return;
+      const list = document.getElementById('layers-list');
+      if (currentSlide.texts.length === 0) {
+        list.innerHTML = '<p class="text-[10px] text-secondary italic">No hay capas de texto. Añade una.</p>';
+        document.getElementById('layer-editor').classList.add('hidden');
+        return;
+      }
+      
+      list.innerHTML = currentSlide.texts.map((t, i) => `
+        <div onclick="selectLayer(${t.id})" class="cursor-pointer p-2 rounded text-[11px] truncate transition-colors border border-transparent ${selectedLayerId === t.id ? 'bg-primary/10 text-primary border-primary/30 font-bold' : 'bg-surface-bright text-primary hover:bg-surface-container'}">
+          ${t.content || ('Texto ' + (i+1))}
+        </div>
+      `).join('');
+      
+      document.getElementById('layer-editor').classList.remove('hidden');
+      loadSelectedLayerIntoForm();
+    }
+    
+    window.selectLayer = function(id) {
+      selectedLayerId = id;
+      renderLayersList();
+      updateLivePreview();
+    };
+    
+    window.addTextLayer = function() {
+      if (!currentSlide) return;
+      const nextId = currentSlide.texts.length > 0 ? Math.max(...currentSlide.texts.map(t => t.id)) + 1 : 1;
+      currentSlide.texts.push({
+          id: nextId, type: 'custom', content: "Nuevo Texto", font: "Playfair Display", 
+          size: activeTab === 'pc' ? 36 : 18, color: "#ffffff", bgColor: "#000000", bgOpacity: 0,
+          left: 50, top: 50, w: 0, h: 0, rot: 0
+      });
+      selectedLayerId = nextId;
+      renderLayersList();
+      updateLivePreview();
+    };
+    
+    window.deleteTextLayer = function() {
+      if (!currentSlide || !selectedLayerId) return;
+      currentSlide.texts = currentSlide.texts.filter(t => t.id !== selectedLayerId);
+      selectedLayerId = currentSlide.texts.length > 0 ? currentSlide.texts[0].id : null;
+      renderLayersList();
+      updateLivePreview();
+    };
+    
+    function loadSelectedLayerIntoForm() {
+      if (!currentSlide || !selectedLayerId) return;
+      const t = currentSlide.texts.find(x => x.id === selectedLayerId);
+      if (!t) return;
+      
+      document.getElementById('edit-layer-text').value = t.content;
+      document.getElementById('edit-layer-font').value = t.font;
+      document.getElementById('edit-layer-size').value = t.size;
+      document.getElementById('edit-layer-rotation').value = t.rot || 0;
+      document.getElementById('val-rot').innerText = t.rot || 0;
+      document.getElementById('edit-layer-color').value = t.color || '#ffffff';
+      document.getElementById('edit-layer-bg-color').value = t.bgColor || '#000000';
+      document.getElementById('edit-layer-bg-opacity').value = t.bgOpacity ?? 0;
+      document.getElementById('val-bg-opacity').innerText = ((t.bgOpacity ?? 0) / 100).toFixed(2);
+    }
+    
+    window.updateSelectedLayer = function() {
+      if (!currentSlide || !selectedLayerId) return;
+      const t = currentSlide.texts.find(x => x.id === selectedLayerId);
+      if (!t) return;
+      
+      t.content = document.getElementById('edit-layer-text').value;
+      t.font = document.getElementById('edit-layer-font').value;
+      t.size = parseInt(document.getElementById('edit-layer-size').value) || (activeTab === 'pc' ? 72 : 36);
+      t.rot = parseInt(document.getElementById('edit-layer-rotation').value) || 0;
+      t.color = document.getElementById('edit-layer-color').value;
+      t.bgColor = document.getElementById('edit-layer-bg-color').value;
+      t.bgOpacity = parseInt(document.getElementById('edit-layer-bg-opacity').value) || 0;
+      
+      renderLayersList();
       updateLivePreview();
     };
 
@@ -360,140 +403,125 @@
       const file = e.target.files[0]; if (!file) return;
       const w = activeTab === 'pc' ? 1920 : 1080;
       const h = activeTab === 'pc' ? 1080 : 1920;
-      
       compressImage(file, w, h, dataUrl => {
         const el = document.getElementById('edit-slide-preview');
         el.src = dataUrl; el.classList.remove('hidden');
         document.getElementById('edit-slide-no-img').classList.add('hidden');
         updateLivePreview();
       });
-      
-      // Reset input so the same file can be selected again
       e.target.value = '';
     };
 
     function hexToRgba(hex, a) { hex = (hex||'#000').replace('#',''); return `rgba(${parseInt(hex.substring(0,2),16)},${parseInt(hex.substring(2,4),16)},${parseInt(hex.substring(4,6),16)},${a})`; }
 
-    window.selectBox = function(type) {
-      selectedBoxType = type;
-      document.querySelectorAll('.text-box').forEach(b => b.classList.remove('selected'));
-      const id = type === 'title' ? 'preview-title-box' : 'preview-sub-box';
-      document.getElementById(id).classList.add('selected');
-    };
-
-    function applyBoxStyle(box, rotator, left, top, w, h, rot) {
-      box.style.left = `${left}%`;
-      box.style.top = `${top}%`;
-      // We apply translation to the box, and rotation to the inner rotator container
-      // This separates positioning from rotation so they don't fight each other
-      box.style.transform = `translate(-${left}%,-${top}%)`;
-      box.style.width = w > 0 ? `${w}%` : 'auto';
-      box.style.height = h > 0 ? `${h}px` : 'auto';
-      box.style.whiteSpace = w > 0 ? 'normal' : 'nowrap';
-      box.style.wordBreak = w > 0 ? 'break-word' : 'normal';
-      
-      if(rotator) {
-         rotator.style.transform = `rotate(${rot}deg)`;
-      }
-    }
-
     window.updateLivePreview = function() {
+      if (!currentSlide) return;
       const bgSrc = document.getElementById('edit-slide-preview').src || '';
-      const title = document.getElementById('edit-slide-title').value || '';
-      const subtitle = document.getElementById('edit-slide-subtitle').value || '';
-      const font = document.getElementById('edit-slide-font').value;
-      const sz = document.getElementById('edit-slide-size').value || (activeTab === 'pc' ? 72 : 36);
+      const imgX = document.getElementById('edit-slide-img-x').value || 50;
+      const imgY = document.getElementById('edit-slide-img-y').value || 50;
       
-      const tL = parseFloat(document.getElementById('edit-title-left').value);
-      const tT = parseFloat(document.getElementById('edit-title-top').value);
-      const tW = parseFloat(document.getElementById('edit-title-w').value);
-      const tH = parseFloat(document.getElementById('edit-title-h').value);
-      const tRot = parseFloat(document.getElementById('edit-title-rotation').value) || 0;
-      
-      const sL = parseFloat(document.getElementById('edit-sub-left').value);
-      const sT = parseFloat(document.getElementById('edit-sub-top').value);
-      const sW = parseFloat(document.getElementById('edit-sub-w').value);
-      const sH = parseFloat(document.getElementById('edit-sub-h').value);
-      const sRot = parseFloat(document.getElementById('edit-sub-rotation').value) || 0;
-      
-      const tColor = document.getElementById('edit-slide-text-color').value;
-      const bgColor = document.getElementById('edit-slide-bg-color').value;
-      const bgOp = parseFloat(document.getElementById('edit-slide-bg-opacity').value) / 100;
-      const imgX = document.getElementById('edit-slide-img-x').value, imgY = document.getElementById('edit-slide-img-y').value;
+      currentSlide.imgPosX = parseInt(imgX);
+      currentSlide.imgPosY = parseInt(imgY);
 
       document.getElementById('preview-bg').style.backgroundImage = `url('${bgSrc}')`;
       document.getElementById('preview-bg').style.backgroundPosition = `${imgX}% ${imgY}%`;
 
-      // Title
+      const container = document.getElementById('preview-layers-container');
       const pr = document.getElementById('preview-frame').getBoundingClientRect();
       const scale = pr.width / (activeTab === 'pc' ? 1920 : 1080);
       
-      const pT = document.getElementById('preview-title-box'), pTp = document.getElementById('preview-title-text'), pTr = document.getElementById('preview-title-rotator');
-      pTp.innerText = title; pTp.style.fontFamily = `'${font}',serif`; pTp.style.fontSize = `${sz * scale}px`; pTp.style.color = tColor;
-      applyBoxStyle(pT, pTr, tL, tT, tW, tH, tRot);
-      pT.style.backgroundColor = hexToRgba(bgColor, bgOp);
-      pT.style.padding = bgOp > 0 ? (activeTab === 'pc' ? '0.5rem 1.5rem' : '0.3rem 0.8rem') : '4px 8px';
-      pT.style.borderRadius = bgOp > 0 ? '0.75rem' : '0';
+      let html = '';
+      currentSlide.texts.forEach(t => {
+        const isSelected = t.id === selectedLayerId;
+        const fontSz = t.size * scale;
+        const op = (t.bgOpacity || 0) / 100;
+        const bg = hexToRgba(t.bgColor, op);
+        
+        let boxStyle = `position: absolute; z-index: 20; left: ${t.left}%; top: ${t.top}%; transform: translate(-${t.left}%,-${t.top}%); background-color: ${bg}; text-align: center; display: flex; align-items: center; justify-content: center; cursor: default;`;
+        boxStyle += t.w > 0 ? `width: ${t.w}%; white-space: normal; word-break: break-word;` : `width: auto; white-space: nowrap;`;
+        boxStyle += t.h > 0 ? `height: ${t.h}px;` : `height: auto;`;
+        
+        if (op > 0) {
+           boxStyle += activeTab === 'pc' ? `padding: 0.5rem 1.5rem; border-radius: 0.75rem;` : `padding: 4px 8px;`;
+        }
 
-      // Subtitle
-      const pS = document.getElementById('preview-sub-box'), pSp = document.getElementById('preview-sub-text'), pSr = document.getElementById('preview-sub-rotator');
-      pSp.innerText = subtitle; pSp.style.color = tColor;
-      // Note: Subtitle uses a fixed smaller font factor based on main font size or could be static. We'll use static proportional size.
-      pSp.style.fontSize = `${(activeTab === 'pc' ? 12 : 8) * scale}px`; 
-      applyBoxStyle(pS, pSr, sL, sT, sW, sH, sRot);
+        const innerStyle = `font-family: '${t.font}',serif; font-size: ${fontSz}px; color: ${t.color}; transform: rotate(${t.rot}deg);`;
+        
+        let handlesHtml = '';
+        if (isSelected) {
+            handlesHtml = `
+              <div class="handle handle-tl" data-dir="tl" style="display:block;"></div><div class="handle handle-tc" data-dir="tc" style="display:block;"></div><div class="handle handle-tr" data-dir="tr" style="display:block;"></div>
+              <div class="handle handle-ml" data-dir="ml" style="display:block;"></div><div class="handle handle-mr" data-dir="mr" style="display:block;"></div>
+              <div class="handle handle-bl" data-dir="bl" style="display:block;"></div><div class="handle handle-bc" data-dir="bc" style="display:block;"></div><div class="handle handle-br" data-dir="br" style="display:block;"></div>
+            `;
+        }
+        
+        html += `
+          <div class="text-box ${isSelected ? 'selected' : ''}" style="${boxStyle}" data-id="${t.id}" onmousedown="if(event.button===2) { selectLayer(${t.id}); event.stopPropagation(); }">
+            <div style="${innerStyle}" class="pointer-events-none font-bold">${t.content}</div>
+            ${handlesHtml}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+      
+      bindWysiwygEvents();
     };
 
-    function initWYSIWYG(el, boxType) {
-      let isDragging = false, isResizing = false, resizeDir = '';
-      let startX, startY, startLeft, startTop, startFontSize, startW, startH;
+    let isDragging = false, isResizing = false, resizeDir = '';
+    let startX, startY, startLeft, startTop, startFontSize, startW, startH;
+    let activeEl = null;
 
-      el.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); });
-
-      el.addEventListener('mousedown', e => {
-        if (e.button === 2) {
-          selectBox(boxType);
-          if (e.target.classList.contains('handle')) return;
-          isDragging = true;
-          startX = e.clientX; startY = e.clientY;
-          const pr = el.parentElement.getBoundingClientRect();
-          const er = el.getBoundingClientRect();
-          startLeft = ((er.left - pr.left + er.width / 2) / pr.width) * 100;
-          startTop = ((er.top - pr.top + er.height / 2) / pr.height) * 100;
-          e.preventDefault();
-        }
+    function bindWysiwygEvents() {
+      const frame = document.getElementById('preview-frame');
+      frame.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); };
+      
+      const boxes = document.querySelectorAll('.text-box');
+      boxes.forEach(el => {
+        el.onmousedown = e => {
+          const id = parseInt(el.dataset.id);
+          if (e.button === 2) {
+            selectLayer(id);
+            if (e.target.classList.contains('handle')) return;
+            isDragging = true; activeEl = el;
+            startX = e.clientX; startY = e.clientY;
+            const pr = frame.getBoundingClientRect();
+            const er = el.getBoundingClientRect();
+            startLeft = ((er.left - pr.left + er.width / 2) / pr.width) * 100;
+            startTop = ((er.top - pr.top + er.height / 2) / pr.height) * 100;
+            e.preventDefault();
+          } else if (e.button === 0) {
+            if (e.target.classList.contains('handle')) {
+              selectLayer(id);
+              isResizing = true; activeEl = el;
+              resizeDir = e.target.dataset.dir;
+              startX = e.clientX; startY = e.clientY;
+              const t = currentSlide.texts.find(x => x.id === id);
+              startFontSize = t.size || 72;
+              const pr = frame.getBoundingClientRect();
+              const er = el.getBoundingClientRect();
+              startW = (er.width / pr.width) * 100; 
+              startH = er.height; 
+              e.preventDefault(); e.stopPropagation();
+            } else {
+              selectLayer(id);
+            }
+          }
+        };
       });
-
-      el.addEventListener('mousedown', e => {
-        if (e.button === 0 && e.target.classList.contains('handle')) {
-          selectBox(boxType);
-          isResizing = true;
-          resizeDir = e.target.dataset.dir;
-          startX = e.clientX; startY = e.clientY;
-          startFontSize = parseInt(document.getElementById('edit-slide-size').value) || 72;
-          const pr = el.parentElement.getBoundingClientRect();
-          const er = el.getBoundingClientRect();
-          startW = (er.width / pr.width) * 100; 
-          startH = er.height; 
-          e.preventDefault(); e.stopPropagation();
-        } else if (e.button === 0) {
-          selectBox(boxType);
-        }
-      });
-
-      const wId = boxType === 'title' ? 'edit-title-w' : 'edit-sub-w';
-      const hId = boxType === 'title' ? 'edit-title-h' : 'edit-sub-h';
-      const leftId = boxType === 'title' ? 'edit-title-left' : 'edit-sub-left';
-      const topId = boxType === 'title' ? 'edit-title-top' : 'edit-sub-top';
-
-      document.addEventListener('mousemove', e => {
-        const parent = el.parentElement;
-        if (!parent) return;
-        const pr = parent.getBoundingClientRect();
+    }
+    
+    document.addEventListener('mousemove', e => {
+        if (!isDragging && !isResizing) return;
+        const frame = document.getElementById('preview-frame');
+        const pr = frame.getBoundingClientRect();
+        const t = currentSlide.texts.find(x => x.id === selectedLayerId);
+        if (!t) return;
 
         if (isDragging) {
           const dx = e.clientX - startX, dy = e.clientY - startY;
-          document.getElementById(leftId).value = Math.max(5, Math.min(95, Math.round(startLeft + (dx / pr.width) * 100)));
-          document.getElementById(topId).value = Math.max(5, Math.min(95, Math.round(startTop + (dy / pr.height) * 100)));
+          t.left = Math.max(0, Math.min(100, Math.round(startLeft + (dx / pr.width) * 100)));
+          t.top = Math.max(0, Math.min(100, Math.round(startTop + (dy / pr.height) * 100)));
           updateLivePreview();
         }
 
@@ -503,33 +531,26 @@
           const isHorizontal = resizeDir === 'ml' || resizeDir === 'mr';
           const isVertical = resizeDir === 'tc' || resizeDir === 'bc';
 
-          if (isCorner && boxType === 'title') {
+          if (isCorner) {
             let delta = (dx + dy) / 2;
-            const factor = 0.3;
-            const newSize = Math.max(8, Math.min(200, Math.round(startFontSize + delta * factor)));
-            document.getElementById('edit-slide-size').value = newSize;
+            const factor = 0.5;
+            t.size = Math.max(8, Math.min(300, Math.round(startFontSize + delta * factor)));
+            document.getElementById('edit-layer-size').value = t.size;
           } else if (isHorizontal) {
             let widthDelta = resizeDir === 'mr' ? dx : -dx;
-            let newW = Math.max(10, Math.min(95, Math.round(startW + (widthDelta / pr.width) * 100)));
-            document.getElementById(wId).value = newW;
+            t.w = Math.max(5, Math.min(100, Math.round(startW + (widthDelta / pr.width) * 100)));
           } else if (isVertical) {
             let heightDelta = resizeDir === 'bc' ? dy : -dy;
-            let newH = Math.max(20, Math.round(startH + heightDelta));
-            document.getElementById(hId).value = newH;
+            t.h = Math.max(20, Math.round(startH + heightDelta));
           }
           updateLivePreview();
         }
-      });
+    });
 
-      document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
-    }
+    document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; activeEl = null; });
 
     window.saveSlide = async function(e) {
       if (e) e.preventDefault();
-      const id = parseInt(document.getElementById('edit-slide-id').value);
-      const slidesData = getActiveSlides();
-      let s = slidesData.find(x => x.id === id);
-      if (!s) { s = { id }; slidesData.push(s); }
       
       const saveBtn = document.querySelector('#slide-form button[type="submit"]');
       const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
@@ -537,31 +558,8 @@
         saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Guardando...';
         saveBtn.disabled = true;
       }
-
-      s.title = document.getElementById('edit-slide-title').value;
-      s.subtitle = document.getElementById('edit-slide-subtitle').value;
-      s.fontStyle = document.getElementById('edit-slide-font').value;
-      s.fontSize = parseInt(document.getElementById('edit-slide-size').value);
-      s.titleLeft = parseInt(document.getElementById('edit-title-left').value);
-      s.titleTop = parseInt(document.getElementById('edit-title-top').value);
-      s.titleW = parseInt(document.getElementById('edit-title-w').value) || 0;
-      s.titleH = parseInt(document.getElementById('edit-title-h').value) || 0;
-      s.titleRotation = parseInt(document.getElementById('edit-title-rotation').value) || 0;
-      
-      s.subLeft = parseInt(document.getElementById('edit-sub-left').value);
-      s.subTop = parseInt(document.getElementById('edit-sub-top').value);
-      s.subW = parseInt(document.getElementById('edit-sub-w').value) || 0;
-      s.subH = parseInt(document.getElementById('edit-sub-h').value) || 0;
-      s.subRotation = parseInt(document.getElementById('edit-sub-rotation').value) || 0;
-      
-      s.textColor = document.getElementById('edit-slide-text-color').value;
-      s.textBgColor = document.getElementById('edit-slide-bg-color').value;
-      s.textBgOpacity = parseInt(document.getElementById('edit-slide-bg-opacity').value);
-      s.imgPosX = parseInt(document.getElementById('edit-slide-img-x').value);
-      s.imgPosY = parseInt(document.getElementById('edit-slide-img-y').value);
       
       let imgSrc = document.getElementById('edit-slide-preview').src;
-      
       if (imgSrc.startsWith('data:image')) {
         try {
           const sigRes = await fetch('/api/upload-signature', { method: 'POST' });
@@ -577,14 +575,16 @@
           const cloudData = await cloudRes.json();
           if (cloudData.error) throw new Error(cloudData.error.message);
           imgSrc = cloudData.secure_url;
+          currentSlide.src = imgSrc;
         } catch (error) {
           console.error('Error uploading image:', error);
           alert('Error subiendo imagen a Cloudinary.');
         }
       }
-
-      s.src = imgSrc;
-      s.template = 0;
+      
+      const slidesData = getActiveSlides();
+      const idx = slidesData.findIndex(x => x.id === currentSlide.id);
+      if (idx !== -1) slidesData[idx] = currentSlide;
       
       setActiveSlides(slidesData);
       renderSlidesList();
@@ -597,10 +597,9 @@
     };
 
     window.deleteCurrentSlide = function() {
-      const id = parseInt(document.getElementById('edit-slide-id').value);
-      if (!confirm('¿Eliminar esta diapositiva?')) return;
+      if (!confirm('¿Eliminar esta diapositiva por completo?')) return;
       let slidesData = getActiveSlides();
-      slidesData = slidesData.filter(x => x.id !== id);
+      slidesData = slidesData.filter(x => x.id !== currentSlide.id);
       setActiveSlides(slidesData);
       renderSlidesList();
       if (slidesData.length > 0) editSlide(slidesData[0].id);
@@ -609,6 +608,6 @@
 
     window.logout = function() { sessionStorage.removeItem('is_admin_logged_in'); window.location.href = '/admin/login.html'; };
     if (sessionStorage.getItem('is_admin_logged_in') !== 'true') window.location.href = '/admin/login.html';
-  </script>
+</script>
 </body>
 </html>

@@ -904,46 +904,37 @@
                         const isActive = idx === 0;
                         const opacityClass = isActive ? 'opacity-100 active-slide' : 'opacity-0';
                         
-                        const font = slide.fontStyle || 'Playfair Display';
-                        const fontSize = slide.fontSize || (isMobile ? 36 : 72);
-                        const titleStyle = `font-family: '${font}', serif; font-size: ${fontSize}px; color: ${slide.textColor || '#ffffff'};`;
-                        
-                        const titleLeft = slide.titleLeft !== undefined ? slide.titleLeft : 50;
-                        const titleTop = slide.titleTop !== undefined ? slide.titleTop : 45;
-                        const titleW = slide.titleW || 0;
-                        const titleH = slide.titleH || 0;
-                        const titleRot = slide.titleRotation || 0;
-                        
-                        const subLeft = slide.subLeft !== undefined ? slide.subLeft : 50;
-                        const subTop = slide.subTop !== undefined ? slide.subTop : 35;
-                        const subW = slide.subW || 0;
-                        const subH = slide.subH || 0;
-                        const subRot = slide.subRotation || 0;
-                        
-                        const textBgColor = slide.textBgColor || '#000000';
-                        const textBgOpacity = parseFloat(slide.textBgOpacity !== undefined ? slide.textBgOpacity : 0) / 100;
-                        
-                        // Outer box handles position
-                        let titleBoxStyle = `position: absolute; z-index: 10; left: ${titleLeft}%; top: ${titleTop}%; transform: translate(-${titleLeft}%, -${titleTop}%); background-color: ${hexToRgba(textBgColor, textBgOpacity)}; text-align: center; display: flex; align-items: center; justify-content: center; overflow: hidden; ${getBoxSizing(titleW, titleH)}`;
-                        if (textBgOpacity > 0) {
-                            titleBoxStyle += ` padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem); border-radius: 1.5rem; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);`;
+                        let centerTextHtml = '';
+                        if (slide.texts && slide.texts.length > 0) {
+                            slide.texts.forEach(txt => {
+                                const font = txt.font || 'Playfair Display';
+                                const fontSize = txt.size || (isMobile ? 36 : 72);
+                                const textStyle = `font-family: '${font}', serif; font-size: ${fontSize}px; color: ${txt.color || '#ffffff'};`;
+                                
+                                const left = txt.left !== undefined ? txt.left : 50;
+                                const top = txt.top !== undefined ? txt.top : 50;
+                                const w = txt.w || 0;
+                                const h = txt.h || 0;
+                                const rot = txt.rot || 0;
+                                
+                                const textBgColor = txt.bgColor || 'transparent';
+                                const textBgOpacity = parseFloat(txt.bgOpacity !== undefined ? txt.bgOpacity : 0) / 100;
+                                
+                                // Omitted 'overflow: hidden;' to prevent cutting off text
+                                let boxStyle = `position: absolute; z-index: 10; left: ${left}%; top: ${top}%; transform: translate(-${left}%, -${top}%); background-color: ${hexToRgba(textBgColor, textBgOpacity)}; text-align: center; display: flex; align-items: center; justify-content: center; ${getBoxSizing(w, h)}`;
+                                if (textBgOpacity > 0 && textBgColor !== 'transparent') {
+                                    boxStyle += ` padding: clamp(0.5rem, 2vw, 1.5rem) clamp(1rem, 3vw, 2.5rem); border-radius: 1rem; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);`;
+                                }
+                                
+                                centerTextHtml += `
+                                    <div class="pointer-events-none" style="${boxStyle}">
+                                      <div style="transform: rotate(${rot}deg);">
+                                        <div class="leading-tight animate-fade-in-up font-bold" style="${textStyle}">${txt.content}</div>
+                                      </div>
+                                    </div>
+                                `;
+                            });
                         }
-                        
-                        const subBoxStyle = `position: absolute; z-index: 10; left: ${subLeft}%; top: ${subTop}%; transform: translate(-${subLeft}%, -${subTop}%); text-align: center; display: flex; align-items: center; justify-content: center; overflow: hidden; ${getBoxSizing(subW, subH)}`;
-                        
-                        // Inner container handles rotation
-                        const centerTextHtml = `
-                            <div class="pointer-events-none" style="${titleBoxStyle}">
-                              <div style="transform: rotate(${titleRot}deg);">
-                                <h1 class="font-display-lg leading-tight animate-fade-in-up" style="${titleStyle}">${slide.title}</h1>
-                              </div>
-                            </div>
-                            <div class="pointer-events-none" style="${subBoxStyle}">
-                              <div style="transform: rotate(${subRot}deg);">
-                                <span class="font-label-sm uppercase tracking-[0.2em] text-xs opacity-90" style="color: ${slide.textColor || '#ffffff'}; ${isMobile ? 'font-size:8px;' : ''}">${slide.subtitle}</span>
-                              </div>
-                            </div>
-                        `;
                         
                         const imgPosX = slide.imgPosX !== undefined ? slide.imgPosX : 50;
                         const imgPosY = slide.imgPosY !== undefined ? slide.imgPosY : 50;

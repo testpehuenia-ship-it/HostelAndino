@@ -207,23 +207,31 @@ window.db = {
       if (!parsed[heroKey]) {
         parsed[heroKey] = JSON.parse(JSON.stringify(defaultHostelData[heroKey]));
         changed = true;
-      } else {
+      }
+      
+      // Migration: Convert flat title/subtitle to texts array
+      if (parsed[heroKey]) {
         parsed[heroKey].forEach(h => {
-          if (h.titleLeft === undefined) { h.titleLeft = 50; changed = true; }
-          if (h.titleTop === undefined) { h.titleTop = 45; changed = true; }
-          if (h.subLeft === undefined) { h.subLeft = 50; changed = true; }
-          if (h.subTop === undefined) { h.subTop = 35; changed = true; }
-          if (h.titleW === undefined) { h.titleW = 0; changed = true; }
-          if (h.titleH === undefined) { h.titleH = 0; changed = true; }
-          if (h.titleRotation === undefined) { h.titleRotation = 0; changed = true; }
-          if (h.subW === undefined) { h.subW = 0; changed = true; }
-          if (h.subH === undefined) { h.subH = 0; changed = true; }
-          if (h.subRotation === undefined) { h.subRotation = 0; changed = true; }
-          if (h.textColor === undefined) { h.textColor = "#ffffff"; changed = true; }
-          if (h.textBgColor === undefined) { h.textBgColor = "#000000"; changed = true; }
-          if (h.textBgOpacity === undefined) { h.textBgOpacity = 0; changed = true; }
-          if (h.imgPosX === undefined) { h.imgPosX = 50; changed = true; }
-          if (h.imgPosY === undefined) { h.imgPosY = 50; changed = true; }
+          if (h.texts === undefined) {
+            h.texts = [];
+            if (h.title !== undefined && h.title !== '') {
+              h.texts.push({
+                id: 1, type: 'title', content: h.title, font: h.fontStyle || "Playfair Display",
+                size: h.fontSize || (heroKey === 'heroPc' ? 72 : 36),
+                color: h.textColor || "#ffffff", bgColor: h.textBgColor || "#000000", bgOpacity: h.textBgOpacity || 0,
+                left: h.titleLeft ?? 50, top: h.titleTop ?? 45, w: h.titleW || 0, h: h.titleH || 0, rot: h.titleRotation || 0
+              });
+            }
+            if (h.subtitle !== undefined && h.subtitle !== '') {
+              h.texts.push({
+                id: 2, type: 'subtitle', content: h.subtitle, font: h.fontStyle || "Playfair Display",
+                size: heroKey === 'heroPc' ? 12 : 8,
+                color: h.textColor || "#ffffff", bgColor: "#000000", bgOpacity: 0,
+                left: h.subLeft ?? 50, top: h.subTop ?? 35, w: h.subW || 0, h: h.subH || 0, rot: h.subRotation || 0
+              });
+            }
+            changed = true;
+          }
         });
       }
     });
