@@ -480,34 +480,29 @@
       boxes.forEach(el => {
         el.onmousedown = e => {
           const id = parseInt(el.dataset.id);
-          if (e.button === 2) {
-            if (e.target.classList.contains('handle')) { selectLayer(id); return; }
-            const pr = frame.getBoundingClientRect();
+          const t = currentSlide.texts.find(x => x.id === id);
+          if (!t) return;
+          
+          if (e.target.classList.contains('handle')) {
+            const prWidth = frame.clientWidth;
             const er = el.getBoundingClientRect();
-            startLeft = ((er.left - pr.left + er.width / 2) / pr.width) * 100;
-            startTop = ((er.top - pr.top + er.height / 2) / pr.height) * 100;
+            startW = (er.width / prWidth) * 100; 
+            startH = er.height; 
+            
+            selectLayer(id);
+            isResizing = true; activeEl = el;
+            resizeDir = e.target.dataset.dir;
+            startX = e.clientX; startY = e.clientY;
+            startFontSize = t.size || 72;
+            e.preventDefault(); e.stopPropagation();
+          } else {
+            startLeft = t.left !== undefined ? t.left : 50;
+            startTop = t.top !== undefined ? t.top : 50;
             
             selectLayer(id);
             isDragging = true; activeEl = el;
             startX = e.clientX; startY = e.clientY;
             e.preventDefault();
-          } else if (e.button === 0) {
-            if (e.target.classList.contains('handle')) {
-              const pr = frame.getBoundingClientRect();
-              const er = el.getBoundingClientRect();
-              startW = (er.width / pr.width) * 100; 
-              startH = er.height; 
-              
-              selectLayer(id);
-              isResizing = true; activeEl = el;
-              resizeDir = e.target.dataset.dir;
-              startX = e.clientX; startY = e.clientY;
-              const t = currentSlide.texts.find(x => x.id === id);
-              startFontSize = t.size || 72;
-              e.preventDefault(); e.stopPropagation();
-            } else {
-              selectLayer(id);
-            }
           }
         };
       });
@@ -516,14 +511,15 @@
     document.addEventListener('mousemove', e => {
         if (!isDragging && !isResizing) return;
         const frame = document.getElementById('preview-frame');
-        const pr = frame.getBoundingClientRect();
+        const prWidth = frame.clientWidth;
+        const prHeight = frame.clientHeight;
         const t = currentSlide.texts.find(x => x.id === selectedLayerId);
         if (!t) return;
 
         if (isDragging) {
           const dx = e.clientX - startX, dy = e.clientY - startY;
-          t.left = Math.max(0, Math.min(100, Math.round(startLeft + (dx / pr.width) * 100)));
-          t.top = Math.max(0, Math.min(100, Math.round(startTop + (dy / pr.height) * 100)));
+          t.left = Math.max(0, Math.min(100, Math.round(startLeft + (dx / prWidth) * 100)));
+          t.top = Math.max(0, Math.min(100, Math.round(startTop + (dy / prHeight) * 100)));
           updateLivePreview();
         }
 
@@ -540,7 +536,7 @@
             document.getElementById('edit-layer-size').value = t.size;
           } else if (isHorizontal) {
             let widthDelta = resizeDir === 'mr' ? dx : -dx;
-            t.w = Math.max(5, Math.min(100, Math.round(startW + (widthDelta / pr.width) * 100)));
+            t.w = Math.max(5, Math.min(100, Math.round(startW + (widthDelta / prWidth) * 100)));
           } else if (isVertical) {
             let heightDelta = resizeDir === 'bc' ? dy : -dy;
             t.h = Math.max(20, Math.round(startH + heightDelta));
