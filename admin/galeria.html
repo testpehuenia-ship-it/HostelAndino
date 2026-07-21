@@ -336,10 +336,7 @@
   function renderBanner() {
     const data = window.db.getData();
     const container = document.getElementById('banner-preview-container');
-    if (!container || !data.bannerOpcionales) return;
-    
-    const data = window.db.getData();
-    if (!data.bannerOpcionales || !Array.isArray(data.bannerOpcionales)) return;
+    if (!container || !data.bannerOpcionales || !Array.isArray(data.bannerOpcionales)) return;
     
     container.innerHTML = data.bannerOpcionales.map(banner => {
       const isChecked = banner.visible !== false ? 'checked' : '';
