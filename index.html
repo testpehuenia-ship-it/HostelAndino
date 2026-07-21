@@ -1273,8 +1273,8 @@
                 if (window.db && window.db._initialized) {
                     renderHomeDynamicContent();
                     
-                    // Hide preloader after data is rendered
-                    setTimeout(() => {
+                    // Hide preloader after data is rendered and window is loaded
+                    const hidePreloader = () => {
                         const preloader = document.getElementById('preloader');
                         if (preloader) {
                             const logo = preloader.querySelector('.preloader-logo');
@@ -1288,18 +1288,20 @@
                                 if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
                             }, 800);
                         }
-                    }, 100); // slight delay to allow DOM to paint the new images
+                    };
+
+                    if (document.readyState === 'complete') {
+                        setTimeout(hidePreloader, 100);
+                    } else {
+                        window.addEventListener('load', hidePreloader);
+                        // Fallback just in case load is blocked by external scripts
+                        setTimeout(hidePreloader, 4000);
+                    }
                 } else {
                     setTimeout(checkDbAndRender, 50);
                 }
             };
-            
-            // Wait for both DOM and Window Load to ensure images are somewhat ready
-            if (document.readyState === 'complete') {
-                checkDbAndRender();
-            } else {
-                window.addEventListener('load', checkDbAndRender);
-            }
+            checkDbAndRender();
 
             // Mobile Menu Logic
             const menuBtn = document.getElementById('mobile-menu-btn');
