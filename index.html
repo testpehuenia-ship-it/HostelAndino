@@ -177,11 +177,17 @@
         #preloader.hidden {
             opacity: 0;
             visibility: hidden;
+            transition: opacity 0.8s ease-in, visibility 0.8s ease-in;
+        }
+        #preloader.hidden .preloader-logo {
+            transform: scale(4);
+            opacity: 0;
         }
         .preloader-logo {
             width: 140px;
             height: auto;
             animation: pulse 1.5s infinite ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease-in;
         }
         @keyframes pulse {
             0% { transform: scale(0.95); opacity: 0.8; }
@@ -1266,11 +1272,34 @@
             const checkDbAndRender = () => {
                 if (window.db && window.db._initialized) {
                     renderHomeDynamicContent();
+                    
+                    // Hide preloader after data is rendered
+                    setTimeout(() => {
+                        const preloader = document.getElementById('preloader');
+                        if (preloader) {
+                            const logo = preloader.querySelector('.preloader-logo');
+                            if (logo) logo.style.animation = 'none'; // Stop pulse animation
+                            
+                            // Force reflow
+                            void preloader.offsetWidth;
+                            
+                            preloader.classList.add('hidden');
+                            setTimeout(() => {
+                                if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+                            }, 800);
+                        }
+                    }, 100); // slight delay to allow DOM to paint the new images
                 } else {
                     setTimeout(checkDbAndRender, 50);
                 }
             };
-            checkDbAndRender();
+            
+            // Wait for both DOM and Window Load to ensure images are somewhat ready
+            if (document.readyState === 'complete') {
+                checkDbAndRender();
+            } else {
+                window.addEventListener('load', checkDbAndRender);
+            }
 
             // Mobile Menu Logic
             const menuBtn = document.getElementById('mobile-menu-btn');
@@ -1351,17 +1380,6 @@
             }
         });
 
-        // Preloader Logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.classList.add('hidden');
-                setTimeout(() => {
-                    if (preloader.parentNode) {
-                        preloader.parentNode.removeChild(preloader);
-                    }
-                }, 600);
-            }
         });
     </script>
 </body></html>
