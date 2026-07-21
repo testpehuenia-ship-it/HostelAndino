@@ -481,27 +481,29 @@
         el.onmousedown = e => {
           const id = parseInt(el.dataset.id);
           if (e.button === 2) {
-            selectLayer(id);
-            if (e.target.classList.contains('handle')) return;
-            isDragging = true; activeEl = el;
-            startX = e.clientX; startY = e.clientY;
+            if (e.target.classList.contains('handle')) { selectLayer(id); return; }
             const pr = frame.getBoundingClientRect();
             const er = el.getBoundingClientRect();
             startLeft = ((er.left - pr.left + er.width / 2) / pr.width) * 100;
             startTop = ((er.top - pr.top + er.height / 2) / pr.height) * 100;
+            
+            selectLayer(id);
+            isDragging = true; activeEl = el;
+            startX = e.clientX; startY = e.clientY;
             e.preventDefault();
           } else if (e.button === 0) {
             if (e.target.classList.contains('handle')) {
+              const pr = frame.getBoundingClientRect();
+              const er = el.getBoundingClientRect();
+              startW = (er.width / pr.width) * 100; 
+              startH = er.height; 
+              
               selectLayer(id);
               isResizing = true; activeEl = el;
               resizeDir = e.target.dataset.dir;
               startX = e.clientX; startY = e.clientY;
               const t = currentSlide.texts.find(x => x.id === id);
               startFontSize = t.size || 72;
-              const pr = frame.getBoundingClientRect();
-              const er = el.getBoundingClientRect();
-              startW = (er.width / pr.width) * 100; 
-              startH = er.height; 
               e.preventDefault(); e.stopPropagation();
             } else {
               selectLayer(id);
