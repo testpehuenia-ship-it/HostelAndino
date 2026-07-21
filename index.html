@@ -200,9 +200,17 @@
 </section>
 
 <!-- Booking Search Bar (WhatsApp) -->
-<section id="buscador-reserva" class="relative z-20 mt-12 mb-8 px-4 md:px-margin-desktop w-full max-w-6xl mx-auto">
-  <div class="bg-[#e6d5c1] p-6 md:p-8 rounded-2xl shadow-xl border border-white/40">
-    <form id="whatsapp-booking-form" class="flex flex-col md:flex-row items-end gap-4">
+<section id="buscador-reserva" class="relative z-20 -mt-20 md:-mt-28 mb-16 px-4 md:px-margin-desktop w-full max-w-6xl mx-auto">
+  <div class="bg-[#e6d5c1] p-6 md:p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white/60 backdrop-blur-md relative overflow-hidden">
+    <!-- Decorative highlight -->
+    <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
+    
+    <div class="text-center mb-6 relative z-10">
+      <h3 class="font-headline-sm text-2xl md:text-3xl text-primary font-bold">¿Listo para tu aventura en la montaña?</h3>
+      <p class="text-primary/70 font-body-md mt-1.5 max-w-2xl mx-auto font-medium">Verificá disponibilidad y asegurá tu lugar. ¡No te quedes sin tu cama!</p>
+    </div>
+
+    <form id="whatsapp-booking-form" class="flex flex-col md:flex-row items-end gap-4 relative z-10">
       
       <div class="w-full md:w-1/4">
         <label for="checkin" class="block font-label-sm uppercase tracking-widest text-primary mb-2 text-xs">Llegada</label>
