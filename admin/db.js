@@ -114,6 +114,7 @@ window.db = {
   _data: null,
   
   init: async () => {
+    window.db._isFallback = false;
     try {
       const res = await fetch('/api/data?t=' + new Date().getTime());
       if (res.ok) {
@@ -122,13 +123,16 @@ window.db = {
           window.db._data = data;
         } else {
           window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
+          window.db._isFallback = true;
         }
       } else {
         window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
+        window.db._isFallback = true;
       }
     } catch (err) {
       console.error('Error loading db:', err);
       window.db._data = JSON.parse(JSON.stringify(defaultHostelData));
+      window.db._isFallback = true;
     }
     
     let parsed = window.db._data;
@@ -263,7 +267,7 @@ window.db = {
       changed = true;
     }
     
-    if (changed) {
+    if (changed && !window.db._isFallback) {
       // Fire and forget save if we migrated
       fetch('/api/data', {
          method: 'POST',
