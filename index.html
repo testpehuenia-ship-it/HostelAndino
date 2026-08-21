@@ -7,7 +7,7 @@
 <link rel="preload" href="/LogoNVO.webp" as="image">
 <link rel="icon" type="image/webp" href="/LogoNVO.webp"/>
 <title>Hostel Andino | Refugio Premium en Villa Pehuenia</title>
-  <meta name="description" content="Hostel Andino en Villa Pehuenia. Alojamiento de montaña premium rodeado de araucarias y lagos. Habitaciones compartidas y privadas con el mejor confort patagónico."/>
+  <meta name="description" content="Hostel Andino en Villa Pehuenia. Alojamiento de montaña premium rodeado de araucarias y lagos. Habitaciones privadas y compartidas en Patagonia."/>
   <meta name="keywords" content="hostel villa pehuenia, alojamiento villa pehuenia, hostel andino, patagonia argentina, turismo neuquen, refugio de montaña"/>
   <meta name="author" content="Hostel Andino"/>
   <link rel="canonical" href="https://www.hostelandino.com.ar/" />
@@ -44,6 +44,8 @@
     "telephone": "+5492983658176",
     "email": "hostelandinovillapehuenia@gmail.com",
     "priceRange": "$$",
+    "checkinTime": "14:00",
+    "checkoutTime": "10:00",
     "description": "Alojamiento de montaña premium en Villa Pehuenia con habitaciones compartidas y familiares, vistas al lago, cocina equipada y áreas comunes de descanso.",
     "address": {
       "@type": "PostalAddress",
@@ -97,7 +99,7 @@
   }
   </script>
 
-  <!-- FAQ Schema (JSON-LD) para IAs (GEO) -->
+  <!-- FAQ Schema (JSON-LD) para IAs (GEO / AEO) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -108,7 +110,7 @@
         "name": "¿Qué servicios ofrece Hostel Andino en Villa Pehuenia?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Hostel Andino ofrece WiFi, cocina industrial completamente equipada, amplio estar con mesa de pool y TV Smart, y habitaciones con baño privado completo."
+          "text": "Hostel Andino ofrece WiFi, cocina industrial completamente equipada, amplio estar con mesa de pool y TV Smart, guarda de esquí y snowboard, y habitaciones con baño privado completo."
         }
       },
       {
@@ -126,13 +128,28 @@
           "@type": "Answer",
           "text": "El hostel está ubicado en Villa Pehuenia, Neuquén, rodeado de araucarias milenarias y con vistas imponentes a los lagos patagónicos."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo reservar en Hostel Andino directo y sin comisión?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Podés reservar directamente y sin intermediarios ni comisiones extras comunicándote por WhatsApp oficial al +54 9 2983 658176 o completando el formulario de consulta en nuestro sitio web oficial."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿A qué distancia está el Hostel Andino del Parque de Nieve Batea Mahuida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hostel Andino se encuentra a solo 8 km del Parque de Nieve Batea Mahuida, constituyendo el punto de partida y descanso estratégico ideal para esquí, snowboard y paseos invernales en Villa Pehuenia."
+        }
       }
     ]
   }
   </script>
 <script src="/admin/db.js" type="module"></script>
 <link href="/style.css" rel="stylesheet">
-<link rel="canonical" href="https://www.hostelandino.com.ar/" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -236,6 +253,7 @@
 </div>
 <!-- 1. Hero Section: Image Slider -->
 <section class="relative aspect-[9/16] md:aspect-video w-full overflow-hidden hero-slider-container" id="inicio">
+  <h1 class="sr-only">Hostel Andino | Alojamiento y Refugio de Montaña en Villa Pehuenia</h1>
   <!-- Carga dinámica desde la base de datos (db.js) -->
 </section>
 
@@ -1006,7 +1024,7 @@
                 const pcHtml = buildSliderHtml(data.heroPc, false);
                 const mobHtml = buildSliderHtml(data.heroMobile, true);
                 
-                inicioSection.innerHTML = pcHtml + mobHtml;
+                inicioSection.innerHTML = '<h1 class="sr-only">Hostel Andino | Alojamiento y Refugio de Montaña en Villa Pehuenia</h1>' + pcHtml + mobHtml;
                 window.currentSlide = 0;
             }
 
