@@ -10,7 +10,7 @@ const defaultHostelData = {
       { id: 6, text: "Guarda de equipos de ski y snowboard.", icon: "ac_unit" },
       { id: 7, text: "Mesa de pool sin restricciones.", icon: "circle" },
       { id: 8, text: "Juegos de mesa.", icon: "casino" },
-      { id: 9, text: "Nintendo Wii.", icon: "sports_esports" },
+      { id: 9, text: "Parrilla al aire libre.", icon: "outdoor_grill" },
       { id: 10, text: "WiFi.", icon: "wifi" }
     ],
     confort: {
@@ -25,7 +25,7 @@ const defaultHostelData = {
       estar: [
         "Dos cómodos divanes cama.",
         "Un sillón confortable de dos cuerpos.",
-        "TV Smart con servicio de DirecTV.",
+        "TV Smart con servicio de Netflix.",
         "Calefacción.",
         "Mesa de pool."
       ],
@@ -50,7 +50,7 @@ const defaultHostelData = {
       estacionamiento: [
         "Estacionamiento privado descubierto gratuito.",
         "Amplio jardín forestado con especies nativas.",
-        "Sector de parrilla y fogón exterior.",
+        "Parrilla al aire libre.",
         "Vistas panorámicas a la montaña."
       ]
     },
@@ -171,11 +171,33 @@ window.db = {
       });
     }
 
-    // Auto-repair/Migration: Replace Netflix with DirecTV
+    // Auto-repair/Migration: Ensure TV Smart with Netflix (without DirecTV)
     if (parsed.servicios && parsed.servicios.confort && parsed.servicios.confort.estar) {
-      const index = parsed.servicios.confort.estar.indexOf("TV Smart con servicio de Netflix.");
-      if (index !== -1) {
-        parsed.servicios.confort.estar[index] = "TV Smart con servicio de DirecTV.";
+      parsed.servicios.confort.estar = parsed.servicios.confort.estar.map(item => {
+        if (item.includes("DirecTV") || item === "TV Smart.") {
+          changed = true;
+          return "TV Smart con servicio de Netflix.";
+        }
+        return item;
+      });
+    }
+
+    // Auto-repair/Migration: Update nuestros servicios to include Parrilla al aire libre
+    if (parsed.servicios && parsed.servicios.nuestros) {
+      parsed.servicios.nuestros.forEach(item => {
+        if (item.text && (item.text.toLowerCase().includes("directv") || item.text.toLowerCase().includes("nintendo wii") || item.text.toLowerCase().includes("wii"))) {
+          item.text = "Parrilla al aire libre.";
+          item.icon = "outdoor_grill";
+          changed = true;
+        }
+      });
+    }
+
+    // Auto-repair/Migration: Ensure Parrilla al aire libre in estacionamiento y jardín
+    if (parsed.servicios && parsed.servicios.confort && parsed.servicios.confort.estacionamiento) {
+      const hasParrilla = parsed.servicios.confort.estacionamiento.some(i => i.toLowerCase().includes("parrilla"));
+      if (!hasParrilla) {
+        parsed.servicios.confort.estacionamiento.push("Parrilla al aire libre.");
         changed = true;
       }
     }
