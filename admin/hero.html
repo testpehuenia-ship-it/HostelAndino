@@ -47,32 +47,56 @@
     .tab-inactive { border-bottom: 2px solid transparent; color: #7c776c; }
   </style>
 </head>
-<body class="flex min-h-screen" oncontextmenu="return false;">
-  <aside class="fixed left-0 top-0 h-full flex flex-col py-8 bg-surface-container-low w-64 z-50 border-r border-outline-variant/30">
-    <div class="px-8 mb-12">
-      <a href="/index.html"><img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-10 w-auto object-contain hover:opacity-80 transition-opacity" /></a>
-      <p class="text-xs uppercase tracking-wider text-secondary">Panel de Gestión</p>
+<body class="flex flex-col md:flex-row min-h-screen bg-background text-on-background" oncontextmenu="return false;">
+
+  <!-- Mobile Header Top Bar -->
+  <header class="md:hidden flex items-center justify-between px-4 py-3 bg-surface-bright border-b border-outline-variant/30 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleAdminMenu()" class="text-primary p-2 hover:bg-surface-container rounded-lg transition-colors flex items-center justify-center" aria-label="Abrir menú">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+      </button>
+      <a href="/index.html"><img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-8 w-auto object-contain" /></a>
     </div>
-    <nav class="flex-1 flex flex-col gap-2">
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/galeria.html"><span class="material-symbols-outlined">photo_library</span><span class="text-xs uppercase tracking-wider">Galería</span></a>
-      <a class="flex items-center gap-4 px-8 py-4 text-primary font-bold border-r-4 border-primary bg-surface-container-high" href="/admin/hero.html"><span class="material-symbols-outlined">image</span><span class="text-xs uppercase tracking-wider">Hero Slider</span></a>
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html"><span class="material-symbols-outlined">payments</span><span class="text-xs uppercase tracking-wider">Tarifas</span></a>
-      <a class="flex items-center gap-4 px-8 py-4 text-secondary hover:bg-surface-container transition-all" href="/admin/tarifas.html"><span class="material-symbols-outlined">sell</span><span class="text-xs uppercase tracking-wider">Promociones</span></a>
+    <div class="flex items-center gap-2">
+      <a href="/index.html" class="flex items-center gap-1 border border-secondary px-2.5 py-1 hover:bg-secondary/10 transition-colors rounded text-xs text-tertiary"><span class="material-symbols-outlined text-sm">visibility</span> Web</a>
+      <span class="font-label-sm text-[11px] uppercase tracking-wider text-secondary font-bold">Hero</span>
+    </div>
+  </header>
+
+  <!-- Mobile Backdrop Overlay -->
+  <div id="admin-menu-backdrop" onclick="toggleAdminMenu(false)" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity opacity-0 md:hidden"></div>
+
+  <!-- Sidebar Navigation Drawer -->
+  <aside id="admin-sidebar" class="fixed left-0 top-0 h-full flex flex-col py-6 md:py-8 bg-surface-container-low w-64 z-50 border-r border-outline-variant/30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none">
+    <div class="px-6 mb-8 flex items-center justify-between">
+      <div>
+        <a href="/index.html"><img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-10 w-auto object-contain hover:opacity-80 transition-opacity" /></a>
+        <p class="font-label-sm text-xs uppercase tracking-wider text-secondary mt-1">Panel de Gestión</p>
+      </div>
+      <button onclick="toggleAdminMenu(false)" class="md:hidden text-secondary hover:text-primary p-1.5 rounded-lg hover:bg-surface-container" aria-label="Cerrar menú">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+    </div>
+    <nav class="flex-1 flex flex-col gap-1 px-3">
+      <a class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-secondary hover:bg-surface-container transition-all group" href="/admin/galeria.html"><span class="material-symbols-outlined">photo_library</span><span class="font-label-sm uppercase tracking-wider text-xs">Galería</span></a>
+      <a class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-primary font-bold border-r-4 border-primary bg-surface-container-high transition-all group" href="/admin/hero.html"><span class="material-symbols-outlined">image</span><span class="font-label-sm uppercase tracking-wider text-xs">Hero Slider</span></a>
+      <a class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-secondary hover:bg-surface-container transition-all group" href="/admin/tarifas.html"><span class="material-symbols-outlined">payments</span><span class="font-label-sm uppercase tracking-wider text-xs">Tarifas</span></a>
+      <a class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-secondary hover:bg-surface-container transition-all group" href="/admin/tarifas.html#promo-form"><span class="material-symbols-outlined">sell</span><span class="font-label-sm uppercase tracking-wider text-xs">Promociones</span></a>
     </nav>
-    <div class="px-8 mt-auto"><a class="flex items-center gap-4 py-4 text-secondary hover:text-error transition-colors cursor-pointer" onclick="logout()"><span class="material-symbols-outlined">logout</span><span class="text-xs uppercase tracking-wider">Cerrar Sesión</span></a></div>
+    <div class="px-6 mt-auto pt-4 border-t border-outline-variant/20"><a class="flex items-center gap-4 py-3 text-secondary hover:text-error transition-colors cursor-pointer" onclick="logout()"><span class="material-symbols-outlined">logout</span><span class="font-label-sm uppercase tracking-wider text-xs">Cerrar Sesión</span></a></div>
   </aside>
 
-  <main class="flex-1 pl-64 min-h-screen flex flex-col">
-    <header class="h-20 border-b border-outline-variant/30 flex items-center justify-between px-12 bg-surface-bright">
+  <main class="flex-1 md:pl-64 pl-0 min-h-screen flex flex-col w-full">
+    <header class="hidden md:flex h-20 border-b border-outline-variant/30 items-center justify-between px-8 md:px-12 bg-surface-bright">
       <div class="flex items-center gap-4"><span class="material-symbols-outlined text-primary text-2xl">image</span><h2 class="text-lg font-bold text-primary">Editor Visual del Hero Slider</h2></div>
       <a href="/index.html" class="flex items-center gap-2 border border-secondary px-4 py-2 hover:bg-secondary/10 transition-colors rounded text-sm text-tertiary"><span class="material-symbols-outlined text-sm">visibility</span> Ver Web</a>
     </header>
 
-    <div class="flex-1 p-12 grid grid-cols-12 gap-8">
+    <div class="flex-1 p-4 sm:p-6 md:p-10 grid grid-cols-12 gap-6 md:gap-8">
       
-      <div class="col-span-12 flex gap-4 border-b border-outline-variant/30">
-        <button id="tab-pc" onclick="switchTab('pc')" class="tab-active px-6 py-3 uppercase tracking-wider text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined">desktop_windows</span> Slider PC</button>
-        <button id="tab-mobile" onclick="switchTab('mobile')" class="tab-inactive px-6 py-3 uppercase tracking-wider text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined">phone_iphone</span> Slider Celular</button>
+      <div class="col-span-12 flex gap-4 border-b border-outline-variant/30 pb-1">
+        <button id="tab-pc" onclick="switchTab('pc')" class="tab-active px-4 sm:px-6 py-3 uppercase tracking-wider text-xs sm:text-sm transition-colors flex items-center gap-2 font-bold"><span class="material-symbols-outlined text-base sm:text-lg">desktop_windows</span> Slider PC</button>
+        <button id="tab-mobile" onclick="switchTab('mobile')" class="tab-inactive px-4 sm:px-6 py-3 uppercase tracking-wider text-xs sm:text-sm transition-colors flex items-center gap-2 font-bold"><span class="material-symbols-outlined text-base sm:text-lg">phone_iphone</span> Slider Celular</button>
       </div>
 
       <!-- Left: Slides + Config -->
@@ -184,6 +208,27 @@
   </main>
 
   <script type="module">
+    // Mobile drawer toggle helper
+    window.toggleAdminMenu = function(forceState) {
+      const sidebar = document.getElementById('admin-sidebar');
+      const backdrop = document.getElementById('admin-menu-backdrop');
+      if (!sidebar || !backdrop) return;
+      
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+      const shouldOpen = forceState !== undefined ? forceState : !isOpen;
+      
+      if (shouldOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+        setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+        document.body.style.overflow = 'hidden';
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+      }
+    };
     document.addEventListener('DOMContentLoaded', () => {
       const checkDb = () => {
         if (window.db && window.db._initialized) {
