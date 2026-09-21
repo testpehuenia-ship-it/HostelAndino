@@ -1269,24 +1269,163 @@
 
                     ratesHtml += `</div>`;
 
-                    const activePromo = Array.isArray(data.promociones) ? data.promociones.find(p => p.active) : (data.promociones && data.promociones.active ? data.promociones : null);
+                    const activePromos = Array.isArray(data.promociones) 
+                        ? data.promociones.filter(p => p.active) 
+                        : (data.promociones && data.promociones.active ? [data.promociones] : []);
                     
-                    if (activePromo) {
+                    if (activePromos.length === 1) {
+                        const promo = activePromos[0];
                         ratesHtml += `
-                            <!-- Highlighted Promo -->
-                            <div class="mt-12 bg-tertiary-container text-on-tertiary-container p-12 relative overflow-hidden rounded-xl">
+                            <!-- Highlighted Promo (Single) -->
+                            <div class="mt-12 bg-tertiary-container text-on-tertiary-container p-8 md:p-12 relative overflow-hidden rounded-2xl shadow-lg border border-primary/10">
                                 <div class="relative z-10">
-                                    <span class="font-label-sm uppercase tracking-widest opacity-80 mb-2 block">Oportunidad Especial</span>
-                                    <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${activePromo.title}</h3>
-                                    <p class="text-on-tertiary-container/80 max-w-lg mb-8 whitespace-pre-line">${activePromo.desc}</p>
-                                    <a href="https://wa.me/5492983658176?text=${encodeURIComponent('Hola! Me comunico para pedir información sobre la promoción: ' + activePromo.title)}" target="_blank" class="inline-block bg-on-tertiary-container text-tertiary-container px-10 py-4 font-label-sm uppercase tracking-widest font-bold hover:scale-105 transition-transform">${activePromo.cta_text || 'Solicitar Promo'}</a>
+                                    <span class="font-label-sm uppercase tracking-widest opacity-80 mb-3 inline-block font-semibold">Oportunidad Especial</span>
+                                    <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-6 text-on-tertiary-container">${promo.title}</h3>
+                                    <p class="text-on-tertiary-container/85 max-w-xl mb-8 whitespace-pre-line leading-relaxed text-sm md:text-base">${promo.desc}</p>
+                                    <a href="https://wa.me/5492983658176?text=${encodeURIComponent('Hola! Me comunico para pedir información sobre la promoción: ' + promo.title)}" target="_blank" class="inline-flex items-center gap-3 bg-on-tertiary-container text-tertiary-container px-8 py-4 font-label-sm uppercase tracking-widest font-bold rounded-xl hover:scale-105 hover:shadow-lg transition-all">${promo.cta_text || 'Solicitar Promo'} <span class="material-symbols-outlined text-lg">arrow_forward</span></a>
                                 </div>
-                                <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 pointer-events-none">sell</span>
+                                <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[180px] md:text-[220px] text-white/5 pointer-events-none select-none">sell</span>
+                            </div>
+                        `;
+                    } else if (activePromos.length > 1) {
+                        // Slider for 2 or more active promotions
+                        ratesHtml += `
+                            <!-- Highlighted Promos Slider -->
+                            <div id="promos-slider-container" class="mt-12 relative overflow-hidden rounded-2xl shadow-xl bg-tertiary-container text-on-tertiary-container border border-primary/10 group">
+                                <!-- Navigation Controls -->
+                                <div class="absolute top-4 right-4 md:top-6 md:right-6 z-30 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                                    <button id="promo-prev-btn" class="text-white/80 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10 flex items-center justify-center" title="Promoción anterior" aria-label="Promoción anterior">
+                                        <span class="material-symbols-outlined text-base">chevron_left</span>
+                                    </button>
+                                    <div id="promo-dots-container" class="flex items-center gap-1.5 px-1">
+                        `;
+
+                        activePromos.forEach((_, idx) => {
+                            ratesHtml += `
+                                <button class="promo-dot h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-white w-5' : 'bg-white/40 w-2'}" onclick="window.goToPromoSlide(${idx})" title="Ver promo ${idx + 1}" aria-label="Ver promoción ${idx + 1}"></button>
+                            `;
+                        });
+
+                        ratesHtml += `
+                                    </div>
+                                    <button id="promo-next-btn" class="text-white/80 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10 flex items-center justify-center" title="Siguiente promoción" aria-label="Siguiente promoción">
+                                        <span class="material-symbols-outlined text-base">chevron_right</span>
+                                    </button>
+                                </div>
+
+                                <!-- Slides Grid Stack -->
+                                <div class="grid grid-cols-1 [grid-template-rows:1fr] relative">
+                        `;
+
+                        activePromos.forEach((promo, idx) => {
+                            const isActive = idx === 0;
+                            ratesHtml += `
+                                <div class="promo-slide col-start-1 row-start-1 p-8 md:p-12 flex flex-col justify-between transition-all duration-700 ease-in-out ${isActive ? 'opacity-100 translate-x-0 pointer-events-auto z-10' : 'opacity-0 translate-x-8 pointer-events-none z-0'}" data-slide-index="${idx}">
+                                    <div class="relative z-10 pr-24 md:pr-32">
+                                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-on-tertiary-container/10 backdrop-blur-sm mb-4">
+                                            <span class="material-symbols-outlined text-sm">stars</span>
+                                            <span class="font-label-sm uppercase tracking-widest text-xs font-semibold">Promoción Destacada (${idx + 1}/${activePromos.length})</span>
+                                        </div>
+                                        <h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-4 text-on-tertiary-container">${promo.title}</h3>
+                                        <p class="text-on-tertiary-container/85 max-w-xl mb-6 whitespace-pre-line leading-relaxed text-sm md:text-base">${promo.desc}</p>
+                                    </div>
+                                    <div class="relative z-10 pt-2 flex flex-wrap items-center gap-4">
+                                        <a href="https://wa.me/5492983658176?text=${encodeURIComponent('Hola! Me comunico para pedir información sobre la promoción: ' + promo.title)}" target="_blank" class="inline-flex items-center gap-3 bg-on-tertiary-container text-tertiary-container px-8 py-3.5 font-label-sm uppercase tracking-widest font-bold rounded-xl hover:scale-105 hover:shadow-lg transition-all">
+                                            <span>${promo.cta_text || 'Solicitar Promo'}</span>
+                                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                                        </a>
+                                    </div>
+                                    <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[180px] md:text-[220px] text-white/5 pointer-events-none select-none">sell</span>
+                                </div>
+                            `;
+                        });
+
+                        ratesHtml += `
+                                </div>
                             </div>
                         `;
                     }
 
                     ratesContainer.innerHTML = ratesHtml;
+
+                    // Initialize slider events if >= 2 promos
+                    if (activePromos.length > 1) {
+                        let currentPromoSlide = 0;
+                        const totalSlides = activePromos.length;
+                        const slides = ratesContainer.querySelectorAll('.promo-slide');
+                        const dots = ratesContainer.querySelectorAll('.promo-dot');
+                        let promoInterval = null;
+
+                        window.goToPromoSlide = function(index) {
+                            if (index < 0) index = totalSlides - 1;
+                            if (index >= totalSlides) index = 0;
+                            
+                            slides.forEach((slide, idx) => {
+                                if (idx === index) {
+                                    slide.classList.remove('opacity-0', 'translate-x-8', 'pointer-events-none', 'z-0');
+                                    slide.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto', 'z-10');
+                                } else {
+                                    slide.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto', 'z-10');
+                                    slide.classList.add('opacity-0', 'translate-x-8', 'pointer-events-none', 'z-0');
+                                }
+                            });
+
+                            dots.forEach((dot, idx) => {
+                                if (idx === index) {
+                                    dot.classList.remove('bg-white/40', 'w-2');
+                                    dot.classList.add('bg-white', 'w-5');
+                                } else {
+                                    dot.classList.remove('bg-white', 'w-5');
+                                    dot.classList.add('bg-white/40', 'w-2');
+                                }
+                            });
+
+                            currentPromoSlide = index;
+                        };
+
+                        const nextPromo = () => window.goToPromoSlide(currentPromoSlide + 1);
+                        const prevPromo = () => window.goToPromoSlide(currentPromoSlide - 1);
+
+                        const prevBtn = document.getElementById('promo-prev-btn');
+                        const nextBtn = document.getElementById('promo-next-btn');
+
+                        if (prevBtn) {
+                            prevBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                prevPromo();
+                                resetPromoTimer();
+                            });
+                        }
+
+                        if (nextBtn) {
+                            nextBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                nextPromo();
+                                resetPromoTimer();
+                            });
+                        }
+
+                        const startPromoTimer = () => {
+                            if (promoInterval) clearInterval(promoInterval);
+                            promoInterval = setInterval(nextPromo, 5500);
+                        };
+
+                        const resetPromoTimer = () => {
+                            startPromoTimer();
+                        };
+
+                        const sliderBox = document.getElementById('promos-slider-container');
+                        if (sliderBox) {
+                            sliderBox.addEventListener('mouseenter', () => {
+                                if (promoInterval) clearInterval(promoInterval);
+                            });
+                            sliderBox.addEventListener('mouseleave', () => {
+                                startPromoTimer();
+                            });
+                        }
+
+                        startPromoTimer();
+                    }
                 }
 
                 renderRatesUI();

@@ -80,6 +80,14 @@ const defaultHostelData = {
       desc: "Disfrutá del silencio de Villa Pehuenia entre Mayo y Junio con un 30% de descuento en estadías mayores a 3 noches.",
       cta_text: "Solicitar Promo",
       createdAt: new Date().toISOString()
+    },
+    {
+      id: 2,
+      active: true,
+      title: "Escapada Andina Fin de Semana",
+      desc: "20% OFF reservando 3 o más noches de jueves a domingo. Incluye kit de leña y desayuno patagónico de bienvenida.",
+      cta_text: "Consultar Promo",
+      createdAt: new Date().toISOString()
     }
   ],
   galeria: [
