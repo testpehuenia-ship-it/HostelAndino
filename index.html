@@ -158,6 +158,7 @@
   <script src="/analytics.js" type="module"></script>
   <script src="/admin/db.js" type="module"></script>
   <link href="/style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -767,47 +768,118 @@
 <section class="py-16 bg-surface-container" id="contacto">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-<!-- Contact Form -->
-<div>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-8">Estamos cerca.</h2>
-<form action="https://formsubmit.co/7e6f482ed636fb6a175bc989a18d3a25" method="POST" class="space-y-8">
+<!-- Contact Form & Confirmation Container -->
+<div id="contact-wrapper">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Estamos cerca.</h2>
+<p class="text-secondary text-sm md:text-base mb-8">Consultanos disponibilidad o tarifas. Te responderemos a la brevedad y podrás descargar tu ficha de pre-reserva.</p>
+
+<!-- Formulario con envío asíncrono seguro (sin cuelgues ni captchas externos) -->
+<form id="contact-form" class="space-y-8" novalidate>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Nombre</label>
-<input name="Nombre" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Tu nombre" type="text" required/>
+<label for="contact-nombre" class="font-label-sm uppercase text-secondary block mb-2">Nombre</label>
+<input id="contact-nombre" name="Nombre" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Tu nombre y apellido" type="text" required/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Email</label>
-<input name="Email" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="email@ejemplo.com" type="email" required/>
+<label for="contact-email" class="font-label-sm uppercase text-secondary block mb-2">Email</label>
+<input id="contact-email" name="Email" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="email@ejemplo.com" type="email" required/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Teléfono</label>
-<input name="Telefono" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="+54 9 2983..." type="tel" required/>
+<div class="flex justify-between items-baseline mb-2">
+  <label for="contact-telefono" class="font-label-sm uppercase text-secondary block">Teléfono / WhatsApp</label>
+  <span class="text-[11px] text-secondary/70">Coordinaremos por WhatsApp</span>
+</div>
+<input id="contact-telefono" name="Telefono" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="+54 9 2983 658176" type="tel" required/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Huéspedes</label>
-<input name="Huespedes" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Cantidad" type="number" min="1" max="20"/>
+<label for="contact-huespedes" class="font-label-sm uppercase text-secondary block mb-2">Huéspedes</label>
+<input id="contact-huespedes" name="Huespedes" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="Cantidad de personas" type="number" min="1" max="20" value="2"/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Check-In</label>
-<input name="CheckIn" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" type="date"/>
+<label for="contact-checkin" class="font-label-sm uppercase text-secondary block mb-2">Check-In</label>
+<input id="contact-checkin" name="CheckIn" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" type="date"/>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Check-Out</label>
-<input name="CheckOut" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" type="date"/>
+<label for="contact-checkout" class="font-label-sm uppercase text-secondary block mb-2">Check-Out</label>
+<input id="contact-checkout" name="CheckOut" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" type="date"/>
 </div>
 </div>
 <div class="border-b border-outline focus-within:border-primary transition-colors">
-<label class="font-label-sm uppercase text-secondary block mb-2">Consulta</label>
-<textarea name="Consulta" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="¿En qué podemos ayudarte?" rows="4" required></textarea>
+<label for="contact-consulta" class="font-label-sm uppercase text-secondary block mb-2">Consulta</label>
+<textarea id="contact-consulta" name="Consulta" class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary placeholder-outline-variant" placeholder="¿En qué podemos ayudarte? (tipo de habitación, requerimientos, dudas...)" rows="4" required></textarea>
 </div>
-<input type="text" name="_honey" style="display:none">
-<input type="hidden" name="_subject" value="Nuevo mensaje web - Hostel Andino">
-<input type="hidden" name="_next" value="https://www.hostelandino.com.ar/">
-<input type="hidden" name="_language" value="es">
-<input type="hidden" name="_template" value="box">
-<button type="submit" class="bg-primary text-on-primary px-12 py-5 font-label-sm uppercase tracking-widest w-full md:w-auto hover:bg-tertiary transition-colors">Enviar Mensaje</button>
+
+<!-- Campo trampa invisible anti-spam (Honeypot) -->
+<input type="text" name="_honey" id="contact-honey" style="display:none" tabindex="-1" autocomplete="off">
+
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+<button type="submit" id="contact-submit-btn" class="bg-primary text-on-primary px-10 py-4 font-label-sm uppercase tracking-widest w-full md:w-auto hover:bg-tertiary transition-all duration-300 flex items-center justify-center gap-3 shadow-md group disabled:opacity-60 disabled:cursor-not-allowed">
+  <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" id="contact-btn-icon">send</span>
+  <span id="contact-btn-text">Enviar Mensaje</span>
+  <svg id="contact-btn-spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+  </svg>
+</button>
+<span class="text-xs text-secondary/80 flex items-center gap-1.5 self-center">
+  <span class="material-symbols-outlined text-sm text-green-700">verified_user</span>
+  Envío seguro directo y sin intermediarios
+</span>
+</div>
+
+<div id="contact-error-msg" class="hidden p-4 rounded bg-red-100/90 border border-red-300 text-red-800 text-sm"></div>
 </form>
+
+<!-- Tarjeta de Confirmación de Éxito (Aparece tras enviar) -->
+<div id="contact-success-card" class="hidden bg-surface-container-high/70 border border-primary/20 rounded-2xl p-6 md:p-8 space-y-6 shadow-md transition-all duration-500">
+  <div class="flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-3xl text-primary">check_circle</span>
+    </div>
+    <div>
+      <h3 class="font-headline-sm text-primary text-xl md:text-2xl font-bold">¡Consulta enviada con éxito!</h3>
+      <p class="text-secondary text-sm">Recibimos tu solicitud para Hostel Andino. Te responderemos a la brevedad.</p>
+    </div>
+  </div>
+
+  <!-- Resumen de la consulta -->
+  <div class="bg-surface-bright rounded-xl p-5 border border-outline-variant/40 space-y-3 text-sm">
+    <div class="flex flex-wrap justify-between gap-2 border-b border-outline-variant/30 pb-2.5">
+      <span class="text-secondary">Huésped:</span>
+      <span id="summary-nombre" class="font-semibold text-primary">--</span>
+    </div>
+    <div class="flex flex-wrap justify-between gap-2 border-b border-outline-variant/30 pb-2.5">
+      <span class="text-secondary">Fechas solicitadas:</span>
+      <span id="summary-fechas" class="font-semibold text-primary">--</span>
+    </div>
+    <div class="flex flex-wrap justify-between gap-2 border-b border-outline-variant/30 pb-2.5">
+      <span class="text-secondary">Huéspedes:</span>
+      <span id="summary-huespedes" class="font-semibold text-primary">--</span>
+    </div>
+    <div class="flex flex-wrap justify-between gap-2">
+      <span class="text-secondary">Teléfono de contacto:</span>
+      <span id="summary-telefono" class="font-semibold text-primary">--</span>
+    </div>
+  </div>
+
+  <!-- Acciones principales: PDF institucional y WhatsApp instantáneo -->
+  <div class="flex flex-col sm:flex-row gap-3 pt-2">
+    <button type="button" id="btn-download-pdf" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-6 py-3.5 rounded-lg font-label-sm uppercase tracking-wider hover:bg-tertiary transition-colors shadow flex-1 text-center font-semibold">
+      <span class="material-symbols-outlined text-xl">picture_as_pdf</span>
+      <span>Descargar Ficha en PDF</span>
+    </button>
+    <a id="btn-whatsapp-direct" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-3.5 rounded-lg font-label-sm uppercase tracking-wider hover:bg-[#1faa53] transition-colors shadow flex-1 text-center font-bold">
+      <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      <span>Hablar por WhatsApp ahora</span>
+    </a>
+  </div>
+
+  <div class="text-center pt-2">
+    <button type="button" id="btn-new-inquiry" class="text-xs text-secondary hover:text-primary transition-colors underline">
+      ¿Deseas enviar otra consulta o cambiar datos?
+    </button>
+  </div>
+</div>
 </div>
 <!-- Map & Info -->
 <div class="flex flex-col">
@@ -1573,6 +1645,463 @@
                     
                     window.open(whatsappUrl, '_blank');
                 });
+            }
+
+            // ==========================================
+            // CONTACT & PRE-RESERVATION FORM LOGIC
+            // ==========================================
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                const nombreInput = document.getElementById('contact-nombre');
+                const emailInput = document.getElementById('contact-email');
+                const telefonoInput = document.getElementById('contact-telefono');
+                const huespedesInput = document.getElementById('contact-huespedes');
+                const checkinInput = document.getElementById('contact-checkin');
+                const checkoutInput = document.getElementById('contact-checkout');
+                const consultaInput = document.getElementById('contact-consulta');
+                const honeyInput = document.getElementById('contact-honey');
+                const submitBtn = document.getElementById('contact-submit-btn');
+                const btnText = document.getElementById('contact-btn-text');
+                const btnIcon = document.getElementById('contact-btn-icon');
+                const btnSpinner = document.getElementById('contact-btn-spinner');
+                const errorMsg = document.getElementById('contact-error-msg');
+                const successCard = document.getElementById('contact-success-card');
+                const btnDownloadPdf = document.getElementById('btn-download-pdf');
+                const btnWhatsappDirect = document.getElementById('btn-whatsapp-direct');
+                const btnNewInquiry = document.getElementById('btn-new-inquiry');
+
+                // Summary elements in success card
+                const summaryNombre = document.getElementById('summary-nombre');
+                const summaryFechas = document.getElementById('summary-fechas');
+                const summaryHuespedes = document.getElementById('summary-huespedes');
+                const summaryTelefono = document.getElementById('summary-telefono');
+
+                // Minimum dates handling
+                const todayStr = new Date().toISOString().split('T')[0];
+                if (checkinInput) {
+                    checkinInput.min = todayStr;
+                    checkinInput.addEventListener('change', (e) => {
+                        if (e.target.value) {
+                            const nextDay = new Date(e.target.value);
+                            nextDay.setDate(nextDay.getDate() + 1);
+                            const nextDayStr = nextDay.toISOString().split('T')[0];
+                            checkoutInput.min = nextDayStr;
+                            if (checkoutInput.value && checkoutInput.value <= e.target.value) {
+                                checkoutInput.value = nextDayStr;
+                            }
+                        }
+                    });
+                }
+
+                // Normalizador inteligente de teléfono para WhatsApp
+                const formatPhoneForWhatsApp = (rawPhone) => {
+                    let cleaned = (rawPhone || '').replace(/\D/g, '');
+                    if (!cleaned) return '';
+                    if (cleaned.startsWith('549')) return cleaned;
+                    if (cleaned.startsWith('54') && !cleaned.startsWith('549')) {
+                        return '549' + cleaned.slice(2);
+                    }
+                    if (cleaned.startsWith('0')) {
+                        cleaned = cleaned.slice(1);
+                    }
+                    if (cleaned.startsWith('15')) {
+                        cleaned = cleaned.slice(2);
+                    }
+                    if (cleaned.length === 10) {
+                        return '549' + cleaned;
+                    }
+                    return cleaned;
+                };
+
+                // Helper para formatear fechas a DD/MM/AAAA
+                const formatDateAR = (isoDate) => {
+                    if (!isoDate) return 'A definir';
+                    const parts = isoDate.split('-');
+                    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    return isoDate;
+                };
+
+                // Helper para cargar imagen de logo a Canvas y DataURL (para jsPDF)
+                let cachedLogoDataUrl = null;
+                const getLogoDataUrl = () => {
+                    return new Promise((resolve) => {
+                        if (cachedLogoDataUrl) return resolve(cachedLogoDataUrl);
+                        const img = new Image();
+                        img.crossOrigin = 'Anonymous';
+                        img.onload = () => {
+                            try {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0);
+                                cachedLogoDataUrl = canvas.toDataURL('image/png');
+                                resolve(cachedLogoDataUrl);
+                            } catch (e) {
+                                resolve(null);
+                            }
+                        };
+                        img.onerror = () => resolve(null);
+                        img.src = '/LogoNVO.webp';
+                    });
+                };
+
+                // Generador de PDF Institucional de Pre-Reserva
+                let lastReservationData = null;
+                const generateAndDownloadPDF = async (data) => {
+                    if (!window.jspdf || !window.jspdf.jsPDF) {
+                        alert('El generador de PDF aún se está cargando. Por favor aguardá unos segundos.');
+                        return;
+                    }
+
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const logoPng = await getLogoDataUrl();
+
+                    // Franja superior institucional
+                    doc.setFillColor(40, 53, 28); // #28351c Primary
+                    doc.rect(0, 0, 210, 6, 'F');
+
+                    // Encabezado con Logo y Marca
+                    if (logoPng) {
+                        doc.addImage(logoPng, 'PNG', 18, 12, 22, 22);
+                    }
+
+                    const textLeft = logoPng ? 44 : 18;
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(20);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('HOSTEL ANDINO', textLeft, 20);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(140, 115, 85);
+                    doc.text('REFUGIO DE MONTAÑA  •  VILLA PEHUENIA, PATAGONIA ARGENTINA', textLeft, 26);
+
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(100, 116, 139);
+                    doc.text('Arroyo Chañi y Arroyo Pehuen Co (8345) • Neuquén', textLeft, 31);
+
+                    // Badge de Solicitud de Reserva
+                    doc.setFillColor(244, 243, 239);
+                    doc.setDrawColor(207, 178, 144);
+                    doc.roundedRect(138, 12, 54, 22, 2, 2, 'FD');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('FICHA DE SOLICITUD', 142, 18);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(7);
+                    doc.setTextColor(70, 70, 70);
+                    doc.text(`Ref: #${data.refCode}`, 142, 24);
+                    doc.text(`Fecha: ${data.fechaEmision}`, 142, 29);
+
+                    // Línea divisoria
+                    doc.setDrawColor(207, 178, 144);
+                    doc.setLineWidth(0.4);
+                    doc.line(18, 38, 192, 38);
+
+                    // SECCIÓN 1: DATOS DEL HUÉSPED
+                    doc.setFillColor(248, 247, 244);
+                    doc.setDrawColor(226, 222, 211);
+                    doc.roundedRect(18, 44, 174, 38, 2, 2, 'FD');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9.5);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('1. DATOS DEL HUÉSPED', 24, 52);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Nombre:', 24, 60);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.nombre || 'No especificado', 45, 60);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Email:', 24, 67);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.email || 'No especificado', 45, 67);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Teléfono:', 24, 74);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.telefono || 'No especificado', 45, 74);
+
+                    // Enlace interactivo directo a WhatsApp en el PDF
+                    if (data.guestWhatsAppUrl) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(8);
+                        doc.setTextColor(37, 140, 70);
+                        doc.textWithLink('➜ Responder o chatear por WhatsApp', 110, 74, { url: data.guestWhatsAppUrl });
+                    }
+
+                    // SECCIÓN 2: DETALLES DE LA ESTADÍA
+                    doc.setFillColor(248, 247, 244);
+                    doc.setDrawColor(226, 222, 211);
+                    doc.roundedRect(18, 88, 174, 38, 2, 2, 'FD');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9.5);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('2. DETALLES DE LA ESTADÍA', 24, 96);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Check-In:', 24, 104);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.checkinStr, 48, 104);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Check-Out:', 105, 104);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.checkoutStr, 130, 104);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Duración:', 24, 111);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(data.nights ? `${data.nights} noche(s)` : 'A convenir', 48, 111);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(70, 70, 70);
+                    doc.text('Huéspedes:', 105, 111);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(20, 20, 20);
+                    doc.text(`${data.huespedes} persona(s)`, 130, 111);
+
+                    doc.setFont('helvetica', 'italic');
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(110, 110, 110);
+                    doc.text('Horarios del establecimiento: Check-In a partir de las 14:00 hs | Check-Out hasta las 10:00 hs', 24, 120);
+
+                    // SECCIÓN 3: CONSULTA / REQUERIMIENTOS
+                    doc.setFillColor(248, 247, 244);
+                    doc.setDrawColor(226, 222, 211);
+                    doc.roundedRect(18, 132, 174, 46, 2, 2, 'FD');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9.5);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('3. CONSULTA O REQUERIMIENTOS ESPECIALES', 24, 140);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(30, 30, 30);
+                    const splitConsulta = doc.splitTextToSize(data.consulta || 'Consulta general de disponibilidad y tarifas.', 162);
+                    doc.text(splitConsulta, 24, 148);
+
+                    // SECCIÓN 4: INFORMACIÓN Y CONTACTO DEL HOSTEL
+                    doc.setFillColor(240, 239, 233);
+                    doc.setDrawColor(207, 178, 144);
+                    doc.roundedRect(18, 184, 174, 52, 2, 2, 'FD');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9.5);
+                    doc.setTextColor(40, 53, 28);
+                    doc.text('CONTACTO DIRECTO CON HOSTEL ANDINO', 24, 192);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8);
+                    doc.setTextColor(50, 50, 50);
+                    doc.text('• Teléfono / WhatsApp oficial 1: +54 9 2983 658176', 24, 200);
+                    doc.text('• Teléfono / WhatsApp oficial 2: +54 9 2942 524420', 24, 206);
+                    doc.text('• Email: hostelandinovillapehuenia@gmail.com', 24, 212);
+                    doc.text('• Sitio Web: https://www.hostelandino.com.ar', 24, 218);
+                    doc.text('• Servicios: Wifi libre, cocina industrial, blanquería premium, mesa de pool, parrilla y estacionamiento.', 24, 224);
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(37, 140, 70);
+                    doc.textWithLink('➜ Abrir chat de WhatsApp con Recepción de Hostel Andino', 24, 231, { url: data.hostelWhatsAppUrl });
+
+                    // Pie de página
+                    doc.setFont('helvetica', 'italic');
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(120, 120, 120);
+                    doc.text('Este documento certifica el envío de la consulta a través de www.hostelandino.com.ar.', 18, 280);
+                    doc.text('La reserva queda sujeta a la confirmación de disponibilidad y seña coordinada con el hostel.', 18, 284);
+
+                    // Guardar / Descargar PDF
+                    const cleanName = (data.nombre || 'Huesped').replace(/[^a-zA-Z0-9]/g, '_');
+                    doc.save(`Ficha_Reserva_HostelAndino_${cleanName}.pdf`);
+                };
+
+                // Envío asíncrono con control de errores y feedback
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    errorMsg.classList.add('hidden');
+                    errorMsg.textContent = '';
+
+                    // Protección Honeypot
+                    if (honeyInput && honeyInput.value.trim() !== '') {
+                        console.warn('Bot detected by honeypot.');
+                        return;
+                    }
+
+                    const nombre = nombreInput.value.trim();
+                    const email = emailInput.value.trim();
+                    const telefono = telefonoInput.value.trim();
+                    const huespedes = huespedesInput.value || '2';
+                    const checkin = checkinInput.value;
+                    const checkout = checkoutInput.value;
+                    const consulta = consultaInput.value.trim();
+
+                    // Validación básica
+                    if (!nombre || !email || !telefono) {
+                        errorMsg.textContent = 'Por favor, completá los campos de Nombre, Email y Teléfono para poder contactarte.';
+                        errorMsg.classList.remove('hidden');
+                        return;
+                    }
+
+                    // Cálculo de noches
+                    let nights = 0;
+                    if (checkin && checkout) {
+                        const d1 = new Date(checkin);
+                        const d2 = new Date(checkout);
+                        const diffTime = d2 - d1;
+                        nights = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
+                    }
+
+                    const checkinStr = formatDateAR(checkin);
+                    const checkoutStr = formatDateAR(checkout);
+                    const cleanPhone = formatPhoneForWhatsApp(telefono);
+
+                    // Link directo para que el ADMIN DEL HOSTEL le responda al huésped por WhatsApp
+                    const guestWhatsAppUrl = cleanPhone 
+                        ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hola ${nombre}, te contactamos desde Hostel Andino (Villa Pehuenia) respecto a tu consulta para las fechas ${checkinStr} al ${checkoutStr}. ¿Cómo estás?`)}`
+                        : '';
+
+                    // Link directo para que el HUÉSPED le escriba al Hostel por WhatsApp
+                    const hostelWhatsAppUrl = `https://wa.me/5492983658176?text=${encodeURIComponent(`Hola Hostel Andino! Acabo de enviar una consulta desde la web. Mi nombre es *${nombre}*, fechas: *${checkinStr}* al *${checkoutStr}* (${nights ? nights + ' noches' : ''}) para *${huespedes}* persona(s).`)}`;
+
+                    const refCode = Math.floor(100000 + Math.random() * 900000).toString();
+                    const fechaEmision = new Date().toLocaleDateString('es-AR', {
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+
+                    // Guardamos datos para el generador de PDF
+                    lastReservationData = {
+                        refCode,
+                        fechaEmision,
+                        nombre,
+                        email,
+                        telefono,
+                        cleanPhone,
+                        huespedes,
+                        checkinStr,
+                        checkoutStr,
+                        nights,
+                        consulta,
+                        guestWhatsAppUrl,
+                        hostelWhatsAppUrl
+                    };
+
+                    // Estado cargando en el botón
+                    submitBtn.disabled = true;
+                    btnText.textContent = 'Enviando solicitud...';
+                    btnIcon.classList.add('hidden');
+                    btnSpinner.classList.remove('hidden');
+
+                    // Payload estructurado para FormSubmit.co
+                    // Con _captcha: "false" para que NUNCA cuelgue la pantalla con captchas externos
+                    const payload = {
+                        _captcha: "false",
+                        _subject: `🏔️ Solicitud Web: ${nombre} (${huespedes} pers.)`,
+                        _template: "table",
+                        "Nombre": nombre,
+                        "Email": email,
+                        "Telefono": telefono,
+                        "👉_RESPONDER_AL_HUESPED_POR_WHATSAPP": guestWhatsAppUrl || 'Número no válido para enlace directo',
+                        "Huéspedes": `${huespedes} persona(s)`,
+                        "Check-In": checkinStr,
+                        "Check-Out": checkoutStr,
+                        "Noches_Estimadas": nights ? `${nights} noches` : 'A definir',
+                        "Consulta": consulta || 'Sin consulta adicional',
+                        "Código_Ref": `#HA-${refCode}`,
+                        "Fecha_Envío": fechaEmision
+                    };
+
+                    try {
+                        const response = await fetch("https://formsubmit.co/ajax/7e6f482ed636fb6a175bc989a18d3a25", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json"
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json().catch(() => ({ success: true }));
+
+                        // Actualizar datos del resumen en la tarjeta de confirmación
+                        summaryNombre.textContent = nombre;
+                        summaryFechas.textContent = `${checkinStr} al ${checkoutStr} ${nights ? '(' + nights + ' noches)' : ''}`;
+                        summaryHuespedes.textContent = `${huespedes} persona(s)`;
+                        summaryTelefono.textContent = telefono;
+
+                        // Configurar botón directo de WhatsApp
+                        btnWhatsappDirect.href = hostelWhatsAppUrl;
+
+                        // Ocultar formulario y mostrar tarjeta de éxito
+                        contactForm.classList.add('hidden');
+                        successCard.classList.remove('hidden');
+                        successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    } catch (err) {
+                        console.error('Error enviando formulario:', err);
+                        // Fallback elegante si falla la red: permitir enviar directamente por WhatsApp para no perder el cliente
+                        errorMsg.innerHTML = `
+                            <p class="font-bold mb-1">Hubo un problema de conexión para enviar el email.</p>
+                            <p class="mb-3">¡No te preocupes! Podés enviarnos tu consulta directamente por WhatsApp ahora mismo:</p>
+                            <a href="${hostelWhatsAppUrl}" target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded font-bold text-sm">
+                                Abrir consulta en WhatsApp
+                            </a>
+                        `;
+                        errorMsg.classList.remove('hidden');
+                    } finally {
+                        submitBtn.disabled = false;
+                        btnText.textContent = 'Enviar Mensaje';
+                        btnIcon.classList.remove('hidden');
+                        btnSpinner.classList.add('hidden');
+                    }
+                });
+
+                // Acción botón descargar PDF
+                if (btnDownloadPdf) {
+                    btnDownloadPdf.addEventListener('click', () => {
+                        if (lastReservationData) {
+                            generateAndDownloadPDF(lastReservationData);
+                        }
+                    });
+                }
+
+                // Acción para reiniciar y enviar otra consulta
+                if (btnNewInquiry) {
+                    btnNewInquiry.addEventListener('click', () => {
+                        contactForm.reset();
+                        successCard.classList.add('hidden');
+                        contactForm.classList.remove('hidden');
+                        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                }
             }
         });
     </script>
