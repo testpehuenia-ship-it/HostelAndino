@@ -15,6 +15,7 @@ export default defineConfig({
         galeria: resolve(__dirname, 'admin/galeria.html'),
         hero: resolve(__dirname, 'admin/hero.html'),
         tarifas: resolve(__dirname, 'admin/tarifas.html'),
+        privacidad: resolve(__dirname, 'privacidad.html'),
 
       }
     }

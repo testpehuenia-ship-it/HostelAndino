@@ -812,6 +812,14 @@
 <!-- Campo trampa invisible anti-spam (Honeypot) -->
 <input type="text" name="_honey" id="contact-honey" style="display:none" tabindex="-1" autocomplete="off">
 
+<!-- Checkbox de Consentimiento RGPD / LPDP -->
+<div class="flex items-start gap-3 pt-1">
+  <input type="checkbox" id="contact-consent" name="Consentimiento" required class="mt-1 rounded border-outline text-primary focus:ring-primary w-4 h-4 cursor-pointer accent-[#28351c]">
+  <label for="contact-consent" class="text-xs text-secondary leading-relaxed cursor-pointer select-none">
+    He leído y acepto la <button type="button" class="underline font-semibold text-primary hover:text-tertiary transition-colors legal-modal-open-btn" data-legal="privacidad">Política de Privacidad</button> y consiento el tratamiento de mis datos personales para la gestión de mi consulta y reserva.
+  </label>
+</div>
+
 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
 <button type="submit" id="contact-submit-btn" class="bg-primary text-on-primary px-10 py-4 font-label-sm uppercase tracking-widest w-full md:w-auto hover:bg-tertiary transition-all duration-300 flex items-center justify-center gap-3 shadow-md group disabled:opacity-60 disabled:cursor-not-allowed">
   <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" id="contact-btn-icon">send</span>
@@ -956,24 +964,115 @@
 </section>
 
 <!-- Footer -->
-<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-[#e6d5c1] to-tertiary-container text-primary grid grid-cols-1 md:grid-cols-3 gap-gutter items-center border-t border-white/10">
-<div class="flex justify-center md:justify-start">
-  <img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-16 w-auto object-contain opacity-90" loading="lazy" />
-</div>
-<div class="text-center font-body-md font-medium opacity-90">
-            © 2026 Hostel Andino. <a href="https://adnqn.ar" target="_blank" class="hover:opacity-80 transition-opacity">by design <span class="font-bold tracking-tight" style="font-family: 'Playfair Display', serif;"><span class="text-[#00966C]">ADN</span><span class="text-[#D4AF37]">QN</span></span>.ar</a>
-            <span class="mx-2 text-primary/40">|</span>
-            <a href="/admin/login.html" class="hover:text-tertiary underline transition-colors">Admin Panel</a>
-        </div>
-<div class="flex justify-center md:justify-end gap-6 items-center">
-<a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://instagram.com/hostelandino_" target="_blank" rel="noopener noreferrer" title="Instagram">
-    <img src="https://cdn.simpleicons.org/instagram/E4405F" class="w-6 h-6 md:w-7 md:h-7" alt="Instagram" loading="lazy" />
-</a>
-<a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://www.facebook.com/andinopehuenia" target="_blank" rel="noopener noreferrer" title="Facebook">
-    <img src="https://cdn.simpleicons.org/facebook/1877F2" class="w-6 h-6 md:w-7 md:h-7" alt="Facebook" loading="lazy" />
-</a>
-</div>
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-[#e6d5c1] to-tertiary-container text-primary flex flex-col gap-8 border-t border-white/10">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter items-center">
+    <div class="flex justify-center md:justify-start">
+      <img src="/LogoNVO.webp" alt="Hostel Andino Logo" class="h-16 w-auto object-contain opacity-90" loading="lazy" />
+    </div>
+    <div class="text-center font-body-md font-medium opacity-90">
+      © 2026 Hostel Andino. <a href="https://adnqn.ar" target="_blank" class="hover:opacity-80 transition-opacity">by design <span class="font-bold tracking-tight" style="font-family: 'Playfair Display', serif;"><span class="text-[#00966C]">ADN</span><span class="text-[#D4AF37]">QN</span></span>.ar</a>
+      <span class="mx-2 text-primary/40">|</span>
+      <a href="/admin/login.html" class="hover:text-tertiary underline transition-colors">Admin Panel</a>
+    </div>
+    <div class="flex justify-center md:justify-end gap-6 items-center">
+      <a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://instagram.com/hostelandino_" target="_blank" rel="noopener noreferrer" title="Instagram">
+        <img src="https://cdn.simpleicons.org/instagram/E4405F" class="w-6 h-6 md:w-7 md:h-7" alt="Instagram" loading="lazy" />
+      </a>
+      <a class="hover:scale-110 transition-transform opacity-90 hover:opacity-100 drop-shadow-sm" href="https://www.facebook.com/andinopehuenia" target="_blank" rel="noopener noreferrer" title="Facebook">
+        <img src="https://cdn.simpleicons.org/facebook/1877F2" class="w-6 h-6 md:w-7 md:h-7" alt="Facebook" loading="lazy" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Legal & Compliance Links (RGPD, Cookies, Seguridad) -->
+  <div class="border-t border-primary/10 pt-6 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs text-primary/80 font-medium">
+    <button type="button" class="hover:text-primary transition-colors legal-modal-open-btn" data-legal="privacidad">
+      Política de Privacidad (RGPD)
+    </button>
+    <span class="text-primary/30 hidden sm:inline">•</span>
+    <button type="button" class="hover:text-primary transition-colors legal-modal-open-btn" data-legal="cookies">
+      Política de Cookies
+    </button>
+    <span class="text-primary/30 hidden sm:inline">•</span>
+    <button type="button" class="hover:text-primary transition-colors legal-modal-open-btn" data-legal="seguridad">
+      Políticas de Seguridad
+    </button>
+    <span class="text-primary/30 hidden sm:inline">•</span>
+    <button type="button" id="footer-cookie-settings-btn" class="hover:text-primary transition-colors underline flex items-center gap-1">
+      <span class="material-symbols-outlined text-sm">settings</span> Configuración de Cookies
+    </button>
+  </div>
 </footer>
+
+<!-- Cookie Consent Banner (RGPD / Cookies) -->
+<aside id="cookie-banner" class="fixed bottom-0 inset-x-0 z-50 p-4 md:p-6 bg-[#28351c]/95 text-[#f7f6f3] backdrop-blur-md border-t border-[#cfb290]/40 shadow-2xl transition-transform duration-500 transform translate-y-full" aria-label="Aviso de Cookies">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-start gap-3">
+      <span class="material-symbols-outlined text-2xl text-[#cfb290] shrink-0 mt-0.5">cookie</span>
+      <p class="text-xs md:text-sm text-[#f7f6f3]/90 leading-relaxed">
+        Utilizamos cookies técnicas necesarias para el funcionamiento del sitio y analíticas anónimas de rendimiento para optimizar tu experiencia y velocidad de carga. Podés aceptar todas, configurarlas o consultar nuestra <button type="button" class="underline text-[#cfb290] hover:text-white legal-modal-open-btn font-semibold" data-legal="cookies">Política de Cookies</button>.
+      </p>
+    </div>
+    <div class="flex items-center gap-2.5 shrink-0 w-full md:w-auto">
+      <button type="button" id="cookie-btn-reject" class="flex-1 md:flex-none px-4 py-2.5 text-xs uppercase tracking-wider rounded border border-[#cfb290]/50 hover:bg-white/10 transition-colors font-medium">
+        Solo necesarias
+      </button>
+      <button type="button" id="cookie-btn-accept" class="flex-1 md:flex-none px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded bg-[#cfb290] text-[#28351c] hover:bg-white transition-colors shadow">
+        Aceptar todas
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- Modal Legal Interactivo (RGPD, Cookies, Seguridad) -->
+<div id="legal-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
+  <div class="bg-[#f7f6f3] text-[#28351c] w-full max-w-2xl max-h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-[#cfb290]/40 animate-fade-in">
+    <!-- Header -->
+    <div class="bg-[#28351c] text-[#f7f6f3] px-6 py-4 flex items-center justify-between border-b border-[#cfb290]/20">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl text-[#cfb290]">verified_user</span>
+        <h3 id="legal-modal-title" class="font-bold text-lg text-[#cfb290]">Políticas & Privacidad</h3>
+      </div>
+      <button type="button" id="legal-modal-close" class="text-white/70 hover:text-white transition-colors p-1" aria-label="Cerrar modal">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+    </div>
+    <!-- Tabs -->
+    <div class="flex border-b border-[#cfb290]/30 bg-[#f0efe9] text-xs font-semibold">
+      <button type="button" class="legal-tab-btn flex-1 py-3 px-2 text-center border-b-2 border-[#28351c] text-[#28351c]" data-tab="tab-privacidad">Privacidad (RGPD)</button>
+      <button type="button" class="legal-tab-btn flex-1 py-3 px-2 text-center text-secondary hover:text-[#28351c]" data-tab="tab-cookies">Cookies</button>
+      <button type="button" class="legal-tab-btn flex-1 py-3 px-2 text-center text-secondary hover:text-[#28351c]" data-tab="tab-seguridad">Seguridad</button>
+    </div>
+    <!-- Body -->
+    <div class="p-6 overflow-y-auto space-y-4 text-xs md:text-sm leading-relaxed text-[#28351c]/90">
+      <div id="tab-privacidad" class="legal-tab-content space-y-3">
+        <h4 class="font-bold text-base text-[#28351c]">Protección de Datos Personales (RGPD / Ley 25.326)</h4>
+        <p><strong>Responsable:</strong> Hostel Andino, Arroyo Chañi y Arroyo Pehuen Co (8345), Villa Pehuenia, Neuquén, Argentina. Email: hostelandinovillapehuenia@gmail.com.</p>
+        <p><strong>Datos recabados:</strong> Nombre, teléfono / WhatsApp, email, fechas de estadía y cantidad de huéspedes solicitados para gestionar tu consulta o pre-reserva.</p>
+        <p><strong>Finalidad:</strong> Responder a tu consulta de disponibilidad y enviarte la cotización o ficha de solicitud en PDF.</p>
+        <p><strong>Legitimación:</strong> Tu consentimiento expreso previo al envío del formulario.</p>
+        <p><strong>Confidencialidad:</strong> Tus datos no son vendidos, cedidos ni compartidos con fines comerciales con terceros.</p>
+        <p><strong>Derechos:</strong> Podés solicitar el acceso, rectificación o eliminación de tus datos en cualquier momento escribiendo a nuestro correo oficial.</p>
+      </div>
+      <div id="tab-cookies" class="legal-tab-content hidden space-y-3">
+        <h4 class="font-bold text-base text-[#28351c]">Uso de Cookies</h4>
+        <p>Este sitio utiliza cookies técnicas necesarias para recordar tus preferencias de privacidad (almacenadas localmente en tu navegador) y cookies analíticas de rendimiento anónimas (Vercel Web Analytics & Speed Insights) para medir la velocidad de carga de la página.</p>
+        <p>No utilizamos cookies de rastreo publicitario invasivo. Podés revocar o cambiar tus preferencias en cualquier momento.</p>
+      </div>
+      <div id="tab-seguridad" class="legal-tab-content hidden space-y-3">
+        <h4 class="font-bold text-base text-[#28351c]">Políticas de Seguridad Técnica</h4>
+        <p><strong>Cifrado en tránsito:</strong> Toda la navegación está protegida mediante HTTPS / TLS con cabeceras estrictas HSTS (HTTP Strict Transport Security) que garantizan que tus datos viajen de forma cifrada.</p>
+        <p><strong>Protección Anti-Bot:</strong> Empleamos filtros silenciosos anti-spam (Honeypot) para bloquear bots automáticos sin exponer tu navegación a captchas de terceros.</p>
+        <p><strong>Generación segura de documentos:</strong> La ficha de pre-reserva en PDF se genera en tu propio navegador de forma privada.</p>
+      </div>
+    </div>
+    <!-- Footer -->
+    <div class="p-4 bg-[#f0efe9] border-t border-[#cfb290]/20 flex justify-between items-center text-xs">
+      <a href="/privacidad.html" target="_blank" class="text-primary underline font-semibold hover:text-tertiary">Ver política completa en nueva pestaña ↗</a>
+      <button type="button" id="legal-modal-ok" class="bg-primary text-on-primary px-5 py-2 rounded font-label-sm uppercase tracking-wider hover:bg-tertiary transition-colors">Entendido</button>
+    </div>
+  </div>
+</div>
 <script>
         // Simple Hero Slider logic
         // Simple Hero Slider logic
@@ -1963,10 +2062,18 @@
                     const checkout = checkoutInput.value;
                     const consulta = consultaInput.value.trim();
 
-                    // Validación básica
+                    // Validación básica y de consentimiento RGPD
                     if (!nombre || !email || !telefono) {
                         errorMsg.textContent = 'Por favor, completá los campos de Nombre, Email y Teléfono para poder contactarte.';
                         errorMsg.classList.remove('hidden');
+                        return;
+                    }
+
+                    const consentInput = document.getElementById('contact-consent');
+                    if (consentInput && !consentInput.checked) {
+                        errorMsg.textContent = 'Por favor, aceptá la Política de Privacidad para poder enviar tu consulta de reserva.';
+                        errorMsg.classList.remove('hidden');
+                        consentInput.focus();
                         return;
                     }
 
@@ -2035,6 +2142,7 @@
                         "Check-Out": checkoutStr,
                         "Noches_Estimadas": nights ? `${nights} noches` : 'A definir',
                         "Consulta": consulta || 'Sin consulta adicional',
+                        "Consentimiento_RGPD": `Aceptado el ${fechaEmision}`,
                         "Código_Ref": `#HA-${refCode}`,
                         "Fecha_Envío": fechaEmision
                     };
@@ -2103,6 +2211,112 @@
                     });
                 }
             }
+
+            // ==========================================
+            // COOKIE BANNER & LEGAL MODAL CONTROLLER (RGPD)
+            // ==========================================
+            const cookieBanner = document.getElementById('cookie-banner');
+            const cookieBtnAccept = document.getElementById('cookie-btn-accept');
+            const cookieBtnReject = document.getElementById('cookie-btn-reject');
+            const footerCookieSettingsBtn = document.getElementById('footer-cookie-settings-btn');
+
+            // Mostrar banner si aún no hay consentimiento guardado
+            const savedConsent = localStorage.getItem('hostelandino_cookie_consent');
+            if (!savedConsent && cookieBanner) {
+                setTimeout(() => {
+                    cookieBanner.classList.remove('translate-y-full');
+                }, 800);
+            }
+
+            if (cookieBtnAccept) {
+                cookieBtnAccept.addEventListener('click', () => {
+                    localStorage.setItem('hostelandino_cookie_consent', 'all');
+                    cookieBanner.classList.add('translate-y-full');
+                });
+            }
+
+            if (cookieBtnReject) {
+                cookieBtnReject.addEventListener('click', () => {
+                    localStorage.setItem('hostelandino_cookie_consent', 'essential');
+                    cookieBanner.classList.add('translate-y-full');
+                });
+            }
+
+            if (footerCookieSettingsBtn) {
+                footerCookieSettingsBtn.addEventListener('click', () => {
+                    if (cookieBanner) {
+                        cookieBanner.classList.remove('translate-y-full');
+                        cookieBanner.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+
+            // Modal Legal y navegación por pestañas
+            const legalModal = document.getElementById('legal-modal');
+            const legalModalClose = document.getElementById('legal-modal-close');
+            const legalModalOk = document.getElementById('legal-modal-ok');
+            const legalOpenButtons = document.querySelectorAll('.legal-modal-open-btn');
+            const legalTabs = document.querySelectorAll('.legal-tab-btn');
+            const legalTabContents = document.querySelectorAll('.legal-tab-content');
+
+            const switchLegalTab = (tabId) => {
+                legalTabs.forEach(btn => {
+                    const isTarget = btn.getAttribute('data-tab') === tabId;
+                    btn.classList.toggle('border-b-2', isTarget);
+                    btn.classList.toggle('border-[#28351c]', isTarget);
+                    btn.classList.toggle('text-[#28351c]', isTarget);
+                    btn.classList.toggle('text-secondary', !isTarget);
+                });
+                legalTabContents.forEach(content => {
+                    content.classList.toggle('hidden', content.id !== tabId);
+                });
+            };
+
+            legalTabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    switchLegalTab(tabId);
+                });
+            });
+
+            const openLegalModal = (initialTabKey) => {
+                if (!legalModal) return;
+                let targetTab = 'tab-privacidad';
+                if (initialTabKey === 'cookies') targetTab = 'tab-cookies';
+                if (initialTabKey === 'seguridad') targetTab = 'tab-seguridad';
+                switchLegalTab(targetTab);
+                legalModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeLegalModal = () => {
+                if (!legalModal) return;
+                legalModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            };
+
+            legalOpenButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const legalKey = btn.getAttribute('data-legal');
+                    openLegalModal(legalKey);
+                });
+            });
+
+            if (legalModalClose) legalModalClose.addEventListener('click', closeLegalModal);
+            if (legalModalOk) legalModalOk.addEventListener('click', closeLegalModal);
+
+            if (legalModal) {
+                legalModal.addEventListener('click', (e) => {
+                    if (e.target === legalModal) closeLegalModal();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && legalModal && !legalModal.classList.contains('hidden')) {
+                    closeLegalModal();
+                }
+            });
         });
     </script>
 </body></html>
